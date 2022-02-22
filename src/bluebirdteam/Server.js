@@ -30,9 +30,10 @@ class Server{
 
     async tick(){
 	try {
-	    await this.raknet.tick();
+	  await this.raknet.tick();
 	}catch(e){
-	    throw e;
+          console.warn("Failed to bind the server");
+	  throw e;
 	}
     }
 
