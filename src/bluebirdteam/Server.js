@@ -10,6 +10,7 @@ class Server{
 
     constructor(path) {
         let start_time = Date.now()
+	this.raknet = new RakNetAdapter(this);
         this.id = 1;
         this.path = path
         if(!Fs.fileExists("BlueBird.json")){
@@ -22,14 +23,17 @@ class Server{
         this.getLogger().info("BlueBird Is distributed under MIT License")
         this.getLogger().info("Opening server on " + new Config("BlueBird.json", Config.JSON).get("interface") + ":" + new Config("BlueBird.json", Config.JSON).get("port"));
         this.getLogger().info("Done in (" + (Date.now() - start_time) + "ms).")
+	let reader = new ConsoleCommandReader(this);
+        reader.tick();
         this.tick();
     }
 
-    tick(){
-        this.raknet = new RakNetAdapter(this);
-        this.raknet.tick();
-        let reader = new ConsoleCommandReader(this);
-        reader.tick();
+    async tick(){
+	try {
+	    await this.raknet.tick();
+	}catch(e){
+	    throw e;
+	}
     }
 
     getId(){
