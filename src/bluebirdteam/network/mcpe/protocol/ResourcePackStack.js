@@ -34,7 +34,7 @@ class ResourcePackStack extends DataPacket {
         }
 
         this.baseGameVersion = this.readString();
-        let experimentsCount = this.readUnsignedVarInt();
+        let experimentsCount = this.readLInt();
         while (experimentsCount-- > 0) {
             this.readString();
             this.readBool();
@@ -60,7 +60,7 @@ class ResourcePackStack extends DataPacket {
         });
 
         this.writeString(this.baseGameVersion);
-        this.writeUnsignedVarInt(0); // experiments count
+        this.writeLInt(0); // experiments count
         this.writeBool(this.experimentsPreviouslyUsed);
         
     }
