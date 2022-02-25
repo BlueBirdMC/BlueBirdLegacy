@@ -76,10 +76,10 @@ class DataPacket extends NetworkBinaryStream{
 
     /**
      * @param handle {PlayerSessionAdapter}
-     * @returns {boolean}
+     * @returns {void}
      */
     handle(handle){
-        return false;
+        return handle.handleDataPacket(this);
     }
 }
 

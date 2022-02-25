@@ -87,7 +87,7 @@ class GamePacket extends DataPacket {
                 }
             }
 
-            return true; // handle
+            return handler.handleGamePacket(this);
         });
     }
 }
