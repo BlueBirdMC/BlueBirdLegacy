@@ -2,8 +2,7 @@ const DataPacket = require("./DataPacket");
 const assert = require("assert");
 const Zlib = require("zlib");
 const PacketPool = require("./PacketPool");
-const BinaryStream = require("bluebirdmc-binarystream")
-const {count} = require("locutus/php/array");
+const BinaryStream = require("bluebirdmc-binarystream");
 
 class GamePacket extends DataPacket {
 
@@ -47,14 +46,14 @@ class GamePacket extends DataPacket {
     }
 
     addPacket(packet) {
-        if (!packet.canBeBatched()) {
+        if (!packet.canBeBatched) {
             throw new Error(packet.getName() + " cant be batched");
         }
         if (!packet.isEncoded) {
             packet.encode();
         }
 
-        this.payload = this.writeUnsignedVarInt(packet.length);
+        this.payload = this.writeUnsignedVarInt(packet.buffer.length);
         this.payload.append(packet.getBuffer());
     }
 
@@ -79,16 +78,20 @@ class GamePacket extends DataPacket {
             return false;
         }
         this.getPackets().forEach(buf => {
-            let packetPool = new PacketPool();
-            let pk = packetPool.getPacket(buf);
-            if(count(pk) > 0){
+            let pk = handler.raknetAdapter.packetPool.getPacket(buf[0]);
+            if (pk instanceof DataPacket) {
                 if (!pk.canBeBatched) {
-                    throw new Error("Received invalid " + pk.getName() + " inside GamePacket");
+                    throw new Error("Received invalid " + pk.getName() + " inside BatchPacket");
                 }
+
+                pk.setBuffer(buf, 1);
+                handler.handleDataPacket(pk);
+            } else {
+                console.log("MINECRAFT PACKET: 0x" + buf.slice(0, 1).toString("hex"));
             }
 
-            return handler.handleGamePacket(this);
         });
+        return true;
     }
 }
 

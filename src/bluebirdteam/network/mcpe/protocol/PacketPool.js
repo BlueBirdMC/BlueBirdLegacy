@@ -1,3 +1,5 @@
+const LoginPacket = require("./LoginPacket");
+
 class PacketPool{
 
     constructor() {
@@ -5,7 +7,7 @@ class PacketPool{
     }
 
     init(){
-        //TODO: add packets
+        this.registerPacket(LoginPacket)
     }
 
     registerPacket(packet){
@@ -13,7 +15,7 @@ class PacketPool{
     }
 
     getPacket(packet){
-        return this.pool.has(packet) ? new (self.pool.get(packet))() : null;
+        return this.pool.has(packet) ? new (this.pool.get(packet))() : null;
     }
 
     isRegistered(packet){

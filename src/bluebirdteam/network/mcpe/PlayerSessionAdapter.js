@@ -1,5 +1,4 @@
 const DataPacket = require("./protocol/DataPacket");
-const GamePacket = require("./protocol/GamePacket");
 
 class PlayerSessionAdapter{
 
@@ -27,11 +26,6 @@ class PlayerSessionAdapter{
         }
 
         console.log("Got "+packet.getName()+" from "+this);
-    }
-
-    handleGamePacket(packet){
-        CheckTypes([GamePacket, packet]);
-        packet.decode();
     }
 
     handleLogin(packet){

@@ -1,5 +1,7 @@
 const PlayerSessionAdapter = require("../network/mcpe/PlayerSessionAdapter");
 const DataPacket = require("../network/mcpe/protocol/DataPacket");
+const LoginPacket = require("../network/mcpe/protocol/LoginPacket");
+const ProtocolInfo = require("../network/mcpe/protocol/ProtocolInfo");
 
 class Player {
 
@@ -23,6 +25,18 @@ class Player {
 
     isConnected(){
         return this.getSessionAdapter() !== null;
+    }
+
+    handleLogin(packet){
+        CheckTypes([LoginPacket, packet]);
+
+        if(packet.protocol !== ProtocolInfo.PROTOCOL){
+            console.log("player protocol is not the default");
+        }else{
+            console.log("player protocol is the default");
+        }
+
+        this.username = packet.username;
     }
 
     doFirstSpawn(){}
