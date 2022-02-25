@@ -1,2 +1,2 @@
 # BlueBird
-A New Minecraft bedrock server software by DRAGKILLS created in java script
+A New Minecraft bedrock server software by DRAGKILLS/VaxPex created in javascript
