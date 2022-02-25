@@ -1,5 +1,5 @@
 const RakNetServer = require("bluebirdmc-raknet/server/RakNetServer");
-const BatchPacket = require("./mcpe/protocol/GamePacket");
+const GamePacket = require("./mcpe/protocol/GamePacket");
 const PlayerList = require("../player/PlayerList");
 const Player = require("../player/Player");
 const Logger = use("log/Logger");
@@ -37,7 +37,7 @@ class RakNetInterface {
         if(this.players.hasPlayer(player)){
             let identifier = this.players.getPlayerIdentifier(player);
 
-            if(packet instanceof BatchPacket){
+            if(packet instanceof GamePacket){
                 let session;
                 if((session = this.raknet.getSessionManager().getSessionByIdentifier(identifier))){
                     session.queueConnectedPacketFromServer(packet, needACK, immediate);
@@ -56,7 +56,7 @@ class RakNetInterface {
             let player = this.players.getPlayer(session.toString());
 
             session.packetBatches.getAllAndClear().forEach(packet => {
-                let pk = new BatchPacket();
+                let pk = new GamePacket();
                 pk.setBuffer(packet.getStream().getBuffer(), 1);
                 pk.decode();
                 pk.handle(player.getSessionAdapter());
