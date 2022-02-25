@@ -11,6 +11,7 @@ class Player {
         this.port = port;
         this.needACK = {};
         this.username = "";
+        server.logger.notice("Player: " + ip + ":" + port);
     }
 
     /**
@@ -22,10 +23,6 @@ class Player {
 
     isConnected(){
         return this.getSessionAdapter() !== null;
-    }
-
-    handleLogin(packet){
-        this.username = packet.username;
     }
 
     doFirstSpawn(){}

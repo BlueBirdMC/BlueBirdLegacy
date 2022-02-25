@@ -14,15 +14,17 @@ class RakNetInterface {
         this.playersCount = 0;
         this.logger = new Logger("RakNet");
         this.raknet = new RakNetServer(this.bluebirdcfg.get("port"), this.logger);
-        this.raknet.getServerName()
-            .setMotd(this.bluebirdcfg.get("motd"))
-            .setName(this.bluebirdcfg.get("motd"))
-            .setProtocol(ProtocolInfo.CURRENT_PROTOCOL)
-            .setVersion(ProtocolInfo.MINECRAFT_VERSION)
-            .setOnlinePlayers(this.playersCount)
-            .setMaxPlayers(this.bluebirdcfg.get("maxplayers"))
-            .setServerId(server.getId())
-            .setGamemode("Creative");
+        setInterval(() => {
+            this.raknet.getServerName()
+                .setMotd(this.bluebirdcfg.get("motd"))
+                .setName("BlueBird Server")
+                .setProtocol(ProtocolInfo.CURRENT_PROTOCOL)
+                .setVersion(ProtocolInfo.MINECRAFT_VERSION)
+                .setOnlinePlayers(this.playersCount)
+                .setMaxPlayers(this.bluebirdcfg.get("maxplayers"))
+                .setServerId(server.getId())
+                .setGamemode("Creative");
+        }, 1000);
         this.packetPool = new PacketPool();
         this.packetPool.init();
         this.players = new PlayerList();
@@ -81,15 +83,11 @@ class RakNetInterface {
                 let player = new Player(this.server, data.clientId, data.ip, data.port);
                 this.players.addPlayer(data.identifier, player);
                 this.playersCount += 1;
-                this.logger.info("got new connection " + player.ip + ":" + player.port);
                 break;
             case "closeSession":
                 if(this.players.has(data.identifier)){
-                    let player = this.players.get(data.identifier);
-                    //player.close("Left The Server", data.reason);
                     this.close(this.players.getPlayer(data.identifier), data.reason);
                     this.playersCount -= 1;
-                    this.logger.info("removed connection for " + player.ip + ":" + player.port);
                 }
                 break;
         }
