@@ -17,11 +17,11 @@ class DataPacket extends NetworkBinaryStream{
     canBeBatched = true;
 
     pid(){
-        return self.NETWORK_ID;
+        return this.constructor.NETWORK_ID;
     }
 
     getName(){
-        return self.__filename.replace(".js", "");
+        return this.constructor.name;
     }
 
     canBeSentBeforeLogin(){
@@ -40,12 +40,12 @@ class DataPacket extends NetworkBinaryStream{
 
     decodeHeader(){
         let header = this.readUnsignedVarInt();
-        let pid = header & self.PID_MASK;
-        if(pid !== self.NETWORK_ID){
-            throw new Error(`Expected ${self.NETWORK_ID} for packet ID, got ${pid}`);
+        let pid = header & this.constructor.PID_MASK;
+        if(pid !== this.constructor.NETWORK_ID){
+            throw new Error(`Expected ${this.constructor.NETWORK_ID} for packet ID, got ${pid}`);
         }
-        this.senderSubId = (header >> self.SENDER_SUBCLIENT_ID_SHIFT) & self.SUBCLIENT_ID_MASK;
-        this.recipientSubId = (header >> self.RECIPIENT_SUBCLIENT_ID_SHIFT) & self.SUBCLIENT_ID_MASK;
+        this.senderSubId = (header >> this.constructor.SENDER_SUBCLIENT_ID_SHIFT) & this.constructor.SUBCLIENT_ID_MASK;
+        this.recipientSubId = (header >> this.constructor.RECIPIENT_SUBCLIENT_ID_SHIFT) & this.constructor.SUBCLIENT_ID_MASK;
     }
 
     decodePayload(){}
@@ -59,27 +59,24 @@ class DataPacket extends NetworkBinaryStream{
 
     encodeHeader(){
         this.writeUnsignedVarInt(
-            self.NETWORK_ID |
-            (this.senderSubId << self.SENDER_SUBCLIENT_ID_SHIFT) |
-            (this.recipientSubId << self.RECIPIENT_SUBCLIENT_ID_SHIFT)
+            this.constructor.NETWORK_ID |
+            (this.senderSubId << this.constructor.SENDER_SUBCLIENT_ID_SHIFT) |
+            (this.recipientSubId << this.constructor.RECIPIENT_SUBCLIENT_ID_SHIFT)
         );
     }
 
     encodePayload(){}
 
     clean(){
-        this.buffer = new Buffer("");
         this.isEncoded = false;
-        this.offset = 0;
-        return this;
+        super.reset();
     }
 
     /**
      * @param handle {PlayerSessionAdapter}
-     * @returns {void}
      */
     handle(handle){
-        return handle.handleDataPacket(this);
+        return false;
     }
 }
 

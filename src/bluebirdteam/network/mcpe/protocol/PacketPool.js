@@ -3,7 +3,7 @@ const LoginPacket = require("./LoginPacket");
 class PacketPool{
 
     constructor() {
-        this.pool = new Map();
+        this.packetPool = new Map();
     }
 
     init(){
@@ -11,15 +11,15 @@ class PacketPool{
     }
 
     registerPacket(packet){
-        this.pool.set(packet, packet);
+        this.packetPool.set(packet.NETWORK_ID, packet);
     }
 
-    getPacket(packet){
-        return this.pool.has(packet) ? new (this.pool.get(packet))() : null;
+    getPacket(id){
+        return this.packetPool.has(id) ? new (this.packetPool.get(id))() : undefined;
     }
 
     isRegistered(packet){
-        return this.pool.has(packet);
+        return this.packetPool.has(packet);
     }
 }
 

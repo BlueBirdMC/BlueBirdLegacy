@@ -4,8 +4,6 @@ const ProtocolInfo = require("./ProtocolInfo");
 const BinaryStream = require("../../NetworkBinaryStream");
 const Utils = require("../../../utils/Utils");
 
-"use strict";
-
 class LoginPacket extends DataPacket {
     static NETWORK_ID = ProtocolInfo.LOGIN_PACKET;
 
