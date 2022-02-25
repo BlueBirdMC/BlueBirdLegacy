@@ -1,4 +1,11 @@
-const LoginPacket = require("./LoginPacket");
+const Login = require("./Login");
+const PlayStatus = require("./PlayStatus");
+const ResourcePackClientResponse = require("./ResourcePackClientResponse");
+const ResourcePacksInfo = require("./ResourcePacksInfo");
+const ResourcePackStack = require("./ResourcePackStack");
+const StartGame = require("./StartGame");
+const CreativeContent = require("./CreativeContent");
+const BiomeDefinitionList = require("./BiomeDefinitionList");
 
 class PacketPool{
 
@@ -7,7 +14,14 @@ class PacketPool{
     }
 
     init(){
-        this.registerPacket(LoginPacket)
+        this.registerPacket(Login);
+        this.registerPacket(PlayStatus);
+        this.registerPacket(ResourcePackClientResponse);
+        this.registerPacket(ResourcePacksInfo);
+        this.registerPacket(ResourcePackStack);
+        this.registerPacket(StartGame);
+        this.registerPacket(CreativeContent);
+        this.registerPacket(BiomeDefinitionList);
     }
 
     registerPacket(packet){

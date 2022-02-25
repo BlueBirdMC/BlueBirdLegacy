@@ -6,9 +6,7 @@ const BinaryStream = require("bluebirdmc-binarystream");
 
 class GamePacket extends DataPacket {
 
-    static get NETWORK_ID() {
-        return 0xFE;
-    }
+    static get NETWORK_ID() { return 0xFE; }
 
     payload = "";
 
@@ -81,7 +79,7 @@ class GamePacket extends DataPacket {
             let pk = handler.raknetAdapter.packetPool.getPacket(buf[0]);
             if (pk instanceof DataPacket) {
                 if (!pk.canBeBatched) {
-                    throw new Error("Received invalid " + pk.getName() + " inside BatchPacket");
+                    throw new Error("Received invalid " + pk.getName() + " inside GamePacket");
                 }
 
                 pk.setBuffer(buf, 1);

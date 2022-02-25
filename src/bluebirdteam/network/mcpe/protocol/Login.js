@@ -4,8 +4,9 @@ const ProtocolInfo = require("./ProtocolInfo");
 const BinaryStream = require("../../NetworkBinaryStream");
 const Utils = require("../../../utils/Utils");
 
-class LoginPacket extends DataPacket {
-    static NETWORK_ID = ProtocolInfo.LOGIN_PACKET;
+class Login extends DataPacket {
+
+    static get NETWORK_ID() { return ProtocolInfo.LOGIN; }
 
     /** @type {string} */
     username = '';
@@ -28,7 +29,9 @@ class LoginPacket extends DataPacket {
     /** @type {any} */
     clientData;
 
-    allowBeforeLogin = true;
+    canBeSentBeforeLogin() {
+        return true;
+    }
 
     mayHaveUnreadBytes = this.protocol !== ProtocolInfo.PROTOCOL;
 
@@ -77,10 +80,10 @@ class LoginPacket extends DataPacket {
         this.clientDataJwt = buffer.read(buffer.readLInt()).toString();
         this.clientData = Utils.decodeJWT(this.clientDataJwt);
 
-        this.clientId = this.clientData["ClientRandomId"] || null;
-        this.serverAddress = this.clientData["ServerAddress"] || null;
+        this.clientId = this.clientData["ClientRandomId"] ?? null;
+        this.serverAddress = this.clientData["ServerAddress"] ?? null;
 
-        this.locale = this.clientData["LanguageCode"] || null;
+        this.locale = this.clientData["LanguageCode"] ?? null;
     }
 
     handle(handler) {
@@ -88,4 +91,4 @@ class LoginPacket extends DataPacket {
     }
 }
 
-module.exports = LoginPacket;
+module.exports = Login;
