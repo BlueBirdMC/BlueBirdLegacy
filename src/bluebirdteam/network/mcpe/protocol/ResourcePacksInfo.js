@@ -44,6 +44,7 @@ class ResourcePacksInfo extends DataPacket {
             this.readString();
             this.readString();
             this.readBool();
+            this.readBool();
         }
     }
 
@@ -55,7 +56,7 @@ class ResourcePacksInfo extends DataPacket {
         this.behaviorPackEntries.forEach(() => {
             this.writeString("");
             this.writeString("");
-            this.writeLLong(1234);
+            this.writeLLong(0);
             this.writeString("");
             this.writeString("");
             this.writeString("");
@@ -65,10 +66,11 @@ class ResourcePacksInfo extends DataPacket {
         this.resourcePackEntries.forEach(() => {
             this.writeString("");
             this.writeString("");
-            this.writeLLong(1234);
+            this.writeLLong(0);
             this.writeString("");
             this.writeString("");
             this.writeString("");
+            this.writeBool(false);
             this.writeBool(false);
         });
     }

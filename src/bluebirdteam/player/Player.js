@@ -123,6 +123,7 @@ class Player {
         let packsInfo = new ResourcePacksInfo();
         packsInfo.resourcePackEntries = [];
         packsInfo.mustAccept = false;
+        packsInfo.forceServerPacks = false;
         this.dataPacket(packsInfo);
 
         this.server.logger.notice("Player: " + this.username);
