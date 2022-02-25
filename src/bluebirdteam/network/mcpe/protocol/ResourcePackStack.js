@@ -12,10 +12,10 @@ class ResourcePackStack extends DataPacket {
     /** @type {any} */
     resourcePackStack = [];
 
-    /** @type {boolean} */
-    isExperimental = false;
     /** @type {string} */
     baseGameVersion = ProtocolInfo.VERSION;
+    /** @type {boolean} */
+    experimentsPreviouslyUsed = false;
 
     decodePayload() {
         this.mustAccept = this.readBool();
@@ -33,8 +33,13 @@ class ResourcePackStack extends DataPacket {
             this.readString();
         }
 
-        this.isExperimental = this.readBool();
         this.baseGameVersion = this.readString();
+        let experimentsCount = this.readLInt();
+        while (experimentsCount-- > 0) {
+            this.readString();
+            this.readBool();
+        }
+        this.experimentsPreviouslyUsed = this.readBool();
     }
 
     encodePayload() {
@@ -54,8 +59,10 @@ class ResourcePackStack extends DataPacket {
             this.writeString("");
         });
 
-        this.writeBool(this.isExperimental);
         this.writeString(this.baseGameVersion);
+        this.writeLInt(0); // experiments count
+        this.writeBool(this.experimentsPreviouslyUsed);
+        
     }
 }
 
