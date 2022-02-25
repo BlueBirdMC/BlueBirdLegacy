@@ -8,6 +8,8 @@ class ResourcePacksInfo extends DataPacket {
     mustAccept = false;
     /** @type {boolean} */
     hasScripts = false;
+    /** @type {boolean} */
+    forceServerPacks = false;
 
     /** @type {any} */
     behaviorPackEntries = [];
@@ -21,6 +23,7 @@ class ResourcePacksInfo extends DataPacket {
     decodePayload() {
         this.mustAccept = this.readBool();
         this.hasScripts = this.readBool();
+        this.forceServerPacks = this.readBool();
         let behaviourPackCount = this.readLShort();
         while (behaviourPackCount-- > 0) {
             this.readString();
@@ -47,6 +50,7 @@ class ResourcePacksInfo extends DataPacket {
     encodePayload() {
         this.writeBool(this.mustAccept);
         this.writeBool(this.hasScripts);
+        this.writeBool(this.forceServerPacks);
         this.writeLShort(this.behaviorPackEntries.length);
         this.behaviorPackEntries.forEach(() => {
             this.writeString("");
