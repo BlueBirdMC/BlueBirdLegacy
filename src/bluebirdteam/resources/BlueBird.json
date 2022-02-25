@@ -1,6 +1,7 @@
 {
-  "motd": "§l§bBlueBrid Minecraft Server",
+  "motd": "§l§bBlueBird Minecraft Server",
   "interface": "0.0.0.0",
   "port": 19132,
-  "maxplayers": "20"
+  "maxplayers": "20",
+  "debug_level": 1
 }

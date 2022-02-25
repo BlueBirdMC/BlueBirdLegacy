@@ -1,5 +1,3 @@
-const LoginPacket = require("./LoginPacket");
-
 class PacketPool{
 
     constructor() {
@@ -7,7 +5,7 @@ class PacketPool{
     }
 
     init(){
-        this.registerPacket(LoginPacket);
+        //TODO: add packets
     }
 
     registerPacket(packet){

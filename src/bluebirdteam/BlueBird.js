@@ -11,7 +11,6 @@ class BlueBird{
         };
         this.server = new Server(path);
     }
-
 }
 
 module.exports = BlueBird

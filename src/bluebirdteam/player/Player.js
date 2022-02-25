@@ -4,7 +4,7 @@ const DataPacket = require("../network/mcpe/protocol/DataPacket");
 class Player {
 
     constructor(server, clientId, ip, port) {
-        this.sessionAdapter = new PlayerSessionAdapter();
+        this.sessionAdapter = new PlayerSessionAdapter(server, server.raknet);
         this.server = server;
         this.clientId = clientId;
         this.ip = ip;

@@ -1,18 +1,19 @@
 const RakNetServer = require("bluebirdmc-raknet/server/RakNetServer");
-const BatchPacket = require("./protocol/BatchPacket");
-const PlayerList = require("../../player/PlayerList");
-const Player = require("../../player/Player");
+const BatchPacket = require("./mcpe/protocol/GamePacket");
+const PlayerList = require("../player/PlayerList");
+const Player = require("../player/Player");
 const Logger = use("log/Logger");
 const ProtocolInfo = use("network/mcpe/protocol/ProtocolInfo");
-const PacketPool = require("./protocol/PacketPool");
+const PacketPool = require("./mcpe/protocol/PacketPool");
 const Config = use("utils/Config");
 
-class RakNetAdapter {
+class RakNetInterface {
     constructor(server) {
         this.server = server;
         this.bluebirdcfg = new Config("BlueBird.json", Config.JSON);
         this.playersCount = 0;
-        this.raknet = new RakNetServer(this.bluebirdcfg.get("port"), this.logger = new Logger("RakNet"));
+        this.logger = new Logger("RakNet");
+        this.raknet = new RakNetServer(this.bluebirdcfg.get("port"), this.logger);
         this.raknet.getServerName()
             .setMotd(this.bluebirdcfg.get("motd"))
             .setName(this.bluebirdcfg.get("motd"))
@@ -25,7 +26,7 @@ class RakNetAdapter {
         this.packetPool = new PacketPool();
         this.packetPool.init();
         this.players = new PlayerList();
-        this.logger.setDebugging(1); // remove this when done
+        this.logger.setDebugging(this.bluebirdcfg.get("debug_level"));
     }
 
     setName(name){
@@ -49,9 +50,7 @@ class RakNetAdapter {
     }
 
     tick(){
-        this.raknet.getSessionManager().readOutgoingMessages().forEach(message => {
-            this._handleIncomingMessage(message.purpose, message.data);
-        });
+        this.raknet.getSessionManager().readOutgoingMessages().forEach(message => this._handleIncomingMessage(message.purpose, message.data));
 
         this.raknet.getSessionManager().getSessions().forEach(session => {
             let player = this.players.getPlayer(session.toString());
@@ -78,14 +77,11 @@ class RakNetAdapter {
 
     _handleIncomingMessage(purpose, data){
         switch(purpose){
-            case "undefined":
-                this.logger.info("undefined purpose \"Need fix\"");
-                break;
             case "openSession":
                 let player = new Player(this.server, data.clientId, data.ip, data.port);
                 this.players.addPlayer(data.identifier, player);
                 this.playersCount += 1;
-                this.logger.info("got new connection " + purpose.hashAddress(player.ip, player.port));
+                this.logger.info("got new connection " + player.ip + ":" + player.port);
                 break;
             case "closeSession":
                 if(this.players.has(data.identifier)){
@@ -93,10 +89,10 @@ class RakNetAdapter {
                     //player.close("Left The Server", data.reason);
                     this.close(this.players.getPlayer(data.identifier), data.reason);
                     this.playersCount -= 1;
-                    this.logger.info("removed connection for " + purpose.hashAddress(player.ip, player.port));
+                    this.logger.info("removed connection for " + player.ip + ":" + player.port);
                 }
                 break;
         }
     }
 }
-module.exports = RakNetAdapter
+module.exports = RakNetInterface

@@ -2,11 +2,11 @@ const DataPacket = require("./protocol/DataPacket");
 
 class PlayerSessionAdapter{
 
-    constructor(player){
+    constructor(player, raknet){
         /** @type {Server} */
         this.server = player.server;
-        /** @type {RakNetAdapter} */
-        this.raknetAdapter = this.server.raknet;
+        /** @type {RakNetInterface} */
+        this.raknetAdapter = raknet;
         /** @type {Player} */
         this.player = player;
     }

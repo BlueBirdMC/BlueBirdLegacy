@@ -1,30 +1,20 @@
-const NetworkBinaryStream = require("../NetworkBinaryStream");
-const Server = require("../../../Server");
+const NetworkBinaryStream = require("../../NetworkBinaryStream");
 
 class DataPacket extends NetworkBinaryStream{
 
     static get NETWORK_ID(){ return 0; }
 
-    static get PID_MASK (){ return 0x3ff; }//10 bits
+    static get PID_MASK (){ return 0x3ff; }
 
     static get SUBCLIENT_ID_MASK(){ return 0x03; }
     static get SENDER_SUBCLIENT_ID_SHIFT(){ return 10; }
     static get RECIPIENT_SUBCLIENT_ID_SHIFT(){ return 12; }
 
-    initVars(){
-        this.isEncoded = false;
-        this.__encapsulatedPacket = null;
-
-        this.senderSubId = 0;
-        this.recipientSubId = 0;
-
-        this.server = new Server();
-    }
-
-    constructor() {
-        super();
-        this.initVars();
-    }
+    isEncoded = false;
+    __encapsulatedPacket = null;
+    senderSubId = 0;
+    recipientSubId = 0;
+    canBeBatched = true;
 
     pid(){
         return self.NETWORK_ID;
@@ -32,10 +22,6 @@ class DataPacket extends NetworkBinaryStream{
 
     getName(){
         return self.__filename.replace(".js", "");
-    }
-
-    canBeBatched(){
-        return true;
     }
 
     canBeSentBeforeLogin(){
@@ -82,13 +68,17 @@ class DataPacket extends NetworkBinaryStream{
     encodePayload(){}
 
     clean(){
-        this.buffer = "";
+        this.buffer = new Buffer("");
         this.isEncoded = false;
         this.offset = 0;
         return this;
     }
 
-    handle(session){
+    /**
+     * @param handle {PlayerSessionAdapter}
+     * @returns {boolean}
+     */
+    handle(handle){
         return false;
     }
 }
