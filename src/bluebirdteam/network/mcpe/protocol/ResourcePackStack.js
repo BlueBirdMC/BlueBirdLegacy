@@ -13,7 +13,7 @@ class ResourcePackStack extends DataPacket {
     resourcePackStack = [];
 
     /** @type {string} */
-    baseGameVersion = ProtocolInfo.VERSION;
+    baseGameVersion = ProtocolInfo.MINECRAFT_VERSION;
     /** @type {boolean} */
     experimentsPreviouslyUsed = false;
 
@@ -62,7 +62,6 @@ class ResourcePackStack extends DataPacket {
         this.writeString(this.baseGameVersion);
         this.writeLInt(0); // experiments count
         this.writeBool(this.experimentsPreviouslyUsed);
-        
     }
 }
 

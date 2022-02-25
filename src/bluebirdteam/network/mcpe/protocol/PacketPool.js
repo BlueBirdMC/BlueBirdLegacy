@@ -16,12 +16,12 @@ class PacketPool{
     init(){
         this.registerPacket(Login);
         this.registerPacket(PlayStatus);
-        this.registerPacket(ResourcePackClientResponse);
         this.registerPacket(ResourcePacksInfo);
+        this.registerPacket(ResourcePackClientResponse);
         this.registerPacket(ResourcePackStack);
         this.registerPacket(StartGame);
-        this.registerPacket(CreativeContent);
         this.registerPacket(BiomeDefinitionList);
+        this.registerPacket(CreativeContent);
     }
 
     registerPacket(packet){
@@ -29,11 +29,7 @@ class PacketPool{
     }
 
     getPacket(id){
-        return this.packetPool.has(id) ? new (this.packetPool.get(id))() : undefined;
-    }
-
-    isRegistered(packet){
-        return this.packetPool.has(packet);
+        return this.packetPool.has(id) ? new (this.packetPool.get(id))() : null;
     }
 }
 

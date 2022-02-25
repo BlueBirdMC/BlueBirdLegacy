@@ -102,18 +102,18 @@ class Player {
         let xuid = packet.xuid;
 
         if (!signedByMojang && xuid !== "") {
-            this.server.getLogger().info(this.getName() + " has an XUID, but their login keychain is not signed by Mojang");
+            this.server.getLogger().info(this.username + " has an XUID, but their login keychain is not signed by Mojang");
             xuid = "";
         }
 
         if (xuid === "" || !xuid instanceof String) {
             if (signedByMojang) {
-                this.server.getLogger().error(this.getName() + " should have an XUID, but none found");
+                this.server.getLogger().error(this.username + " should have an XUID, but none found");
             }
 
-            this.server.getLogger().debug(this.getName() + " is NOT logged into Xbox Live");
+            this.server.getLogger().debug(this.username + " is NOT logged into Xbox Live");
         } else {
-            this.server.getLogger().debug(this.getName() + " is logged into Xbox Live");
+            this.server.getLogger().debug(this.username + " is logged into Xbox Live");
         }
 
         let play_status = new PlayStatus();
@@ -141,22 +141,21 @@ class Player {
         return this.username;
     }
 
-    sendDataPacket(packet, needACK = false, immediate = false){
-        CheckTypes([DataPacket, packet], [Boolean, needACK], [Boolean, immediate]);
-        if (this.isConnected()) {
-            if (!packet.canBeSentBeforeLogin()) {
-                throw new Error("Attempted to send " + packet.getName() + " to " + this.ip + " before they got logged in.");
-            }
-            let identifier = this.getSessionAdapter().sendPacket(packet, needACK, immediate);
-            if (!(needACK && identifier !== null)) {
-                return true;
-            } else {
-                this.needACK[identifier] = false;
-                return identifier;
-            }
-        } else {
-            return false;
+    sendDataPacket(packet, needACK = false, immediate = false) {
+        if (!this.isConnected()) return false;
+
+        if (!packet.canBeSentBeforeLogin()) {
+            throw new Error("Attempted to send " + packet.getName() + " to " + this.getName() + " before they got logged in.");
         }
+
+        let identifier = this.server.raknet.sendPacket(this, packet, needACK, immediate);
+
+        if (needACK && identifier !== null) {
+            this.needACK[identifier] = false;
+            return identifier;
+        }
+
+        return true;
     }
 }
 

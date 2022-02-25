@@ -5,6 +5,8 @@ const Player = require("../player/Player");
 const Logger = use("log/Logger");
 const ProtocolInfo = use("network/mcpe/protocol/ProtocolInfo");
 const PacketPool = require("./mcpe/protocol/PacketPool");
+const EncapsulatedPacket = require("bluebirdmc-raknet/protocol/EncapsulatedPacket");
+const PacketReliability = require("bluebirdmc-raknet/protocol/PacketReliability");
 const Config = use("utils/Config");
 
 class RakNetInterface {
@@ -31,22 +33,36 @@ class RakNetInterface {
         this.logger.setDebugging(this.bluebirdcfg.get("debug_level"));
     }
 
+    identifiersACK = [];
+
     setName(name){
         return this.raknet.getServerName().setMotd(name);
     }
 
     sendPacket(player, packet, needACK, immediate){
-        if(this.players.hasPlayer(player)){
+        if (this.players.hasPlayer(player)) {
             let identifier = this.players.getPlayerIdentifier(player);
+            if (!packet.isEncoded) {
+                packet.encode();
+            }
 
-            if(packet instanceof GamePacket){
+            if (packet instanceof GamePacket) {
+                if (needACK) {
+                    let pk = new EncapsulatedPacket();
+                    pk.identifierACK = this.identifiersACK[identifier]++;
+                    pk.stream.buffer = packet.buffer;
+                    pk.reliability = PacketReliability.RELIABLE_ORDERED;
+                    pk.orderChannel = 0;
+                }
+
                 let session;
-                if((session = this.raknet.getSessionManager().getSessionByIdentifier(identifier))){
+                if ((session = this.raknet.getSessionManager().getSessionByIdentifier(identifier))) {
                     session.queueConnectedPacketFromServer(packet, needACK, immediate);
                 }
                 return null;
-            }else{
+            } else {
                 this.server.batchPackets([player], [packet], true, immediate);
+                return null;
             }
         }
     }
@@ -59,7 +75,7 @@ class RakNetInterface {
 
             session.packetBatches.getAllAndClear().forEach(packet => {
                 let pk = new GamePacket();
-                pk.setBuffer(packet.getStream().getBuffer(), 1);
+                pk.setBuffer(packet.getStream().getBuffer());
                 pk.decode();
                 pk.handle(player.getSessionAdapter());
             });

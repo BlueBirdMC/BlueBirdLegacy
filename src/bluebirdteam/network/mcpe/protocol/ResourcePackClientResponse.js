@@ -1,8 +1,6 @@
 const DataPacket = require("./DataPacket");
 const ProtocolInfo = require("./ProtocolInfo");
 
-"use strict";
-
 class ResourcePackClientResponse extends DataPacket {
     static get NETWORK_ID(){ return ProtocolInfo.RESOURCE_PACK_CLIENT_RESPONSE; }
 
