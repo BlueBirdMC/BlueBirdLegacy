@@ -31,7 +31,7 @@ class Server{
             }else{
                 clearInterval();
             }
-        }, 1000);
+        }, SessionManager.RAKNET_TICK_LENGTH * 1000);
     }
 
     async listen(){
