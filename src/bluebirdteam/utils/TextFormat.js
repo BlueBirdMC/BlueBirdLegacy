@@ -1,4 +1,4 @@
-const TerminalTextFormat = use("utils/TerminalTextFormat");
+import TerminalTextFormat from "./TerminalTextFormat.js";
 
 const TextFormat = {};
 
@@ -113,4 +113,4 @@ TextFormat.toTerminal = function(str){
     return str.join("");
 };
 
-module.exports = TextFormat;
+export default TextFormat;

@@ -1,7 +1,6 @@
-const TimeStamp = require("time-stamp");
-
-const TextFormat = use("utils/TextFormat");
-const TerminalTextFormat = use("utils/TerminalTextFormat");
+import TimeStamp from 'time-stamp';
+import TextFormat from '../utils/TextFormat.js';
+import TerminalTextFormat from '../utils/TerminalTextFormat.js';
 
 class Logger {
     constructor(caller = "Server thread", subcaller = ""){
@@ -78,4 +77,4 @@ class Logger {
     }
 }
 
-module.exports = Logger;
+export default Logger;

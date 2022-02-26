@@ -1,5 +1,5 @@
-const FileSystem = require("fs");
-const Path = require("path");
+import FileSystem from "fs";
+import Path from "path";
 
 class Config {
     static get DETECT(){return 0}
@@ -169,4 +169,4 @@ class Config {
     }
 }
 
-module.exports = Config;
+export default Config;

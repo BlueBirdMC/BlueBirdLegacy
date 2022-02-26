@@ -24,4 +24,4 @@ TerminalTextFormat.UNDERLINE     = TerminalTextFormat.ESCAPE + "[4m";
 TerminalTextFormat.ITALIC        = TerminalTextFormat.ESCAPE + "[3m";
 TerminalTextFormat.RESET         = TerminalTextFormat.ESCAPE + "[0m";
 
-module.exports = TerminalTextFormat;
+export default TerminalTextFormat;

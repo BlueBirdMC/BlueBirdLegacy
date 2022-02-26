@@ -1,2 +1,2 @@
-const BlueBirdServer = require("./");
-new BlueBirdServer();
+import BlueBird from "./src/bluebirdteam/BlueBird.js"
+new BlueBird();

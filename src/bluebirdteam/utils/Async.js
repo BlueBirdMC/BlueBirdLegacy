@@ -4,7 +4,7 @@
  * @param cb {Function} run this in async
  * @return {Promise<any>}
  */
-function Async(cb){
+export function Async(cb){
     return new Promise((resolve, reject) => {
         setImmediate(() => {
             try {
@@ -15,5 +15,3 @@ function Async(cb){
         });
     });
 }
-
-module.exports = Async;

@@ -1,7 +1,7 @@
-const fs = require("fs");
-const path = require("path");
+import fs from 'fs';
+import path from 'path';
 
-class SimpleFileSystem {
+export class SimpleFileSystem {
     static fileExists(f){
         return fs.existsSync(f);
     }
@@ -66,5 +66,3 @@ class SimpleFileSystem {
         return fs.readdirSync(d).map(p => {return d + p;});
     }
 }
-
-module.exports = SimpleFileSystem;
