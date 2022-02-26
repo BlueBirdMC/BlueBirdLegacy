@@ -17,6 +17,10 @@ class ResourcePackStack extends DataPacket {
     /** @type {boolean} */
     experimentsPreviouslyUsed = false;
 
+    canBeSentBeforeLogin() {
+        return true;
+    }
+
     decodePayload() {
         this.mustAccept = this.readBool();
         let behaviorPackCount = this.readUnsignedVarInt();

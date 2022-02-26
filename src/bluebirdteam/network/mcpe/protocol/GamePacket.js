@@ -1,7 +1,7 @@
 const DataPacket = require("./DataPacket");
 const assert = require("assert");
 const Zlib = require("zlib");
-const BinaryStream = require("bluebirdmc-binarystream");
+const BinaryStream = require("../../NetworkBinaryStream");
 
 class GamePacket extends DataPacket {
 
@@ -48,7 +48,7 @@ class GamePacket extends DataPacket {
             packet.encode();
         }
 
-        this.writeUnsignedVarInt(packet.buffer.length);
+        this.payload.writeUnsignedVarInt(packet.buffer.length);
         this.payload.append(packet.getBuffer());
     }
 

@@ -1,5 +1,4 @@
 const PlayerSessionAdapter = require("../network/mcpe/PlayerSessionAdapter");
-const DataPacket = require("../network/mcpe/protocol/DataPacket");
 const LoginPacket = require("../network/mcpe/protocol/Login");
 const ProtocolInfo = require("../network/mcpe/protocol/ProtocolInfo");
 const PlayStatus = require("../network/mcpe/protocol/PlayStatus");

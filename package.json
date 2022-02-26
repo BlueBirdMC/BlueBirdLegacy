@@ -1,5 +1,5 @@
 {
-  "name": "bluebirdmc",
+  "name": "bluebird",
   "version": "1.0.0",
   "description": "A software for minecraft bedrock",
   "main": "src/bluebirdteam/BlueBird.js",
@@ -15,6 +15,5 @@
   "license": "MIT",
   "devDependencies": {
     "time-stamp": "^2.2.0"
-  },
-  "type": "module"
+  }
 }

@@ -13,7 +13,7 @@ class BiomeDefinitionList extends DataPacket {
     };
 
     canBeSentBeforeLogin(){
-        return false;
+        return true; //idk
     }
 
     /** @type {Buffer} */
