@@ -1,2 +1,2 @@
-const BlueBirdServer = require("./");
-new BlueBirdServer();
+const BlueBird = require("./");
+new BlueBird();
