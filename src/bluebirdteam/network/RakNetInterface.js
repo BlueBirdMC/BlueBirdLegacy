@@ -73,7 +73,7 @@ class RakNetInterface {
     }
 
     tick(){
-        this.raknet.getSessionManager().readOutgoingMessages().forEach(message => this._handleIncomingMessage(message.purpose, message.data));
+        this.raknet.getSessionManager().readOutgoingMessages().forEach(message => this.handleIncomingMessage(message.purpose, message.data));
 
         this.raknet.getSessionManager().getSessions().forEach(session => {
             let player = this.players.getPlayer(session.toString());
@@ -98,7 +98,7 @@ class RakNetInterface {
         this.raknet.shutdown();
     }
 
-    _handleIncomingMessage(purpose, data){
+    handleIncomingMessage(purpose, data){
         switch(purpose){
             case "openSession":
                 let player = new Player(this.server, data.clientId, data.ip, data.port);
