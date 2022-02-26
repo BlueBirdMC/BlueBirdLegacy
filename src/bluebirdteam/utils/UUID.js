@@ -1,4 +1,4 @@
-const BinaryStream = use("network/mcpe/NetworkBinaryStream")
+const BinaryStream = use("network/NetworkBinaryStream")
 
 class UUID {
     initVars(){

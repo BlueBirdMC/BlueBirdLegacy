@@ -9,9 +9,8 @@ class BlueBird{
             file: Path.normalize(__dirname + "/../"),
             data: Path.normalize(__dirname + "/../../")
         };
-        new Server(path)
+        this.server = new Server(path);
     }
-
 }
 
 module.exports = BlueBird

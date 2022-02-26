@@ -1,6 +1,4 @@
-const UUID = use("utils/UUID");
-
-'use strict'
+const UUID = import('../utils/UUID.js');
 
 class NetworkBinaryStream extends require("bluebirdmc-binarystream"){
 
@@ -17,7 +15,10 @@ class NetworkBinaryStream extends require("bluebirdmc-binarystream"){
      */
     writeString(v){
         this.writeUnsignedVarInt(Buffer.byteLength(v));
-        this.append(v);
+        if (v.length === 0) {
+            return this;
+        }
+        this.append(Buffer.from(v, "utf8"));
         return this;
     }
 
@@ -45,4 +46,5 @@ class NetworkBinaryStream extends require("bluebirdmc-binarystream"){
 
     //TODO: Add everything else
 }
-module.exports = NetworkBinaryStream
+
+module.exports = NetworkBinaryStream;
