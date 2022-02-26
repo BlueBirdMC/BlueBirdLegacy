@@ -1,16 +1,16 @@
-require('./utils/methods/Globals')
-const Path = require("path")
-const Server = use("Server")
+import Path from 'path';
+import {Server} from './Server.js';
+import {dirname} from "locutus/php/filesystem/index.js";
 
 class BlueBird{
 
     constructor() {
         let path = {
-            file: Path.normalize(__dirname + "/../"),
-            data: Path.normalize(__dirname + "/../../")
+            file: Path.normalize(dirname("/../")),
+            data: Path.normalize(dirname("/../../"))
         };
-        this.server = new Server(path);
+        new Server(path);
     }
 }
 
-module.exports = BlueBird
+export default BlueBird;

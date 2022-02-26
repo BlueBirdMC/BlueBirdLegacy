@@ -1,4 +1,4 @@
-const NetworkBinaryStream = require("../../NetworkBinaryStream");
+import NetworkBinaryStream from '../../NetworkBinaryStream.cjs';
 
 class DataPacket extends NetworkBinaryStream{
 
@@ -80,4 +80,4 @@ class DataPacket extends NetworkBinaryStream{
     }
 }
 
-module.exports = DataPacket;
+export default DataPacket;

@@ -1,5 +1,5 @@
-const DataPacket = require("./DataPacket");
-const ProtocolInfo = require("./ProtocolInfo");
+import DataPacket from './DataPacket.js';
+import { ProtocolInfo } from './ProtocolInfo.js';
 
 class StartGame extends DataPacket{
     static get NETWORK_ID(){ return ProtocolInfo.START_GAME; }
@@ -89,4 +89,4 @@ class StartGame extends DataPacket{
     }
 }
 
-module.exports = StartGame;
+export default StartGame;

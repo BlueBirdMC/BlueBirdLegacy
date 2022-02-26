@@ -1,4 +1,4 @@
-const DataPacket = require("./protocol/DataPacket");
+import DataPacket from './protocol/DataPacket.js';
 
 class PlayerSessionAdapter{
 
@@ -45,4 +45,4 @@ class PlayerSessionAdapter{
     }
 }
 
-module.exports = PlayerSessionAdapter;
+export default PlayerSessionAdapter;

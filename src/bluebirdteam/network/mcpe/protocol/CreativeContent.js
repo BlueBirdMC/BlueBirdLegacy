@@ -1,5 +1,5 @@
-const DataPacket = require("./DataPacket");
-const ProtocolInfo = require("./ProtocolInfo");
+import DataPacket from './DataPacket.js';
+import { ProtocolInfo } from './ProtocolInfo.js';
 
 class CreativeContent extends DataPacket {
     static NETWORK_ID = ProtocolInfo.CREATIVE_CONTENT;
@@ -17,4 +17,4 @@ class CreativeContent extends DataPacket {
     }
 }
 
-module.exports = CreativeContent;
+export default CreativeContent;

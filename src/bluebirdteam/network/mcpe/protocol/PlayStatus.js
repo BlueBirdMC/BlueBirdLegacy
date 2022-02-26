@@ -1,5 +1,5 @@
-const DataPacket = require("./DataPacket");
-const ProtocolInfo = require("./ProtocolInfo");
+import DataPacket from './DataPacket.js';
+import { ProtocolInfo } from './ProtocolInfo.js';
 
 class PlayStatus extends DataPacket {
 
@@ -49,4 +49,4 @@ class PlayStatus extends DataPacket {
     }
 }
 
-module.exports = PlayStatus;
+export default PlayStatus;

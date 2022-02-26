@@ -3,10 +3,8 @@
  * @param str String
  * @returns String
  */
-function UCFirst(str){
+export function UCFirst(str){
     str = str.split("");
     str[0] = str[0].toUpperCase();
     return str.join("");
 }
-
-module.exports = UCFirst;

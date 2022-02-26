@@ -1,4 +1,4 @@
-const Player = require("./Player");
+import Player from './Player.js';
 
 class PlayerList extends Map {
     addPlayer(id, player){
@@ -23,4 +23,4 @@ class PlayerList extends Map {
     }
 }
 
-module.exports = PlayerList;
+export default PlayerList;

@@ -3,8 +3,7 @@
  * @param v {*}
  * @return {boolean}
  */
-function Isset(v){
+
+export function Isset(v){
     return typeof v !== "undefined";
 }
-
-module.exports = Isset;

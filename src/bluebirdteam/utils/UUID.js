@@ -1,4 +1,4 @@
-const BinaryStream = use("network/NetworkBinaryStream")
+import BinaryStream from '../network/NetworkBinaryStream.cjs'
 
 class UUID {
     initVars(){
@@ -40,3 +40,5 @@ class UUID {
         return this._parts[i] ? this._parts[i] : null
     }
 }
+
+export default UUID;

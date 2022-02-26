@@ -1,5 +1,5 @@
-const readline = require('readline')
-const TerminalTextformat = use("utils/TerminalTextFormat")
+import readline from 'readline';
+import TerminalTextformat from '../utils/TerminalTextFormat.js';
 
 class ConsoleCommandReader {
 
@@ -40,4 +40,4 @@ class ConsoleCommandReader {
     }
 }
 
-module.exports = ConsoleCommandReader
+export default ConsoleCommandReader;

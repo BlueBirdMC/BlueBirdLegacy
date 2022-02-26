@@ -1,28 +1,28 @@
-const BatchPacket = require("./network/mcpe/protocol/GamePacket");
-const Config = use("utils/Config");
-const RakNetAdapter = use("network/RakNetInterface")
-const Fs = use("utils/SimpleFileSystem")
-const Logger = use("log/Logger")
-const ConsoleCommandReader = use("command/ConsoleCommandReader")
+import { SimpleFileSystem } from './utils/SimpleFileSystem.js';
+import Config from './utils/Config.js';
+import RakNetInterface from './network/RakNetInterface.js';
+import Logger from './log/Logger.js';
+import ConsoleCommandReader from './command/ConsoleCommandReader.js';
+import GamePacket from './network/mcpe/protocol/GamePacket.js';
 
-class Server{
+export class Server{
 
     constructor(path) {
         let start_time = Date.now()
         this.id = 1;
         this.path = path
-        if(!Fs.fileExists("BlueBird.json")){
-            Fs.copy(this.path.file + "bluebirdteam/resources/BlueBird.json", this.path.data + "BlueBird.json")
+        if(!SimpleFileSystem.fileExists("BlueBird.json")){
+            SimpleFileSystem.copy(this.path.file + "bluebirdteam/resources/BlueBird.json", this.path.data + "BlueBird.json")
         }
         this.logger = new Logger();
-        this.raknet = new RakNetAdapter(this);
+        this.raknet = new RakNetInterface(this);
         this.getLogger().info("Starting Server...");
         this.getLogger().info("Loading BlueBird.json");
         this.getLogger().info("This Server Is Running BlueBird Version 1.0!");
         this.getLogger().info("BlueBird Is distributed under MIT License");
         this.getLogger().info("Opening server on " + new Config("BlueBird.json", Config.JSON).get("interface") + ":" + new Config("BlueBird.json", Config.JSON).get("port"));
         this.getLogger().info("Done in (" + (Date.now() - start_time) + "ms).");
-	    let reader = new ConsoleCommandReader(this);
+        let reader = new ConsoleCommandReader(this);
         reader.tick();
         setInterval(() => {
             this.listen();
@@ -30,12 +30,12 @@ class Server{
     }
 
     async listen(){
-	    try {
-	      await this.raknet.tick();
-	    }catch(e){
-              console.warn("Failed to bind the server");
-	      throw e;
-	    }
+        try {
+            await this.raknet.tick();
+        }catch(e){
+            console.warn("Failed to bind the server");
+            throw e;
+        }
     }
 
     getId(){
@@ -49,7 +49,7 @@ class Server{
         });
 
         if(targets.length > 0){
-            let pk = new BatchPacket();
+            let pk = new GamePacket();
 
             packets.forEach(packet => pk.addPacket(packet));
 
@@ -60,7 +60,7 @@ class Server{
             }
         }
     }
-    
+
     getDataPath(){
         return this.path.data;
     }
@@ -94,5 +94,3 @@ class Server{
         }
     }
 }
-
-module.exports = Server

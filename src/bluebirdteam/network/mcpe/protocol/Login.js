@@ -1,8 +1,8 @@
-const DataPacket = require("./DataPacket");
-const ProtocolInfo = require("./ProtocolInfo");
+import DataPacket from './DataPacket.js';
+import { ProtocolInfo } from './ProtocolInfo.js';
 
-const BinaryStream = require("../../NetworkBinaryStream");
-const Utils = require("../../../utils/Utils");
+import BinaryStream from '../../NetworkBinaryStream.cjs';
+import Utils from '../../../utils/Utils.js';
 
 class Login extends DataPacket {
 
@@ -91,4 +91,4 @@ class Login extends DataPacket {
     }
 }
 
-module.exports = Login;
+export default Login;

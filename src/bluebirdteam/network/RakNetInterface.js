@@ -1,13 +1,13 @@
-const RakNetServer = require("bluebirdmc-raknet/server/RakNetServer");
-const GamePacket = require("./mcpe/protocol/GamePacket");
-const PlayerList = require("../player/PlayerList");
-const Player = require("../player/Player");
-const Logger = use("log/Logger");
-const ProtocolInfo = use("network/mcpe/protocol/ProtocolInfo");
-const PacketPool = require("./mcpe/protocol/PacketPool");
-const EncapsulatedPacket = require("bluebirdmc-raknet/protocol/EncapsulatedPacket");
-const PacketReliability = require("bluebirdmc-raknet/protocol/PacketReliability");
-const Config = use("utils/Config");
+import RakNetServer from 'bluebirdmc-raknet';
+import PlayerList from '../player/PlayerList.js';
+import Player from "../player/Player.js";
+import Logger from '../log/Logger.js';
+import { ProtocolInfo } from './mcpe/protocol/ProtocolInfo.js';
+import PacketPool from './mcpe/protocol/PacketPool.js';
+import EncapsulatedPacket from 'bluebirdmc-raknet/protocol/EncapsulatedPacket.js';
+import PacketReliability from 'bluebirdmc-raknet/protocol/PacketReliability.js';
+import Config from '../utils/Config.js';
+import GamePacket from './mcpe/protocol/GamePacket.js';
 
 class RakNetInterface {
     constructor(server) {
@@ -109,4 +109,5 @@ class RakNetInterface {
         }
     }
 }
-module.exports = RakNetInterface
+
+export default RakNetInterface;

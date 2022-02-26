@@ -1,11 +1,11 @@
-const Login = require("./Login");
-const PlayStatus = require("./PlayStatus");
-const ResourcePackClientResponse = require("./ResourcePackClientResponse");
-const ResourcePacksInfo = require("./ResourcePacksInfo");
-const ResourcePackStack = require("./ResourcePackStack");
-const StartGame = require("./StartGame");
-const CreativeContent = require("./CreativeContent");
-const BiomeDefinitionList = require("./BiomeDefinitionList");
+import Login from './Login.js';
+import PlayStatus from './PlayStatus.js';
+import ResourcePackClientResponse from './ResourcePackClientResponse.js';
+import ResourcePacksInfo from './ResourcePacksInfo.js';
+import ResourcePackStack from './ResourcePackStack.js';
+import StartGame from './StartGame.js';
+import CreativeContent from './CreativeContent.js';
+import BiomeDefinitionList from './BiomeDefinitionList.js';
 
 class PacketPool{
 
@@ -33,4 +33,4 @@ class PacketPool{
     }
 }
 
-module.exports = PacketPool;
+export default PacketPool;

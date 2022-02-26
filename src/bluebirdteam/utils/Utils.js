@@ -1,4 +1,4 @@
-const Base64 = require("./Base64");
+import Base64 from './Base64.js';
 
 class Utils{
     static decodeJWT(token){
@@ -8,4 +8,4 @@ class Utils{
     }
 }
 
-module.exports = Utils;
+export default Utils;

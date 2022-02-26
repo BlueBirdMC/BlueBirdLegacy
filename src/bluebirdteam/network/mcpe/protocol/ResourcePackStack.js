@@ -1,5 +1,5 @@
-const DataPacket = require("./DataPacket");
-const ProtocolInfo = require("./ProtocolInfo");
+import DataPacket from './DataPacket.js';
+import { ProtocolInfo } from './ProtocolInfo.js';
 
 class ResourcePackStack extends DataPacket {
     static get NETWORK_ID(){ return ProtocolInfo.RESOURCE_PACK_STACK; }
@@ -65,4 +65,4 @@ class ResourcePackStack extends DataPacket {
     }
 }
 
-module.exports = ResourcePackStack;
+export default ResourcePackStack;

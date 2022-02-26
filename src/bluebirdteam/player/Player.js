@@ -1,15 +1,14 @@
-const PlayerSessionAdapter = require("../network/mcpe/PlayerSessionAdapter");
-const DataPacket = require("../network/mcpe/protocol/DataPacket");
-const LoginPacket = require("../network/mcpe/protocol/Login");
-const ProtocolInfo = require("../network/mcpe/protocol/ProtocolInfo");
-const PlayStatus = require("../network/mcpe/protocol/PlayStatus");
-const StartGame = require("../network/mcpe/protocol/StartGame");
-const ResourcePackClientResponse = require("../network/mcpe/protocol/ResourcePackClientResponse");
-const ResourcePackStack = require("../network/mcpe/protocol/ResourcePackStack");
-const TextFormat = require("../utils/TextFormat");
-const ResourcePacksInfo = require("../network/mcpe/protocol/ResourcePacksInfo");
-const BiomeDefinitionList = require("../network/mcpe/protocol/BiomeDefinitionList");
-const CreativeContent = require("../network/mcpe/protocol/CreativeContent");
+import PlayerSessionAdapter from '../network/mcpe/PlayerSessionAdapter.js';
+import LoginPacket from '../network/mcpe/protocol/Login.js';
+import { ProtocolInfo } from '../network/mcpe/protocol/ProtocolInfo.js';
+import PlayStatus from '../network/mcpe/protocol/PlayStatus.js';
+import StartGame from '../network/mcpe/protocol/StartGame.js';
+import ResourcePackClientResponse from '../network/mcpe/protocol/ResourcePackClientResponse.js';
+import ResourcePackStack from '../network/mcpe/protocol/ResourcePackStack.js';
+import TextFormat from '../utils/TextFormat.js';
+import ResourcePacksInfo from '../network/mcpe/protocol/ResourcePacksInfo.js';
+import BiomeDefinitionList from '../network/mcpe/protocol/BiomeDefinitionList.js';
+import CreativeContent from '../network/mcpe/protocol/CreativeContent.js';
 
 class Player {
 
@@ -159,4 +158,4 @@ class Player {
     }
 }
 
-module.exports = Player;
+export default Player;

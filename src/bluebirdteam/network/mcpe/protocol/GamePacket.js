@@ -1,7 +1,7 @@
-const DataPacket = require("./DataPacket");
-const assert = require("assert");
-const Zlib = require("zlib");
-const BinaryStream = require("bluebirdmc-binarystream");
+import DataPacket from './DataPacket.js';
+import assert from 'assert';
+import Zlib from 'zlib';
+import BinaryStream from '../../NetworkBinaryStream.cjs';
 
 class GamePacket extends DataPacket {
 
@@ -89,4 +89,4 @@ class GamePacket extends DataPacket {
     }
 }
 
-module.exports = GamePacket;
+export default GamePacket;

@@ -1,7 +1,7 @@
-const DataPacket = require("./DataPacket");
-const ProtocolInfo = require("./ProtocolInfo");
+import DataPacket from './DataPacket.js';
+import { ProtocolInfo } from "./ProtocolInfo.js";
 
-"use strict";
+'use strict';
 
 class BiomeDefinitionList extends DataPacket {
     static get NETWORK_ID() {
@@ -32,4 +32,4 @@ class BiomeDefinitionList extends DataPacket {
     }
 }
 
-module.exports = BiomeDefinitionList;
+export default BiomeDefinitionList;
