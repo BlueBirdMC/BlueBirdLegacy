@@ -47,10 +47,6 @@ class PlayStatus extends DataPacket {
     encodePayload() {
         this.writeInt(this.status);
     }
-
-    handle(handler) {
-        return handler.handlePlayStatus(this);
-    }
 }
 
 module.exports = PlayStatus;

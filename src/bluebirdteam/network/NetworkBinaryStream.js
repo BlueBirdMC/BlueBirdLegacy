@@ -17,7 +17,10 @@ class NetworkBinaryStream extends require("bluebirdmc-binarystream"){
      */
     writeString(v){
         this.writeUnsignedVarInt(Buffer.byteLength(v));
-        this.append(v);
+        if (v.length === 0) {
+            return this;
+        }
+        this.append(Buffer.from(v, "utf8"));
         return this;
     }
 
@@ -43,24 +46,6 @@ class NetworkBinaryStream extends require("bluebirdmc-binarystream"){
         return this;
     }
 
-    writeGameRules(rules){
-        this.writeUnsignedVarInt(rules.length);
-        rules.forEach(rule => {
-            this.writeString(rule.getName());
-            if (typeof rule.getValue() === "boolean") {
-                this.writeByte(1);
-                this.writeBool(rule.getValue());
-            } else if (Number.isInteger(rule.getValue())) {
-                this.writeByte(2);
-                this.writeUnsignedVarInt(rule.getValue());
-            } else if (typeof rule.getValue() === "number" && !Number.isInteger(rule.getValue())) {
-                this.writeByte(3);
-                this.writeLFloat(rule.getValue());
-            }
-        });
-
-        return this;
-    }
     //TODO: Add everything else
 }
 module.exports = NetworkBinaryStream

@@ -44,7 +44,7 @@ class StartGame extends DataPacket{
         this.writeVarInt(0);
         this.writeBool(true);
         this.writeBool(false);
-        this.writeGameRules([]);
+        this.writeUnsignedVarInt(0);
         this.writeLInt(0);
         this.writeString("");
         this.writeBool(false);
@@ -86,10 +86,6 @@ class StartGame extends DataPacket{
         this.writeBool(false);
         this.writeString("BlueBird");
         this.writeLLong(0);
-    }
-
-    handle(handle) {
-        return false;
     }
 }
 
