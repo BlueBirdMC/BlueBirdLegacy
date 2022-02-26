@@ -31,15 +31,15 @@ class Server{
             }else{
                 clearInterval();
             }
-        }, SessionManager.RAKNET_TICK_LENGTH * 1000);
+        }, 1000);
     }
 
     async listen(){
 	    try {
 	      await this.raknet.tick();
 	    }catch(e){
-              console.warn("Failed to bind the server");
-	      throw e;
+            console.warn("Failed to bind the server");
+            throw e;
 	    }
     }
 
