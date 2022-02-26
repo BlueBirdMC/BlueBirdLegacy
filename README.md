@@ -1,6 +1,6 @@
 ## What is BlueBird?
 
-> BlueBird is a new Minecraft: Bedrock Edition Server Software that runs on JavaScript which is faster then most of the software available
+> BlueBird is a new Minecraft: Bedrock Edition Server Software that runs on JavaScript
 
 ## Quick Links
 
