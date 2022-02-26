@@ -7,13 +7,11 @@ class GamePacket extends DataPacket {
 
     static get NETWORK_ID() { return 0xFE; }
 
-    payload = "";
+    payload = new BinaryStream();
 
     compressionLevel = 7;
 
-    canBeBatched() {
-        return false;
-    }
+    canBeBatched = false;
 
     canBeSentBeforeLogin() {
         return true;
@@ -29,7 +27,7 @@ class GamePacket extends DataPacket {
         try {
             this.payload = new BinaryStream(Zlib.inflateRawSync(data, {level: this.compressionLevel, maxOutputLength: 1024 * 1024 * 2}));
         } catch (e) { //zlib decode error
-            this.payload = "";
+            this.payload = new BinaryStream();
         }
     }
 
@@ -50,7 +48,7 @@ class GamePacket extends DataPacket {
             packet.encode();
         }
 
-        this.payload = this.writeUnsignedVarInt(packet.buffer.length);
+        this.writeUnsignedVarInt(packet.buffer.length);
         this.payload.append(packet.getBuffer());
     }
 
@@ -71,7 +69,7 @@ class GamePacket extends DataPacket {
     }
 
     handle(handler) {
-        if (this.payload === "") {
+        if (this.payload.length === 0) {
             return false;
         }
         this.getPackets().forEach(buf => {
@@ -86,7 +84,6 @@ class GamePacket extends DataPacket {
             } else {
                 console.log("MINECRAFT PACKET: 0x" + buf.slice(0, 1).toString("hex"));
             }
-
         });
         return true;
     }
