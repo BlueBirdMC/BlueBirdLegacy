@@ -1,7 +1,7 @@
 const DataPacket = require("./DataPacket");
 const assert = require("assert");
 const Zlib = require("zlib");
-const BinaryStream = require("../../NetworkBinaryStream");
+const BinaryStream = require("bluebirdmc-binarystream");
 
 class GamePacket extends DataPacket {
 
