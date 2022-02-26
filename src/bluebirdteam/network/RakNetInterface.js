@@ -7,6 +7,7 @@ const Player = require("../player/Player");
 const Logger = use("log/Logger");
 const ProtocolInfo = use("network/mcpe/protocol/ProtocolInfo");
 const PacketPool = require("./mcpe/protocol/PacketPool");
+const SessionManager = require("bluebirdmc-raknet/server/SessionManager");
 const Config = use("utils/Config");
 
 class RakNetInterface {
@@ -17,16 +18,20 @@ class RakNetInterface {
         this.logger = new Logger("RakNet");
         this.raknet = new RakNetServer(this.bluebirdcfg.get("port"), this.logger);
         setInterval(() => {
-            this.raknet.getServerName()
-                .setMotd(this.bluebirdcfg.get("motd"))
-                .setName("BlueBird Server")
-                .setProtocol(ProtocolInfo.CURRENT_PROTOCOL)
-                .setVersion(ProtocolInfo.MINECRAFT_VERSION)
-                .setOnlinePlayers(this.playersCount)
-                .setMaxPlayers(this.bluebirdcfg.get("maxplayers"))
-                .setServerId(server.getId())
-                .setGamemode("Creative");
-        }, 1000);
+            if(!this.raknet.isShutdown()){
+                this.raknet.getServerName()
+                    .setMotd(this.bluebirdcfg.get("motd"))
+                    .setName("BlueBird Server")
+                    .setProtocol(ProtocolInfo.CURRENT_PROTOCOL)
+                    .setVersion(ProtocolInfo.MINECRAFT_VERSION)
+                    .setOnlinePlayers(this.playersCount)
+                    .setMaxPlayers(this.bluebirdcfg.get("maxplayers"))
+                    .setServerId(server.getId())
+                    .setGamemode("Creative");
+            }else{
+                clearInterval();
+            }
+        }, SessionManager.RAKNET_TICK_LENGTH * 1000);
         this.packetPool = new PacketPool();
         this.packetPool.init();
         this.players = new PlayerList();

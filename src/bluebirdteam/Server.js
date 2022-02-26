@@ -1,4 +1,5 @@
 const BatchPacket = require("./network/mcpe/protocol/GamePacket");
+const SessionManager = require("bluebirdmc-raknet/server/SessionManager");
 const Config = use("utils/Config");
 const RakNetAdapter = use("network/RakNetInterface")
 const Fs = use("utils/SimpleFileSystem")
@@ -25,8 +26,12 @@ class Server{
 	    let reader = new ConsoleCommandReader(this);
         reader.tick();
         setInterval(() => {
-            this.listen();
-        }, 1000);
+            if(!this.raknet.raknet.isShutdown()){
+                this.listen();
+            }else{
+                clearInterval();
+            }
+        }, SessionManager.RAKNET_TICK_LENGTH * 1000);
     }
 
     async listen(){
