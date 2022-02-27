@@ -2,7 +2,7 @@ const NetworkBinaryStream = require("../../NetworkBinaryStream");
 
 class DataPacket extends NetworkBinaryStream{
 
-    static get NETWORK_ID(){ return 0; }
+    static get NETWORK_ID(){ return 0x00; }
 
     static get PID_MASK (){ return 0x3ff; }
 
