@@ -17,5 +17,9 @@
 
 >Windows
 ```
-./start.cmd to install the depends then run it again and it will start
+npm install
+```
+#### then
+```
+node start.js
 ```
