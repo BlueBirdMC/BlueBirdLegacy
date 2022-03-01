@@ -84,6 +84,9 @@ class Player {
 
                 this.dataPacket(new BiomeDefinitionList());
                 this.dataPacket(new CreativeContent());
+                let play_status = new PlayStatus();
+                play_status.status = PlayStatus.PLAYER_SPAWN;
+                this.dataPacket(play_status);
                 break;
 
             default:

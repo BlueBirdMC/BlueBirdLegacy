@@ -83,6 +83,7 @@ class GamePacket extends DataPacket {
                 handler.handleDataPacket(pk);
             } else {
                 console.log("MINECRAFT PACKET: 0x" + buf.slice(0, 1).toString("hex"));
+                console.log(buf);
             }
         });
         return true;
