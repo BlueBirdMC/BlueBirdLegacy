@@ -11,10 +11,10 @@
 
 ## FAQ
 **Does BlueBird Supports plugins**
-> Currently Not, But it will be added soon
+> No but it will be added soon
 
 **Can I use BlueBird in Production Servers**
-> We highly recommend not to as its not stable
+> No its not stable
 
 ## how can i run it?
 
