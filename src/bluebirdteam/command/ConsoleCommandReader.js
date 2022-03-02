@@ -4,7 +4,7 @@ const Textformat = require("../utils/TextFormat")
 class ConsoleCommandReader {
 
     constructor(server) {
-        this.server = server
+        this.server = server;
     }
 
     tick() {
