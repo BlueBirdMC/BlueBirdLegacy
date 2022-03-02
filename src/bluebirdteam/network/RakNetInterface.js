@@ -4,21 +4,21 @@ const PacketReliability = require("bluebirdmc-raknet/protocol/PacketReliability"
 const GamePacket = require("./mcpe/protocol/GamePacket");
 const PlayerList = require("../player/PlayerList");
 const Player = require("../player/Player");
-const Logger = use("log/Logger");
-const ProtocolInfo = use("network/mcpe/protocol/ProtocolInfo");
+const Logger = require("../utils/MainLogger");
+const ProtocolInfo = require("../network/mcpe/protocol/ProtocolInfo");
 const PacketPool = require("./mcpe/protocol/PacketPool");
 const SessionManager = require("bluebirdmc-raknet/server/SessionManager");
-const Config = use("utils/Config");
+const Config = require("../utils/Config");
 
 class RakNetInterface {
     constructor(server) {
         this.server = server;
         this.bluebirdcfg = new Config("BlueBird.json", Config.JSON);
         this.playersCount = 0;
-        this.logger = new Logger("RakNet");
+        this.logger = new Logger();
         this.raknet = new RakNetServer(this.bluebirdcfg.get("port"), this.logger);
         setInterval(() => {
-            if(!this.raknet.isShutdown()){
+            if (!this.raknet.isShutdown()) {
                 this.raknet.getServerName()
                     .setMotd(this.bluebirdcfg.get("motd"))
                     .setName("BlueBird Server")
@@ -28,23 +28,23 @@ class RakNetInterface {
                     .setMaxPlayers(this.bluebirdcfg.get("maxplayers"))
                     .setServerId(server.getId())
                     .setGamemode("Creative");
-            }else{
+            } else {
                 clearInterval();
             }
         }, SessionManager.RAKNET_TICK_LENGTH * 1000);
         this.packetPool = new PacketPool();
         this.packetPool.init();
         this.players = new PlayerList();
-        this.logger.setDebugging(this.bluebirdcfg.get("debug_level"));
+        this.logger.setDebuggingLevel(this.bluebirdcfg.get("debug_level"));
     }
 
     identifiersACK = [];
 
-    setName(name){
+    setName(name) {
         return this.raknet.getServerName().setMotd(name);
     }
 
-    sendPacket(player, packet, needACK, immediate){
+    sendPacket(player, packet, needACK, immediate) {
         if (this.players.hasPlayer(player)) {
             let identifier = this.players.getPlayerIdentifier(player);
             if (!packet.isEncoded) {
@@ -72,7 +72,7 @@ class RakNetInterface {
         }
     }
 
-    tick(){
+    tick() {
         this.raknet.getSessionManager().readOutgoingMessages().forEach(message => this.handleIncomingMessage(message.purpose, message.data));
 
         this.raknet.getSessionManager().getSessions().forEach(session => {
@@ -87,26 +87,26 @@ class RakNetInterface {
         });
     }
 
-    close(player, reason = "unknown reason"){
-        if(this.players.hasPlayer(player.ip + ":" + player.port)){
+    close(player, reason = "unknown reason") {
+        if (this.players.hasPlayer(player.ip + ":" + player.port)) {
             this.raknet.getSessionManager().removeSession(this.raknet.getSessionManager().getSession(player.ip, player.port), reason);
             this.players.removePlayer(player.ip + ":" + player.port);
         }
     }
 
-    shutdown(){
+    shutdown() {
         this.raknet.shutdown();
     }
 
-    handleIncomingMessage(purpose, data){
-        switch(purpose){
+    handleIncomingMessage(purpose, data) {
+        switch (purpose) {
             case "openSession":
                 let player = new Player(this.server, data.clientId, data.ip, data.port);
                 this.players.addPlayer(data.identifier, player);
                 this.playersCount += 1;
                 break;
             case "closeSession":
-                if(this.players.has(data.identifier)){
+                if (this.players.has(data.identifier)) {
                     this.players.get(data.identifier).close(data.reason, true);
                     this.playersCount -= 1;
                 }
@@ -114,4 +114,5 @@ class RakNetInterface {
         }
     }
 }
+
 module.exports = RakNetInterface;

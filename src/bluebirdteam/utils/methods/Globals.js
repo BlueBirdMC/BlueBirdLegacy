@@ -1,9 +1,3 @@
-const Path = require("path")
-
-global.use = function (path){
-    return require(Path.normalize(__dirname + "/../../" + path));
-}
-
 global.ucfirst = function (str){
     str = str.split("");
     str[0] = str[0].toUpperCase();

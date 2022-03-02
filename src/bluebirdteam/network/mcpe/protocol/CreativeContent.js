@@ -16,10 +16,6 @@ class CreativeContent extends DataPacket {
         this.writeUnsignedVarInt(0);
         // this.append(Buffer.from(CreativeContent.HARDCODED_CC_BLOB(), 'base64'));
     }
-
-    handle(handler) {
-        return false;
-    }
 }
 
 module.exports = CreativeContent;

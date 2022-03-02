@@ -53,7 +53,6 @@ class Player {
             }
 
             this.close("Incompatible Protocol");
-
             return;
         }
 
@@ -141,8 +140,7 @@ class Player {
     handleText(packet) {
         CheckTypes([Text, packet]);
         if (packet.type === Text.TYPE_CHAT) {
-            let message = TextFormat.clean(packet.message, false);
-
+            let message = TextFormat.clean(packet.message);
             message = message.split("\n");
             for (let i in message) {
                 let messagePart = message[i];

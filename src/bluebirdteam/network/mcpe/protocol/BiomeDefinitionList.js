@@ -33,10 +33,6 @@ class BiomeDefinitionList extends DataPacket {
         this.writeByte(0);
         // this.append(this.namedtag ?? Buffer.from(BiomeDefinitionList.HARDCODED_NBT_BLOB(), 'base64'));
     }
-
-    handle(handler) {
-        return false;
-    }
 }
 
 module.exports = BiomeDefinitionList;

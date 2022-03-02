@@ -1,4 +1,5 @@
 const DataPacket = require("./protocol/DataPacket");
+const SessionManager = require("bluebirdmc-raknet/server/SessionManager");
 
 class PlayerSessionAdapter{
 
@@ -9,10 +10,6 @@ class PlayerSessionAdapter{
         this.raknetAdapter = player.server.raknet;
         /** @type {Player} */
         this.player = player;
-    }
-
-    sendPacket(packet, needACK = false, immediate = true){
-        return this.raknetAdapter.sendPacket(this.player, packet, needACK, immediate);
     }
 
     handleDataPacket(packet){
@@ -45,7 +42,7 @@ class PlayerSessionAdapter{
     }
 
     toString(){
-        return this.player.username !== "" ? this.player.username : this.player.ip + ":" + this.player.port;
+        return this.player.getName() !== "" ? this.player.getName() : SessionManager.hashAddress(this.player.ip, this.player.port);
     }
 }
 

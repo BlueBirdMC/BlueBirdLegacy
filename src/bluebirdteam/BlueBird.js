@@ -1,6 +1,6 @@
-require('./utils/methods/Globals')
-const Path = require("path")
-const Server = use("Server")
+require('./utils/methods/Globals');
+const Path = require("path");
+const Server = require("./Server");
 
 class BlueBird{
 
@@ -13,4 +13,4 @@ class BlueBird{
     }
 }
 
-module.exports = BlueBird
+module.exports = BlueBird;

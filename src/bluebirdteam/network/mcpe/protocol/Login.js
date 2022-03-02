@@ -33,7 +33,7 @@ class Login extends DataPacket {
         return true;
     }
 
-    mayHaveUnreadBytes = this.protocol !== ProtocolInfo.PROTOCOL;
+    mayHaveUnreadBytes = this.protocol !== ProtocolInfo.CURRENT_PROTOCOL;
 
     decodePayload() {
         this.protocol = this.readInt();

@@ -1,42 +1,42 @@
-const BinaryStream = use("network/NetworkBinaryStream")
+const BinaryStream = require("../network/NetworkBinaryStream");
 
 class UUID {
-    initVars(){
-        this._parts = [0, 0, 0, 0]
-        this._version = null
-    }
+
+    parts = [0, 0, 0, 0];
+    version;
 
     constructor(part1 = 0, part2 = 0, part3 = 0, part4 = 0, version = null){
-        this.initVars()
-        this._parts = [part1, part2, part3, part4]
-        this._version = version ? version : (part2 & 0xf000) >> 12
+        this.parts = [part1, part2, part3, part4];
+        this.version = version ? version : (part2 & 0xf000) >> 12;
     }
 
     getVersion(){
-        return this._version
+        return this.version;
     }
 
     equals(uuid){
         if(uuid instanceof UUID){
-            return uuid._parts[0] === this._parts[0] && uuid._parts[1] === this._parts[1] && uuid._parts[2] === this._parts[2] && uuid._parts[3] === this._parts[3];
+            return uuid.parts[0] === this.parts[0] && uuid.parts[1] === this.parts[1] && uuid.parts[2] === this.parts[2] && uuid.parts[3] === this.parts[3];
         }
         return false;
     }
 
     static fromString(uuid, version){
-        return UUID.fromBinary(Buffer.from(uuid.trim().replace(/-/g, "")), version)
+        return UUID.fromBinary(Buffer.from(uuid.trim().replace(/-/g, "")), version);
     }
 
     static fromBinary(buffer, version){
         if(buffer.length !== 16){
             throw new TypeError("UUID buffer must be exactly 16 bytes");
         }
-        let stream = new BinaryStream(buffer)
+        let stream = new BinaryStream(buffer);
 
-        return new UUID(stream.readInt(), stream.readInt(), stream.readInt(), stream.readInt(), version)
+        return new UUID(stream.readInt(), stream.readInt(), stream.readInt(), stream.readInt(), version);
     }
 
     getPart(i){
-        return this._parts[i] ? this._parts[i] : null
+        return this.parts[i] ? this.parts[i] : null;
     }
 }
+
+module.exports = UUID;
