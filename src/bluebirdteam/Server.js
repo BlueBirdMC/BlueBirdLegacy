@@ -20,8 +20,8 @@ class Server {
         this.getLogger().info("Starting Server...");
         this.getLogger().info("Loading BlueBird.json");
         this.getLogger().info("This Server Is Running BlueBird Version 1.0!");
-        this.getLogger().info("BlueBird Is distributed under MIT License");
-        this.getLogger().info("Opening server on 0.0.0.0:" + new Config("BlueBird.json", Config.JSON).get("port"));
+        this.getLogger().info("BlueBird Is distributed under GPLv3 License");
+        this.getLogger().info("Opening server on " + new Config("BlueBird.json", Config.JSON).get("interface") + ":" + new Config("BlueBird.json", Config.JSON).get("port"));
         this.getLogger().info("Done in (" + (Date.now() - start_time) + "ms).");
         let reader = new ConsoleCommandReader(this);
         reader.tick();
