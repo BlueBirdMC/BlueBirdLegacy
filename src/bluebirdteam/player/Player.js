@@ -145,7 +145,7 @@ class Player {
                 let messagePart = message[i];
                 if (messagePart.trim() !== "" && messagePart.length <= 255) {
                         if (messagePart.startsWith("/")) {
-                            this.server.getCommandMap().dispatchCommand(this, messagePart.substr(1));
+                            //todo messagePart.substr(1)
                         } else {
                             let msg = "<:player> :message".replace(":player", this.getName()).replace(":message", messagePart);
                             this.server.broadcastMessage(msg);
