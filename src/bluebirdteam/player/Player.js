@@ -11,6 +11,7 @@ const BiomeDefinitionList = require("../network/mcpe/protocol/BiomeDefinitionLis
 const CreativeContent = require("../network/mcpe/protocol/CreativeContent");
 const Text = require("../network/mcpe/protocol/Text");
 const SetTitle = require("../network/mcpe/protocol/SetTitle");
+const DisconnectPacket = require("../network/mcpe/protocol/DisconnectPacket");
 
 class Player {
 
@@ -22,7 +23,7 @@ class Player {
         this.needACK = {};
         this.username = "";
         this.locale = "en_US";
-        this.loggedIn = false; //todo handle leaving to set it to false again when he joins
+        this.loggedIn = false;
         this.sessionAdapter = new PlayerSessionAdapter(this, server);
     }
 
@@ -51,7 +52,7 @@ class Player {
                 this.directDataPacket(play_status);
             }
 
-            this.sessionAdapter.raknetAdapter.close(this, "Incompatible Protocol");
+            this.close("Incompatible Protocol");
 
             return;
         }
@@ -68,7 +69,7 @@ class Player {
     handleResourcePackClientResponse(packet) {
         switch (packet.status) {
             case ResourcePackClientResponse.STATUS_REFUSED:
-                this.sessionAdapter.raknetAdapter.close(this, "You must accept resource packs to join this server.");
+                this.close("You must accept resource packs to join this server.");
                 break;
 
             case ResourcePackClientResponse.STATUS_SEND_PACKS:
@@ -91,6 +92,7 @@ class Player {
                 let play_status = new PlayStatus();
                 play_status.status = PlayStatus.PLAYER_SPAWN;
                 this.dataPacket(play_status);
+
                 this.loggedIn = true;
                 break;
 
@@ -102,7 +104,7 @@ class Player {
 
     onVerifyCompleted(packet, error, signedByMojang) {
         if (error !== null) {
-            this.sessionAdapter.raknetAdapter.close("", "Invalid Session");
+            this.close("Invalid Session");
             return;
         }
 
@@ -150,6 +152,7 @@ class Player {
                     } else {
                         let msg = "<:player> :message".replace(":player", this.getName()).replace(":message", messagePart);
                         this.server.broadcastMessage(msg);
+                        this.close("chated");
                     }
                 }
             }
@@ -206,16 +209,27 @@ class Player {
         this.dataPacket(pk);
     }
 
+    close(reason) {
+        if(this.loggedIn){
+            let pk = new DisconnectPacket();
+            pk.message = reason;
+            this.dataPacket(pk);
+            this.server.raknet.close(this, reason);
+            this.sessionAdapter = null;
+            this.loggedIn = false;
+        }
+    }
+
+    getName() {
+        return this.username;
+    }
+
     dataPacket(packet, needACK = false) {
         return this.sendDataPacket(packet, needACK, false);
     }
 
     directDataPacket(packet, needACK = false) {
         return this.sendDataPacket(packet, needACK, true);
-    }
-
-    getName() {
-        return this.username;
     }
 
     sendDataPacket(packet, needACK = false, immediate = false) {

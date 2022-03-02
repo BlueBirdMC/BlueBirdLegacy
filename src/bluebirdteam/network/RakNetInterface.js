@@ -107,7 +107,7 @@ class RakNetInterface {
                 break;
             case "closeSession":
                 if(this.players.has(data.identifier)){
-                    this.close(this.players.getPlayer(data.identifier), data.reason);
+                    this.players.get(data.identifier).close(data.reason);
                     this.playersCount -= 1;
                 }
                 break;

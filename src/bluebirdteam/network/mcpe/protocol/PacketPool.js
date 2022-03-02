@@ -8,6 +8,7 @@ const CreativeContent = require("./CreativeContent");
 const BiomeDefinitionList = require("./BiomeDefinitionList");
 const Text = require("./Text");
 const SetTitle = require("./SetTitle");
+const DisconnectPacket = require("./DisconnectPacket");
 
 class PacketPool{
 
@@ -26,6 +27,7 @@ class PacketPool{
         this.registerPacket(CreativeContent);
         this.registerPacket(Text);
         this.registerPacket(SetTitle);
+        this.registerPacket(DisconnectPacket);
     }
 
     registerPacket(packet){

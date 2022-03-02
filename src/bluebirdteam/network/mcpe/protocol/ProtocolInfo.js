@@ -1,4 +1,4 @@
-module.exports = {
+module.exports = ProtocolInfo = {
     /** minecraft protocol */
     CURRENT_PROTOCOL: 486,
     /** the display version will be showed */
@@ -13,5 +13,6 @@ module.exports = {
     BIOME_DEFINITION_LIST: 0x7A,
     CREATIVE_CONTENT: 0x91,
     TEXT: 0x09,
-    SET_TITLE: 0x58
+    SET_TITLE: 0x58,
+    DISCONNECT_PACKET: 0x05
 };
