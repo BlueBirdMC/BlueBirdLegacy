@@ -2,4 +2,3 @@ package-lock.json
 .idea/
 BlueBird.json
 node_modules/
-bin/
