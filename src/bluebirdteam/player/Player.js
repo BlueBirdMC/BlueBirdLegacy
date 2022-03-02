@@ -21,7 +21,7 @@ class Player {
         this.needACK = {};
         this.username = "";
         this.locale = "en_US";
-        this.loggedIn = false;
+        this.loggedIn = false; //todo handle leaving to set it to false again when he joins
         this.sessionAdapter = new PlayerSessionAdapter(this, server);
     }
 
