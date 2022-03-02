@@ -13,5 +13,6 @@ ProtocolInfo.RESOURCE_PACK_CLIENT_RESPONSE = 0x08;
 ProtocolInfo.START_GAME = 0x0b;
 ProtocolInfo.BIOME_DEFINITION_LIST = 0x7A;
 ProtocolInfo.CREATIVE_CONTENT = 0x91;
+ProtocolInfo.TEXT = 0x09;
 
 module.exports = ProtocolInfo;

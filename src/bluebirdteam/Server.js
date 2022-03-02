@@ -98,6 +98,14 @@ class Server{
             });
         }
     }
+
+    broadcastMessage(message) {
+        let players = Array.from(this.raknet.players.values());
+        players.forEach(players => players.sendMessage(message));
+        this.getLogger().info(message);
+
+        return players.length;
+    }
 }
 
 module.exports = Server

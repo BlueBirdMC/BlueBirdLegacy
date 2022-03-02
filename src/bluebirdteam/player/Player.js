@@ -9,6 +9,7 @@ const TextFormat = require("../utils/TextFormat");
 const ResourcePacksInfo = require("../network/mcpe/protocol/ResourcePacksInfo");
 const BiomeDefinitionList = require("../network/mcpe/protocol/BiomeDefinitionList");
 const CreativeContent = require("../network/mcpe/protocol/CreativeContent");
+const Text = require("../network/mcpe/protocol/Text");
 
 class Player {
 
@@ -19,7 +20,8 @@ class Player {
         this.port = port;
         this.needACK = {};
         this.username = "";
-        this.locale = "en_US"
+        this.locale = "en_US";
+        this.loggedIn = false;
         this.sessionAdapter = new PlayerSessionAdapter(this, server);
     }
 
@@ -84,9 +86,11 @@ class Player {
 
                 this.dataPacket(new BiomeDefinitionList());
                 this.dataPacket(new CreativeContent());
+
                 let play_status = new PlayStatus();
                 play_status.status = PlayStatus.PLAYER_SPAWN;
                 this.dataPacket(play_status);
+                this.loggedIn = true;
                 break;
 
             default:
@@ -131,6 +135,34 @@ class Player {
         this.server.logger.notice("Player: " + this.username);
     }
 
+    handleText(packet){
+        CheckTypes([Text, packet]);
+        if (packet.type === Text.TYPE_CHAT) {
+            let message = TextFormat.clean(packet.message, false);
+
+            message = message.split("\n");
+            for (let i in message) {
+                let messagePart = message[i];
+                if (messagePart.trim() !== "" && messagePart.length <= 255) {
+                        if (messagePart.startsWith("/")) {
+                            this.server.getCommandMap().dispatchCommand(this, messagePart.substr(1));
+                        } else {
+                            let msg = "<:player> :message".replace(":player", this.getName()).replace(":message", messagePart);
+                            this.server.broadcastMessage(msg);
+                    }
+                }
+            }
+            return true;
+        }
+    }
+
+    sendMessage(message){
+        let pk = new Text();
+        pk.type = Text.TYPE_RAW;
+        pk.message = message;
+        this.dataPacket(pk);
+    }
+
     dataPacket(packet, needACK = false){
         return this.sendDataPacket(packet, needACK, false);
     }
@@ -146,7 +178,7 @@ class Player {
     sendDataPacket(packet, needACK = false, immediate = false) {
         if (!this.isConnected()) return false;
 
-        if (!packet.canBeSentBeforeLogin()) {
+        if (!packet.canBeSentBeforeLogin() && !this.loggedIn) {
             throw new Error("Attempted to send " + packet.getName() + " to " + this.getName() + " before they got logged in.");
         }
 

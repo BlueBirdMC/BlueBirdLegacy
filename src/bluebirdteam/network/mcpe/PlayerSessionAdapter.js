@@ -36,6 +36,10 @@ class PlayerSessionAdapter{
         return this.player.handleLogin(packet);
     }
 
+    handleText(packet){
+        return this.player.handleText(packet);
+    }
+
     handleResourcePackClientResponse(packet){
         return this.player.handleResourcePackClientResponse(packet);
     }

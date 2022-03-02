@@ -2,6 +2,7 @@ const DataPacket = require("./DataPacket");
 const assert = require("assert");
 const Zlib = require("zlib");
 const BinaryStream = require("../../NetworkBinaryStream");
+const Text = require("./Text");
 
 class GamePacket extends DataPacket {
 
@@ -74,6 +75,9 @@ class GamePacket extends DataPacket {
         }
         this.getPackets().forEach(buf => {
             let pk = handler.raknetAdapter.packetPool.getPacket(buf[0]);
+            if(pk instanceof Text){
+                console.log(buf);
+            }
             if (pk instanceof DataPacket) {
                 if (!pk.canBeBatched) {
                     throw new Error("Received invalid " + pk.getName() + " inside GamePacket");

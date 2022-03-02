@@ -6,6 +6,7 @@ const ResourcePackStack = require("./ResourcePackStack");
 const StartGame = require("./StartGame");
 const CreativeContent = require("./CreativeContent");
 const BiomeDefinitionList = require("./BiomeDefinitionList");
+const Text = require("./Text");
 
 class PacketPool{
 
@@ -22,6 +23,7 @@ class PacketPool{
         this.registerPacket(StartGame);
         this.registerPacket(BiomeDefinitionList);
         this.registerPacket(CreativeContent);
+        this.registerPacket(Text);
     }
 
     registerPacket(packet){
