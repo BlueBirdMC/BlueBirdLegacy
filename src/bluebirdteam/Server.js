@@ -58,7 +58,7 @@ class Server {
             packets.forEach(packet => pk.addPacket(packet));
 
             if (!forceSync && !immediate) {
-                this.broadcastPackets([pk], this.getOnlinePlayers(), false); //not sure if it's right
+                this.broadcastPackets(pk, targets, false); //not sure if it's right
             } else {
                 this.broadcastPackets(pk, targets, immediate);
             }
