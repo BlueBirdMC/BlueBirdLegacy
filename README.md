@@ -22,7 +22,6 @@
 ```
 npm install
 ```
-#### then
 ```
 node start.js
 ```
