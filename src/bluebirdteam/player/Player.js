@@ -152,7 +152,6 @@ class Player {
                     } else {
                         let msg = "<:player> :message".replace(":player", this.getName()).replace(":message", messagePart);
                         this.server.broadcastMessage(msg);
-                        this.close("chated");
                     }
                 }
             }
