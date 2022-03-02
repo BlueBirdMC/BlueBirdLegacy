@@ -17,6 +17,13 @@ class DisconnectPacket extends DataPacket {
             this.message = this.readString();
         }
     }
+
+    encodePayload() {
+        this.writeBool(this.hideDisconnectionScreen);
+        if(!this.hideDisconnectionScreen){
+            this.writeString(this.message);
+        }
+    }
 }
 
 module.exports = DisconnectPacket;

@@ -4,8 +4,10 @@ const TextFormat = use("utils/TextFormat");
 const TerminalTextFormat = use("utils/TerminalTextFormat");
 
 class Logger {
+
+    debuggingLevel = 0;
+
     constructor(caller = "Server thread", subcaller = ""){
-        this.debuggingLevel = 0;
         this.caller = caller;
         this.subcaller = subcaller !== "" ? " " + subcaller : "";
     }
