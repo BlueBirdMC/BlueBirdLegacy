@@ -46,7 +46,7 @@ class MainLogger {
     log(type, message, color = TextFormat.GRAY){
         color = TextFormat.toTerminal(color);
         message = TextFormat.toTerminal(message);
-        console.log(TextFormat.toTerminal(TextFormat.BLUE) + "[" + TimeStamp("HH:MM:SS") + "]" + TextFormat.toTerminal(TextFormat.RESET) + " " + color + type + " >", message + TextFormat.toTerminal(TextFormat.RESET));
+        console.log(TextFormat.toTerminal(TextFormat.BLUE) + "[" + TimeStamp("HH:mm:ss") + "]" + TextFormat.toTerminal(TextFormat.RESET) + " " + color + type + " >", message + TextFormat.toTerminal(TextFormat.RESET));
     }
 
     setDebuggingLevel(level){
