@@ -5,6 +5,9 @@
 ## Why JS?
 > why not? i want a js software cuz i never saw a working one and up to date
 
+## Pictures
+<img src="https://media.discordapp.net/attachments/947005759537971270/948471077892415518/unknown.png" alt="BlueBird">
+
 ## Quick Links
 
 * __[Discord](https://discord.gg/KQCYsxAD2b)__
