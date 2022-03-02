@@ -218,6 +218,7 @@ class Player {
             this.server.raknet.close(this, reason);
             this.sessionAdapter = null;
             this.loggedIn = false;
+            this.username = "";
         }
     }
 
