@@ -208,9 +208,10 @@ class Player {
         this.dataPacket(pk);
     }
 
-    close(reason) {
+    close(reason, hide_disconnection_screen = false) {
         if(this.loggedIn){
             let pk = new DisconnectPacket();
+            pk.hideDisconnectionScreen = hide_disconnection_screen;
             pk.message = reason;
             this.dataPacket(pk);
             this.server.raknet.close(this, reason);
