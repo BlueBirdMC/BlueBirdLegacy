@@ -19,9 +19,9 @@
 ## how can i run it?
 
 >Windows
+```php
+$ npm install
 ```
-npm install
-```
-```
-node start.js
+```php
+$ node start.js
 ```
