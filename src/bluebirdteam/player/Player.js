@@ -135,7 +135,7 @@ class Player {
         packsInfo.forceServerPacks = false;
         this.dataPacket(packsInfo);
 
-        this.server.logger.notice("Player: " + this.username);
+        this.server.logger.notice("Player: " + this.username + " joined");
     }
 
     handleText(packet) {
@@ -210,6 +210,7 @@ class Player {
 
     close(reason, hide_disconnection_screen = false) {
         if(this.loggedIn){
+            this.server.getLogger().notice("Player: " + this.username + " left");
             let pk = new DisconnectPacket();
             pk.hideDisconnectionScreen = hide_disconnection_screen;
             pk.message = reason;
