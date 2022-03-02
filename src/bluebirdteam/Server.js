@@ -79,6 +79,10 @@ class Server{
         process.exit(1);
     }
 
+    getOnlinePlayers(){
+        return Array.from(this.raknet.players.values());
+    }
+
     broadcastPackets(pk, targets, immediate) {
         if(!pk.isEncoded){
             pk.encode();
@@ -100,7 +104,7 @@ class Server{
     }
 
     broadcastMessage(message) {
-        let players = Array.from(this.raknet.players.values());
+        let players = this.getOnlinePlayers();
         players.forEach(players => players.sendMessage(message));
         this.getLogger().info(message);
 

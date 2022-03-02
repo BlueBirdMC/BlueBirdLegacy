@@ -10,6 +10,7 @@ const ResourcePacksInfo = require("../network/mcpe/protocol/ResourcePacksInfo");
 const BiomeDefinitionList = require("../network/mcpe/protocol/BiomeDefinitionList");
 const CreativeContent = require("../network/mcpe/protocol/CreativeContent");
 const Text = require("../network/mcpe/protocol/Text");
+const SetTitle = require("../network/mcpe/protocol/SetTitle");
 
 class Player {
 
@@ -28,23 +29,23 @@ class Player {
     /**
      * @return {PlayerSessionAdapter}
      */
-    getSessionAdapter(){
+    getSessionAdapter() {
         return this.sessionAdapter;
     }
 
-    isConnected(){
+    isConnected() {
         return this.sessionAdapter !== null;
     }
 
-    handleLogin(packet){
+    handleLogin(packet) {
         CheckTypes([LoginPacket, packet]);
 
-        if(packet.protocol !== ProtocolInfo.CURRENT_PROTOCOL){
-            if(packet.protocol < ProtocolInfo.CURRENT_PROTOCOL){
+        if (packet.protocol !== ProtocolInfo.CURRENT_PROTOCOL) {
+            if (packet.protocol < ProtocolInfo.CURRENT_PROTOCOL) {
                 let play_status = new PlayStatus();
                 play_status.status = PlayStatus.LOGIN_FAILED_CLIENT;
                 this.directDataPacket(play_status);
-            }else{
+            } else {
                 let play_status = new PlayStatus();
                 play_status.status = PlayStatus.LOGIN_FAILED_SERVER;
                 this.directDataPacket(play_status);
@@ -99,7 +100,7 @@ class Player {
         return true;
     }
 
-    onVerifyCompleted(packet, error, signedByMojang){
+    onVerifyCompleted(packet, error, signedByMojang) {
         if (error !== null) {
             this.sessionAdapter.raknetAdapter.close("", "Invalid Session");
             return;
@@ -135,7 +136,7 @@ class Player {
         this.server.logger.notice("Player: " + this.username);
     }
 
-    handleText(packet){
+    handleText(packet) {
         CheckTypes([Text, packet]);
         if (packet.type === Text.TYPE_CHAT) {
             let message = TextFormat.clean(packet.message, false);
@@ -144,11 +145,11 @@ class Player {
             for (let i in message) {
                 let messagePart = message[i];
                 if (messagePart.trim() !== "" && messagePart.length <= 255) {
-                        if (messagePart.startsWith("/")) {
-                            //todo messagePart.substr(1)
-                        } else {
-                            let msg = "<:player> :message".replace(":player", this.getName()).replace(":message", messagePart);
-                            this.server.broadcastMessage(msg);
+                    if (messagePart.startsWith("/")) {
+                        //todo messagePart.substr(1)
+                    } else {
+                        let msg = "<:player> :message".replace(":player", this.getName()).replace(":message", messagePart);
+                        this.server.broadcastMessage(msg);
                     }
                 }
             }
@@ -156,22 +157,64 @@ class Player {
         }
     }
 
-    sendMessage(message){
+    sendMessage(message) {
         let pk = new Text();
         pk.type = Text.TYPE_RAW;
         pk.message = message;
         this.dataPacket(pk);
     }
 
-    dataPacket(packet, needACK = false){
+    sendTitle(title, subtitle = "", fadeIn = -1, stay = -1, fadeOut = -1) {
+        this.setTitleDuration(fadeIn, stay, fadeOut);
+        if (subtitle !== "") {
+            this.sendSubTitle(subtitle);
+        }
+        this.sendTitleText(title, SetTitle.TYPE_SET_TITLE);
+    }
+
+    sendSubTitle(subtitle) {
+        this.sendTitleText(subtitle, SetTitle.TYPE_SET_SUBTITLE);
+    }
+
+    clearTitles() {
+        let pk = new SetTitle();
+        pk.type = SetTitle.TYPE_CLEAR_TITLE;
+        this.dataPacket(pk);
+    }
+
+    resetTitles() {
+        let pk = new SetTitle();
+        pk.type = SetTitle.TYPE_RESET_TITLE;
+        this.dataPacket(pk);
+    }
+
+    setTitleDuration(fadeIn, stay, fadeOut) {
+        if (fadeIn >= 0 && stay >= 0 && fadeOut >= 0) {
+            let pk = new SetTitle();
+            pk.type = SetTitle.TYPE_SET_ANIMATION_TIMES;
+            pk.fadeInTime = fadeIn;
+            pk.stayTime = stay;
+            pk.fadeOutTime = fadeOut;
+            this.dataPacket(pk);
+        }
+    }
+
+    sendTitleText(title, type) {
+        let pk = new SetTitle();
+        pk.type = type;
+        pk.text = title;
+        this.dataPacket(pk);
+    }
+
+    dataPacket(packet, needACK = false) {
         return this.sendDataPacket(packet, needACK, false);
     }
 
-    directDataPacket(packet, needACK = false){
+    directDataPacket(packet, needACK = false) {
         return this.sendDataPacket(packet, needACK, true);
     }
 
-    getName(){
+    getName() {
         return this.username;
     }
 

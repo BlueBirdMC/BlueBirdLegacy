@@ -13,7 +13,7 @@ class BiomeDefinitionList extends DataPacket {
     };
 
     canBeSentBeforeLogin(){
-        return true; //idk
+        return true;
     }
 
     /** @type {Buffer} */
@@ -31,7 +31,7 @@ class BiomeDefinitionList extends DataPacket {
         this.append(Buffer.from("Taiga"));
         this.writeByte(0);
         this.writeByte(0);
-        // this.append(Buffer.from(BiomeDefinitionList.HARDCODED_NBT_BLOB(), 'base64'));
+        // this.append(this.namedtag ?? Buffer.from(BiomeDefinitionList.HARDCODED_NBT_BLOB(), 'base64'));
     }
 
     handle(handler) {
