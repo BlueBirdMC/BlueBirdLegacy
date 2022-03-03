@@ -143,12 +143,12 @@ class Player {
             let message = TextFormat.clean(packet.message);
             message = message.split("\n");
             for (let i in message) {
-                let messagePart = message[i];
-                if (messagePart.trim() !== "" && messagePart.length <= 255) {
-                    if (messagePart.startsWith("/")) {
+                let messageElement = message[i];
+                if (messageElement.trim() !== "" && messageElement.length <= 255) {
+                    if (messageElement.startsWith("/")) {
                         //todo messagePart.substr(1)
                     } else {
-                        let msg = "<:player> :message".replace(":player", this.getName()).replace(":message", messagePart);
+                        let msg = "<:player> :message".replace(":player", this.getName()).replace(":message", messageElement);
                         this.server.broadcastMessage(msg);
                     }
                 }
