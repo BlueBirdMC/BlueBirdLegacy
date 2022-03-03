@@ -1,4 +1,4 @@
-const BatchPacket = require("./network/mcpe/protocol/GamePacket");
+const GamePacket = require("./network/mcpe/protocol/GamePacket");
 const SessionManager = require("bluebirdmc-raknet/server/SessionManager");
 const Config = require("./utils/Config");
 const RakNetAdapter = require("./network/RakNetInterface");
@@ -53,7 +53,7 @@ class Server {
         });
 
         if (targets.length > 0) {
-            let pk = new BatchPacket();
+            let pk = new GamePacket();
 
             packets.forEach(packet => pk.addPacket(packet));
 
