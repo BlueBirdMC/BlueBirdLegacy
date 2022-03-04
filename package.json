@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "bluebirdmc-binarystream": "git+https://github.com/BlueBirdMC/NodeBinaryStream.git",
-    "bluebirdmc-raknet": "git+https://github.com/BlueBirdMC/RakNet.git",
+    "bluebirdmc-raknet": "git+https://github.com/BlueBirdMC/PRakNet.git",
     "locutus": "^2.0.11"
   },
   "author": "DRAGKILLS",
