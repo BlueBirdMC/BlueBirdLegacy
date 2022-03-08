@@ -3,7 +3,7 @@
 > BlueBird is a new Minecraft: Bedrock Edition Server Software written on JavaScript
 
 ## Why JS?
-> why not? i want a js software cuz i never saw a working one and up to date
+> why not? I want a js software cuz i never saw a working one and up to date
 
 ## Pictures
 <img src="https://media.discordapp.net/attachments/947005759537971270/948471077892415518/unknown.png" alt="BlueBird">
@@ -17,7 +17,7 @@
 > No but it will be added soon
 
 **Can I use BlueBird in Production Servers**
-> No its not stable
+> No it's not stable
 
 ## how can i run it?
 
