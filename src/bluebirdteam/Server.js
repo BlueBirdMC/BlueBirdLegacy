@@ -13,13 +13,24 @@ class Server {
         let start_time = Date.now();
         this.id = 0;
         this.logger = new Logger();
-        this.raknet = new RakNetAdapter(this);
         this.getLogger().info("Starting Server...");
         this.getLogger().info("Loading BlueBird.json");
         this.path = path;
         if (!fs.existsSync("BlueBird.json")) {
-            fs.copyFileSync(this.path.file + "bluebirdteam/resources/BlueBird.json", this.path.data + "BlueBird.json");
+            // I know that this code is bad
+            // But we don't have any another option
+			this.getLogger().notice("Generation of config finished. Please restart your server now");
+			let source = __dirname + '/resources/BlueBird.json'
+		    fs.copyFile(source, 'BlueBird.json', (err) => {
+				if (err){
+					this.getLogger().critical("Failed to load config: ");
+					this.getLogger().critical(err);
+					process.exit(1)
+				}
+			});
+			process.on('uncaughtException', err => { process.exit(0) } )
         }
+		this.raknet = new RakNetAdapter(this);
         this.getLogger().info("This server is running BlueBird version " + version);
         this.getLogger().info("BlueBird is distributed under GPLv3 License");
         this.getLogger().info("Opening server on *:" + new Config("BlueBird.json", Config.JSON).get("port"));
