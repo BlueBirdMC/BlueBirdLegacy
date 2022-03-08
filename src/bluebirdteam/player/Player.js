@@ -30,6 +30,7 @@ class Player {
     /**
      * @return {PlayerSessionAdapter}
      */
+ 
     getSessionAdapter() {
         return this.sessionAdapter;
     }
@@ -52,7 +53,7 @@ class Player {
                 this.directDataPacket(play_status);
             }
 
-            this.close("Incompatible Protocol");
+            this.close("Incompatible protocol");
             return;
         }
 
@@ -103,7 +104,7 @@ class Player {
 
     onVerifyCompleted(packet, error, signedByMojang) {
         if (error !== null) {
-            this.close("Invalid Session");
+            this.close("Invalid session");
             return;
         }
 
@@ -111,6 +112,10 @@ class Player {
 
         if (!signedByMojang && xuid !== "") {
             this.server.getLogger().info(this.username + " has an XUID, but their login keychain is not signed by Mojang");
+            if(new Config("BlueBird.json", Config.JSON).get("onlinemode") == "true"){
+                this.server.getLogger().debug(this.username + " is not logged into Xbox Live");
+                this.close('To join this server you must login to your Xbox account')
+            }
             xuid = "";
         }
 
@@ -118,8 +123,10 @@ class Player {
             if (signedByMojang) {
                 this.server.getLogger().error(this.username + " should have an XUID, but none found");
             }
-
-            this.server.getLogger().debug(this.username + " is NOT logged into Xbox Live");
+            if(new Config("BlueBird.json", Config.JSON).get("onlinemode") == "true"){
+                this.server.getLogger().debug(this.username + " is not logged into Xbox Live");
+                this.close('To join this server you must login to your Xbox account')
+            }
         } else {
             this.server.getLogger().debug(this.username + " is logged into Xbox Live");
         }
@@ -134,7 +141,7 @@ class Player {
         packsInfo.forceServerPacks = false;
         this.dataPacket(packsInfo);
 
-        this.server.logger.notice("Player: " + this.username + " joined");
+        this.server.broadcastMessage("§6Player " + this.username + " joined the game");
     }
 
     handleText(packet) {
@@ -146,7 +153,7 @@ class Player {
                 let messageElement = message[i];
                 if (messageElement.trim() !== "" && messageElement.length <= 255) {
                     if (messageElement.startsWith("/")) {
-                        //todo messagePart.substr(1)
+                        console.log(messageElement)
                     } else {
                         let msg = "<:player> :message".replace(":player", this.getName()).replace(":message", messageElement);
                         this.server.broadcastMessage(msg);
@@ -207,8 +214,8 @@ class Player {
     }
 
     close(reason, hide_disconnection_screen = false) {
-        if(this.loggedIn){
-            this.server.getLogger().notice("Player: " + this.username + " left");
+            this.server.getLogger().info("Player " + this.username + " disconnected due to " + reason);
+            this.server.broadcastMessage("§6Player " + this.username + " left the game");
             let pk = new DisconnectPacket();
             pk.hideDisconnectionScreen = hide_disconnection_screen;
             pk.message = reason;
@@ -217,7 +224,6 @@ class Player {
             this.sessionAdapter = null;
             this.loggedIn = false;
             this.username = "";
-        }
     }
 
     getName() {
