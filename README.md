@@ -13,13 +13,13 @@
 * __[Discord](https://discord.gg/KQCYsxAD2b)__
 
 ## FAQ
-**Does BlueBird Supports plugins**
+**Does BlueBird support plugins**
 > No but it will be added soon
 
 **Can I use BlueBird in Production Servers**
 > No it's not stable
 
-## how can i run it?
+## How can I run it?
 
 >Windows
 ```php
