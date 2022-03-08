@@ -1,11 +1,8 @@
 {
   "name": "bluebird",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A software for minecraft bedrock",
   "main": "src/bluebirdteam/BlueBird.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "dependencies": {
     "bluebirdmc-binarystream": "git+https://github.com/BlueBirdMC/NodeBinaryStream.git",
     "bluebirdmc-raknet": "git+https://github.com/BlueBirdMC/PRakNet.git",
