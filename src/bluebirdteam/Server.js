@@ -36,10 +36,14 @@ class Server {
     }
 
     async listen() {
+        var err = true;
         try {
             await this.raknet.tick();
+            err = false;
         } catch (e) {
-            throw new Error("Failed to bind the server on the port " + new Config("BlueBird.json", Config.JSON).get("port"));
+            if(err == "true"){
+                throw new Error("Failed to bind the server on the port " + new Config("BlueBird.json", Config.JSON).get("port"));
+            }
         }
     }
 
