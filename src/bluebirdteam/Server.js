@@ -5,23 +5,24 @@ const RakNetAdapter = require("./network/RakNetInterface");
 const Logger = require("./utils/MainLogger");
 const ConsoleCommandReader = require("./command/ConsoleCommandReader");
 const fs = require("fs");
+const version = "1.1";
 
 class Server {
 
     constructor(path) {
         let start_time = Date.now();
         this.id = 0;
-        this.path = path;
-        if (!fs.existsSync("BlueBird.json")) {
-            fs.copyFileSync(this.path.file + "bluebirdteam/resources/BlueBird.json", this.path.data + "BlueBird.json");
-        }
         this.logger = new Logger();
         this.raknet = new RakNetAdapter(this);
         this.getLogger().info("Starting Server...");
         this.getLogger().info("Loading BlueBird.json");
-        this.getLogger().info("This Server Is Running BlueBird Version 1.0!");
-        this.getLogger().info("BlueBird Is distributed under GPLv3 License");
-        this.getLogger().info("Opening server on 0.0.0.0:" + new Config("BlueBird.json", Config.JSON).get("port"));
+        this.path = path;
+        if (!fs.existsSync("BlueBird.json")) {
+            fs.copyFileSync(this.path.file + "bluebirdteam/resources/BlueBird.json", this.path.data + "BlueBird.json");
+        }
+        this.getLogger().info("This server is running BlueBird version " + version);
+        this.getLogger().info("BlueBird is distributed under GPLv3 License");
+        this.getLogger().info("Opening server on *:" + new Config("BlueBird.json", Config.JSON).get("port"));
         this.getLogger().info("Done in (" + (Date.now() - start_time) + "ms).");
         let reader = new ConsoleCommandReader(this);
         reader.tick();
@@ -58,7 +59,7 @@ class Server {
             packets.forEach(packet => pk.addPacket(packet));
 
             if (!forceSync && !immediate) {
-                this.broadcastPackets(pk, targets, false); //not sure if it's right
+                this.broadcastPackets(pk, targets, false);
             } else {
                 this.broadcastPackets(pk, targets, immediate);
             }
