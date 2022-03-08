@@ -118,6 +118,10 @@ class Player {
             }
             xuid = "";
         }
+		
+		if(!this.username){
+			this.close("Username is required")
+		}
 
         if (xuid === "" || !xuid instanceof String) {
             if (signedByMojang) {
@@ -141,7 +145,8 @@ class Player {
         packsInfo.forceServerPacks = false;
         this.dataPacket(packsInfo);
 
-        this.server.broadcastMessage("§6Player " + this.username + " joined the game");
+		this.server.getLogger().info("Player " + this.username + " joined the game");
+        this.server.broadcastMessage("ยง6Player " + this.username + " joined the game");
     }
 
     handleText(packet) {
@@ -153,12 +158,15 @@ class Player {
                 let messageElement = message[i];
                 if (messageElement.trim() !== "" && messageElement.length <= 255) {
                     if (messageElement.startsWith("/")) {
-                        console.log(messageElement)
+                        //TODO: Add player commands
                     } else {
                         let msg = "<:player> :message".replace(":player", this.getName()).replace(":message", messageElement);
                         this.server.broadcastMessage(msg);
                     }
                 }
+				if (messageElement.length > 255) {
+					this.close('Message is too long')
+				}
             }
             return true;
         }
@@ -214,16 +222,14 @@ class Player {
     }
 
     close(reason, hide_disconnection_screen = false) {
-            this.server.getLogger().info("Player " + this.username + " disconnected due to " + reason);
-            this.server.broadcastMessage("§6Player " + this.username + " left the game");
-            let pk = new DisconnectPacket();
-            pk.hideDisconnectionScreen = hide_disconnection_screen;
-            pk.message = reason;
-            this.dataPacket(pk);
-            this.server.raknet.close(this, reason);
-            this.sessionAdapter = null;
-            this.loggedIn = false;
-            this.username = "";
+        this.server.getLogger().info("Player " + this.username + " disconnected due to " + reason);
+        this.server.broadcastMessage("ยง6Player " + this.username + " left the game");
+        let pk = new DisconnectPacket();
+        pk.hideDisconnectionScreen = hide_disconnection_screen;
+        pk.message = reason;
+        this.dataPacket(pk);
+        this.server.raknet.close(this, reason);
+		return;
     }
 
     getName() {
