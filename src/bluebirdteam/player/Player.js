@@ -30,7 +30,7 @@ class Player {
     /**
      * @return {PlayerSessionAdapter}
      */
- 
+
     getSessionAdapter() {
         return this.sessionAdapter;
     }
@@ -112,22 +112,22 @@ class Player {
 
         if (!signedByMojang && xuid !== "") {
             this.server.getLogger().info(this.username + " has an XUID, but their login keychain is not signed by Mojang");
-            if(new Config("BlueBird.json", Config.JSON).get("onlinemode") == "true"){
+            if (new Config("BlueBird.json", Config.JSON).get("onlinemode") == "true") {
                 this.server.getLogger().debug(this.username + " is not logged into Xbox Live");
                 this.close('To join this server you must login to your Xbox account')
             }
             xuid = "";
         }
-		
-		if(!this.username){
-			this.close("Username is required")
-		}
+
+        if (!this.username) {
+            this.close("Username is required")
+        }
 
         if (xuid === "" || !xuid instanceof String) {
             if (signedByMojang) {
                 this.server.getLogger().error(this.username + " should have an XUID, but none found");
             }
-            if(new Config("BlueBird.json", Config.JSON).get("onlinemode") == "true"){
+            if (new Config("BlueBird.json", Config.JSON).get("onlinemode") == "true") {
                 this.server.getLogger().debug(this.username + " is not logged into Xbox Live");
                 this.close('To join this server you must login to your Xbox account')
             }
@@ -145,7 +145,7 @@ class Player {
         packsInfo.forceServerPacks = false;
         this.dataPacket(packsInfo);
 
-		this.server.getLogger().info("Player " + this.username + " joined the game");
+        this.server.getLogger().info("Player " + this.username + " joined the game");
         this.server.broadcastMessage("ยง6Player " + this.username + " joined the game");
     }
 
@@ -159,14 +159,14 @@ class Player {
                 if (messageElement.trim() !== "" && messageElement.length <= 255) {
                     if (messageElement.startsWith("/")) {
                         //TODO: Add player commands
-                    } else {
-                        let msg = "<:player> :message".replace(":player", this.getName()).replace(":message", messageElement);
-                        this.server.broadcastMessage(msg);
+			return false;
                     }
+                     let msg = "<:player> :message".replace(":player", this.getName()).replace(":message", messageElement);
+                     this.server.broadcastMessage(msg);
                 }
-				if (messageElement.length > 255) {
-					this.close('Message is too long')
-				}
+                if (messageElement.length > 255) {
+                    this.close('Message is too long')
+                }
             }
             return true;
         }
@@ -229,7 +229,7 @@ class Player {
         pk.message = reason;
         this.dataPacket(pk);
         this.server.raknet.close(this, reason);
-		return;
+        return;
     }
 
     getName() {
