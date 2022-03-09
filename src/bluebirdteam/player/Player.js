@@ -146,7 +146,7 @@ class Player {
         this.dataPacket(packsInfo);
 
         this.server.getLogger().info('Player ' + this.username + ' joined the game');
-        this.server.broadcastMessage('ยง6Player ' + this.username + ' joined the game');
+        this.server.broadcastMessage('§6Player ' + this.username + ' joined the game');
     }
 
     handleText(packet) {
