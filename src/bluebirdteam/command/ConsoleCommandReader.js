@@ -15,7 +15,7 @@ class ConsoleCommandReader {
                     this.server.getLogger().info("Commands list:");
                     this.server.getLogger().info("help: shows this list");
                     this.server.getLogger().info("stop: shutdowns the server");
-                    this.server.getLogger().info("bug: to report a bug");
+                    this.server.getLogger().info("reportbug: to report a bug");
                     break;
                 case "reportbug":
                     this.server.getLogger().info("You can report bugs or issues here: https://github.com/BlueBirdMC/BlueBird/issues");
