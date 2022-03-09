@@ -5,10 +5,6 @@ class MainLogger {
 
     debuggingLevel = 0;
 
-    info(message){
-        return this.log("INFO", message, TextFormat.WHITE);
-    }
-
     alert(message){
         return this.log("ALERT", message, TextFormat.AQUA);
     }
@@ -26,7 +22,11 @@ class MainLogger {
     }
 
     warning(message){
-        return this.log("ERROR", message, TextFormat.YELLOW);
+        return this.log("WARNING", message, TextFormat.YELLOW);
+    }
+
+    info(message){
+        return this.log("INFO", message, TextFormat.WHITE);
     }
 
     notice(message){
@@ -34,12 +34,12 @@ class MainLogger {
     }
 
     debug(message){
-        if(this.debuggingLevel < 1)return false;
+        if(this.debuggingLevel < 1) return false;
         return this.log("DEBUG", message);
     }
 
     debugExtensive(message){
-        if(this.debuggingLevel < 2)return false;
+        if(this.debuggingLevel < 2) return false;
         return this.log("DEBUG", message);
     }
 
