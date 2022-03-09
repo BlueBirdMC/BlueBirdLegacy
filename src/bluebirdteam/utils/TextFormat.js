@@ -51,7 +51,7 @@ TerminalColors.ITALIC = TerminalColors.ESCAPE + "[3m";
 TerminalColors.RESET = TerminalColors.ESCAPE + "[0m";
 
 TextFormat.tokenize = function (str) {
-    return str.split(new RegExp("(" + TextFormat.ESCAPE + "[0123456789abcdefklmnor])")).filter(v => v !== "");
+    return str.toString().split(new RegExp("(" + TextFormat.ESCAPE + "[0123456789abcdefklmnor])")).filter(v => v !== "");
 };
 
 TextFormat.clean = function (str, removeFormat = true) {

@@ -1,0 +1,9 @@
+1.0.1:
+
+Fixed typos
+Added /reportbug
+Fixed console spam
+Added onlinemode to config
+Added more checks
+Cleaned some code
+Fixed a crash

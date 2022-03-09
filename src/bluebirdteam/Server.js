@@ -5,23 +5,36 @@ const RakNetAdapter = require("./network/RakNetInterface");
 const Logger = require("./utils/MainLogger");
 const ConsoleCommandReader = require("./command/ConsoleCommandReader");
 const fs = require("fs");
+const version = "1.0.1";
 
 class Server {
 
     constructor(path) {
         let start_time = Date.now();
         this.id = 0;
-        this.path = path;
-        if (!fs.existsSync("BlueBird.json")) {
-            fs.copyFileSync(this.path.file + "bluebirdteam/resources/BlueBird.json", this.path.data + "BlueBird.json");
-        }
         this.logger = new Logger();
-        this.raknet = new RakNetAdapter(this);
         this.getLogger().info("Starting Server...");
         this.getLogger().info("Loading BlueBird.json");
-        this.getLogger().info("This Server Is Running BlueBird Version 1.0!");
-        this.getLogger().info("BlueBird Is distributed under GPLv3 License");
-        this.getLogger().info("Opening server on 0.0.0.0:" + new Config("BlueBird.json", Config.JSON).get("port"));
+        this.path = path;
+        if (!fs.existsSync("BlueBird.json")) {
+	   // fs.copyFileSync(this.path.file + "bluebirdteam/resources/BlueBird.json", this.path.data + "BlueBird.json"); doesnt work
+           // I know that this code is bad
+           // But we don't have any another option
+	   this.getLogger().notice("Generation of config finished. Please restart your server now");
+	   let source = __dirname + '/resources/BlueBird.json'
+	   fs.copyFile(source, 'BlueBird.json', (err) => {
+	   if (err){
+	         this.getLogger().critical("Failed to load config: ");
+	         this.getLogger().critical(err);
+	         process.exit(1)
+	      }
+	   });
+	   process.on('uncaughtException', err => { process.exit(0) } )
+        }
+        this.raknet = new RakNetAdapter(this);
+        this.getLogger().info("This server is running BlueBird version " + version);
+        this.getLogger().info("BlueBird is distributed under GPLv3 License");
+        this.getLogger().info("Opening server on *:" + new Config("BlueBird.json", Config.JSON).get("port"));
         this.getLogger().info("Done in (" + (Date.now() - start_time) + "ms).");
         let reader = new ConsoleCommandReader(this);
         reader.tick();
@@ -35,10 +48,14 @@ class Server {
     }
 
     async listen() {
+        let err = true;
         try {
             await this.raknet.tick();
+            err = false;
         } catch (e) {
-            throw new Error("Failed to bind the server on the port " + new Config("BlueBird.json", Config.JSON).get("port"));
+            if(err == "true") { // to fix console spam
+                throw new Error("Failed to bind the server on the port " + new Config("BlueBird.json", Config.JSON).get("port"));
+            }
         }
     }
 
@@ -58,7 +75,7 @@ class Server {
             packets.forEach(packet => pk.addPacket(packet));
 
             if (!forceSync && !immediate) {
-                this.broadcastPackets(pk, targets, false); //not sure if it's right
+                this.broadcastPackets(pk, targets, false);
             } else {
                 this.broadcastPackets(pk, targets, immediate);
             }
