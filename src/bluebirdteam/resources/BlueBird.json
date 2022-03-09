@@ -3,5 +3,5 @@
   "port": 19132,
   "maxplayers": 20,
   "debug_level": 0,
-  "onlinemode": "true"
+  "onlinemode": true
 }
