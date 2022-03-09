@@ -17,6 +17,7 @@ class Server {
         this.getLogger().info("Loading BlueBird.json");
         this.path = path;
         if (!fs.existsSync("BlueBird.json")) {
+	   // fs.copyFileSync(this.path.file + "bluebirdteam/resources/BlueBird.json", this.path.data + "BlueBird.json"); doesnt work
            // I know that this code is bad
            // But we don't have any another option
 	   this.getLogger().notice("Generation of config finished. Please restart your server now");
