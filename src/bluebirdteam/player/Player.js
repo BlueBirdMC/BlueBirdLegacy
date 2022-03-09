@@ -220,7 +220,7 @@ class Player {
 
     close(reason, hide_disconnection_screen = false) {
         this.server.getLogger().info("Player " + this.username + " disconnected due to " + reason);
-        this.server.broadcastMessage("§66Player " + this.username + " left the game");
+        this.server.broadcastMessage("§6Player " + this.username + " left the game");
         let pk = new DisconnectPacket();
         pk.hideDisconnectionScreen = hide_disconnection_screen;
         pk.message = reason;
