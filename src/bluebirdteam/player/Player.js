@@ -112,7 +112,7 @@ class Player {
 
         if (!signedByMojang && xuid !== "") {
             this.server.getLogger().info(this.username + " has an XUID, but their login keychain is not signed by Mojang");
-            if (new Config("BlueBird.json", Config.JSON).get("onlinemode") == "true") {
+            if (new Config("BlueBird.json", Config.JSON).get("onlinemode") === true) {
                 this.server.getLogger().debug(this.username + " is not logged into Xbox Live");
                 this.close('To join this server you must login to your Xbox account')
             }
@@ -126,7 +126,7 @@ class Player {
         if (xuid === "" || !xuid instanceof String) {
             if (signedByMojang) {
                 this.server.getLogger().warning(this.username + ' tried to join without XUID');
-		if (new Config("BlueBird.json", Config.JSON).get('onlinemode') == 'true') {
+		if (new Config("BlueBird.json", Config.JSON).get('onlinemode') === true) {
                    this.close('To join this server you must login to your Xbox account')
                 }
             }
@@ -145,8 +145,8 @@ class Player {
         packsInfo.forceServerPacks = false;
         this.dataPacket(packsInfo);
 
-        this.server.getLogger().info('Player ' + this.username + ' joined the game");
-        this.server.broadcastMessage('ยง6Player ' + this.username + ' joined the game");
+        this.server.getLogger().info('Player ' + this.username + ' joined the game');
+        this.server.broadcastMessage('ยง6Player ' + this.username + ' joined the game');
     }
 
     handleText(packet) {
