@@ -247,7 +247,7 @@ class Player {
     sendDataPacket(packet, needACK = false, immediate = false) {
         if (!this.isConnected()) return false;
 
-        if (!packet.canBeSentBeforeLogin() && !this.loggedIn) {
+        if (!this.loggedIn && !packet.canBeSentBeforeLogin()) {
             throw new Error("Attempted to send " + packet.getName() + " to " + this.getName() + " before they got logged in.");
         }
 
