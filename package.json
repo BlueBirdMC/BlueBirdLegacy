@@ -1,7 +1,7 @@
 {
   "name": "bluebird",
   "version": "1.0.1",
-  "description": "A server software for Minecraft: bedrock edition",
+  "description": "A server software for Minecraft: Bedrock edition",
   "main": "src/bluebirdteam/BlueBird.js",
   "dependencies": {
     "bluebirdmc-binarystream": "git+https://github.com/BlueBirdMC/NodeBinaryStream.git",
