@@ -22,18 +22,9 @@
 ## How can I run it?
 >**Linux**
 ```php
-$ sudo apt update && apt install nodejs
-```
-```php
-$ npm install
-```
-```php
-$ node start.js
+$ sudo apt update && apt install nodejs && npm install && node start.js
 ```
 >**Windows**
 ```php
-$ npm install
-```
-```php
-$ node start.js
+$ npm install && node start.js
 ```
