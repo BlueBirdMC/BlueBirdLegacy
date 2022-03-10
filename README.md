@@ -20,8 +20,17 @@
 > No it's not stable
 
 ## How can I run it?
-
->Windows
+>**Linux**
+```php
+$ sudo apt update && apt install nodejs
+```
+```php
+$ npm install
+```
+```php
+$ node start.js
+```
+>**Windows**
 ```php
 $ npm install
 ```

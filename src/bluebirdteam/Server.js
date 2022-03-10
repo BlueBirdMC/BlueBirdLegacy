@@ -17,19 +17,22 @@ class Server {
         this.getLogger().info("Loading BlueBird.json");
         this.path = path;
         if (!fs.existsSync("BlueBird.json")) {
-	   // fs.copyFileSync(this.path.file + "bluebirdteam/resources/BlueBird.json", this.path.data + "BlueBird.json"); doesnt work
-           // I know that this code is bad
-           // But we don't have any another option
-	   this.getLogger().notice("Generation of config finished. Please restart your server now");
-	   let source = __dirname + '/resources/BlueBird.json'
-	   fs.copyFile(source, 'BlueBird.json', (err) => {
-	   if (err){
-	         this.getLogger().critical("Failed to load config: ");
-	         this.getLogger().critical(err);
-	         process.exit(1)
-	      }
-	   });
-	   process.on('uncaughtException', err => { process.exit(0) } )
+            fs.copyFileSync(this.path.file + "bluebirdteam/resources/BlueBird.json", this.path.data + "BlueBird.json");
+            //todo: remove it
+            /*// I know that this code is bad
+            // But we don't have any another option
+            this.getLogger().notice("Generation of config finished. Please restart your server now");
+            let source = __dirname + '/resources/BlueBird.json'
+            fs.copyFile(source, 'BlueBird.json', (err) => {
+                if (err) {
+                    this.getLogger().critical("Failed to load config: ");
+                    this.getLogger().critical(err);
+                    process.exit(1)
+                }
+            });
+            process.on('uncaughtException', () => {
+                process.exit(0);
+            });*/
         }
         this.raknet = new RakNetAdapter(this);
         this.getLogger().info("This server is running BlueBird version " + version);
@@ -53,7 +56,7 @@ class Server {
             await this.raknet.tick();
             err = false;
         } catch (e) {
-            if(err === true) { // to fix console spam
+            if (err === true) { // to fix console spam
                 throw new Error("Failed to bind the server on the port " + new Config("BlueBird.json", Config.JSON).get("port"));
             }
         }
