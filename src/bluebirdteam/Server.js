@@ -5,7 +5,7 @@ const RakNetAdapter = require("./network/RakNetInterface");
 const Logger = require("./utils/MainLogger");
 const ConsoleCommandReader = require("./command/ConsoleCommandReader");
 const fs = require("fs");
-const version = "1.0.1";
+const version = "1.0.2";
 
 class Server {
 
@@ -18,24 +18,9 @@ class Server {
         this.path = path;
         if (!fs.existsSync("BlueBird.json")) {
             fs.copyFileSync(this.path.file + "bluebirdteam/resources/BlueBird.json", this.path.data + "BlueBird.json");
-            //todo: remove it
-            /*// I know that this code is bad
-            // But we don't have any another option
-            this.getLogger().notice("Generation of config finished. Please restart your server now");
-            let source = __dirname + '/resources/BlueBird.json'
-            fs.copyFile(source, 'BlueBird.json', (err) => {
-                if (err) {
-                    this.getLogger().critical("Failed to load config: ");
-                    this.getLogger().critical(err);
-                    process.exit(1)
-                }
-            });
-            process.on('uncaughtException', () => {
-                process.exit(0);
-            });*/
         }
         this.raknet = new RakNetAdapter(this);
-        this.getLogger().info("This server is running BlueBird version " + version);
+        this.getLogger().info("This server is running BlueBird " + version);
         this.getLogger().info("BlueBird is distributed under GPLv3 License");
         this.getLogger().info("Opening server on *:" + new Config("BlueBird.json", Config.JSON).get("port"));
         this.getLogger().info("Done in (" + (Date.now() - start_time) + "ms).");
