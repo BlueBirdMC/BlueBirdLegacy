@@ -12,6 +12,7 @@ const CreativeContent = require("../network/mcpe/protocol/CreativeContent");
 const Text = require("../network/mcpe/protocol/Text");
 const SetTitle = require("../network/mcpe/protocol/SetTitle");
 const DisconnectPacket = require("../network/mcpe/protocol/DisconnectPacket");
+const Config = require("../utils/Config");
 
 class Player {
 
@@ -92,8 +93,6 @@ class Player {
                 let play_status = new PlayStatus();
                 play_status.status = PlayStatus.PLAYER_SPAWN;
                 this.dataPacket(play_status);
-
-                this.loggedIn = true;
                 break;
 
             default:
@@ -134,6 +133,8 @@ class Player {
         } else {
             this.server.getLogger().debug(this.username + ' is logged into Xbox Live');
         }
+
+        this.loggedIn = true;
 
         let play_status = new PlayStatus();
         play_status.status = PlayStatus.LOGIN_SUCCESS;
@@ -226,7 +227,6 @@ class Player {
         pk.message = reason;
         this.dataPacket(pk);
         this.server.raknet.close(this, reason);
-        return;
     }
 
     getName() {

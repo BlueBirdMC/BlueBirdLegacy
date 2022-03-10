@@ -57,6 +57,7 @@ class Server {
             err = false;
         } catch (e) {
             if (err === true) { // to fix console spam
+                console.log(e);
                 throw new Error("Failed to bind the server on the port " + new Config("BlueBird.json", Config.JSON).get("port"));
             }
         }
