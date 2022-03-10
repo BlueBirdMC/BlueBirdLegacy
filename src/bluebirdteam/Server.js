@@ -20,7 +20,7 @@ class Server {
             fs.copyFileSync(this.path.file + "bluebirdteam/resources/BlueBird.json", this.path.data + "BlueBird.json");
         }
         this.raknet = new RakNetAdapter(this);
-        this.getLogger().info("This server is running BlueBird version " + version);
+        this.getLogger().info("This server is running BlueBird " + version);
         this.getLogger().info("BlueBird is distributed under GPLv3 License");
         this.getLogger().info("Opening server on *:" + new Config("BlueBird.json", Config.JSON).get("port"));
         this.getLogger().info("Done in (" + (Date.now() - start_time) + "ms).");
