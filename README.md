@@ -26,8 +26,5 @@ $ sudo apt update && apt install nodejs && npm install && node start.js
 ```
 >**Windows**
 ```php
-$ npm install
-```
-```php
-$ node start.js
+$ npm install && node start.js
 ```
