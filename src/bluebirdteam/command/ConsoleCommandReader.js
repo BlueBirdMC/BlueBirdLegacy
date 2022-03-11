@@ -1,5 +1,5 @@
-const readline = require('readline')
-const Textformat = require("../utils/TextFormat")
+const readline = require('readline');
+const Textformat = require("../utils/TextFormat");
 
 class ConsoleCommandReader {
 
@@ -7,7 +7,7 @@ class ConsoleCommandReader {
         this.server = server;
     }
 
-    tick() {
+    read() {
         let rl = readline.createInterface({ input: process.stdin });
         rl.on("line", (input) => {
             switch (input) {

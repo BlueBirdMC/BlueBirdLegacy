@@ -5,6 +5,7 @@ const RakNetAdapter = require("./network/RakNetInterface");
 const Logger = require("./utils/MainLogger");
 const ConsoleCommandReader = require("./command/ConsoleCommandReader");
 const fs = require("fs");
+
 const version = "1.0.2";
 
 class Server {
@@ -25,7 +26,7 @@ class Server {
         this.getLogger().info("Opening server on *:" + new Config("BlueBird.json", Config.JSON).get("port"));
         this.getLogger().info("Done in (" + (Date.now() - start_time) + "ms).");
         let reader = new ConsoleCommandReader(this);
-        reader.tick();
+        reader.read();
         setInterval(() => {
             if (!this.raknet.raknet.isShutdown()) {
                 this.listen();
