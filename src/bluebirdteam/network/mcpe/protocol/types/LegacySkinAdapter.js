@@ -2,6 +2,7 @@ const {is_array} = require("locutus/php/var");
 const SkinData = require("./SkinData");
 const SkinImage = require("./SkinImage");
 const Skin = require("../../../../entity/Skin");
+const crypto = require('crypto')
 
 class LegacySkinAdapter {
 
@@ -24,7 +25,7 @@ class LegacySkinAdapter {
 
     fromSkinData(data) {
         if (data.isPersona()) {
-            return new Skin('Standard_Custom', Crypto.randomBytes(3).toString('hex') + '\xff'.repeat(4096));
+            return new Skin('Standard_Custom', crypto.randomBytes(3).toString('hex') + '\xff'.repeat(4096));
         }
 
         let capeData = data.isPersonaCapeOnClassic() ? "" : data.getCapeImage().getData();
