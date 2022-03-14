@@ -78,12 +78,7 @@ class RakNetInterface {
 	}
 
 	tick() {
-		this.raknet
-			.getSessionManager()
-			.readOutgoingMessages()
-			.forEach((message) =>
-				this.handleIncomingMessage(message.purpose, message.data)
-			);
+		this.raknet.getSessionManager().readOutgoingMessages().forEach(message => this.handleIncomingMessage(message.purpose, message.data));
 
 		this.raknet
 			.getSessionManager()
@@ -102,12 +97,7 @@ class RakNetInterface {
 
 	close(player, reason = "unknown reason") {
 		if (this.players.hasPlayer(player.identifier)) {
-			this.raknet
-				.getSessionManager()
-				.removeSession(
-					this.raknet.getSessionManager().getSession(player.ip, player.port),
-					reason
-				);
+			this.raknet.getSessionManager().removeSession(this.raknet.getSessionManager().getSession(player.ip, player.port), reason);
 			this.players.removePlayer(player.ip + ":" + player.port);
 		}
 	}
@@ -119,13 +109,7 @@ class RakNetInterface {
 	handleIncomingMessage(purpose, data) {
 		switch (purpose) {
 			case "openSession":
-				let player = new Player(
-					this.server,
-					data.clientId,
-					data.ip,
-					data.port,
-					data.identifier
-				);
+				let player = new Player(this.server, data.clientId, data.ip, data.port, data.identifier);
 				this.players.addPlayer(data.identifier, player);
 				this.playersCount += 1;
 				break;

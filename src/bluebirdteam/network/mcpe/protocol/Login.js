@@ -38,9 +38,7 @@ class Login extends DataPacket {
 		try {
 			this.decodeConnectionRequest();
 		} catch (e) {
-			throw new Error(
-				`${this.constructor.name} was thrown while decoding connection request in login (protocol version ${this.protocol})`
-			);
+			throw new Error(`${this.constructor.name} was thrown while decoding connection request in login (protocol version ${this.protocol})`);
 		}
 	}
 

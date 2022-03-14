@@ -17,18 +17,12 @@ class Server {
 		this.getLogger().info("Loading BlueBird.json");
 		this.path = path;
 		if (!fs.existsSync("BlueBird.json")) {
-			fs.copyFileSync(
-				this.path.file + "bluebirdteam/resources/BlueBird.json",
-				this.path.data + "BlueBird.json"
-			);
+			fs.copyFileSync(this.path.file + "bluebirdteam/resources/BlueBird.json", this.path.data + "BlueBird.json");
 		}
 		this.raknet = new RakNetAdapter(this);
 		this.getLogger().info("This server is running BlueBird " + version);
 		this.getLogger().info("BlueBird is distributed under GPLv3 License");
-		this.getLogger().info(
-			"Opening server on *:" +
-				new Config("BlueBird.json", Config.JSON).get("port")
-		);
+		this.getLogger().info("Opening server on *:" + new Config("BlueBird.json", Config.JSON).get("port"));
 		this.getLogger().info("Done in (" + (Date.now() - start_time) + "ms).");
 		let reader = new ConsoleCommandReader(this);
 		reader.read();
@@ -50,10 +44,7 @@ class Server {
 			if (err === true) {
 				// to fix console spam
 				console.log(e);
-				throw new Error(
-					"Failed to bind the server on the port " +
-						new Config("BlueBird.json", Config.JSON).get("port")
-				);
+				throw new Error("Failed to bind the server on the port " + new Config("BlueBird.json", Config.JSON).get("port"));
 			}
 		}
 	}

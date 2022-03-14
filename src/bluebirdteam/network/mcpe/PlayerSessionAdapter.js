@@ -25,14 +25,7 @@ class PlayerSessionAdapter {
 
 		if (!packet.feof() && !packet.mayHaveUnreadBytes) {
 			let remains = packet.buffer.slice(packet.offset);
-			this.server.logger.debug(
-				"Still " +
-					remains.length +
-					" bytes unread in " +
-					packet.getName() +
-					": 0x" +
-					remains.toString("hex")
-			);
+			this.server.logger.debug("Still " + remains.length + " bytes unread in " + packet.getName() + ": 0x" + remains.toString("hex"));
 		}
 
 		packet.handle(this);
@@ -51,9 +44,7 @@ class PlayerSessionAdapter {
 	}
 
 	toString() {
-		return this.player.getName() !== ""
-			? this.player.getName()
-			: SessionManager.hashAddress(this.player.ip, this.player.port);
+		return this.player.getName() !== "" ? this.player.getName() : SessionManager.hashAddress(this.player.ip, this.player.port);
 	}
 }
 

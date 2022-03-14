@@ -25,7 +25,7 @@ class Player {
 		this.locale = "en_US";
 		this.loggedIn = false;
 		this.identifier = identifier;
-		this.sessionAdapter = new PlayerSessionAdapter(this, server);
+		this.sessionAdapter = new PlayerSessionAdapter(this);
 	}
 
 	/**
@@ -110,16 +110,9 @@ class Player {
 		let xuid = packet.xuid;
 
 		if (!signedByMojang && xuid !== "") {
-			this.server
-				.getLogger()
-				.info(
-					this.username +
-						" has an XUID, but their login keychain is not signed by Mojang"
-				);
+			this.server.getLogger().info(this.username + " has an XUID, but their login keychain is not signed by Mojang");
 			if (new Config("BlueBird.json", Config.JSON).get("onlinemode") === true) {
-				this.server
-					.getLogger()
-					.debug(this.username + " is not logged into Xbox Live");
+				this.server.getLogger().debug(this.username + " is not logged into Xbox Live");
 				this.close("To join this server you must login to your Xbox account");
 			}
 			xuid = "";
@@ -131,22 +124,14 @@ class Player {
 
 		if (xuid === "" || !xuid instanceof String) {
 			if (signedByMojang) {
-				this.server
-					.getLogger()
-					.warning(this.username + " tried to join without XUID");
-				if (
-					new Config("BlueBird.json", Config.JSON).get("onlinemode") === true
-				) {
+				this.server.getLogger().warning(this.username + " tried to join without XUID");
+				if (new Config("BlueBird.json", Config.JSON).get("onlinemode") === true) {
 					this.close("To join this server you must login to your Xbox account");
 				}
 			}
-			this.server
-				.getLogger()
-				.debug(this.username + " is not logged into Xbox Live");
+			this.server.getLogger().debug(this.username + " is not logged into Xbox Live");
 		} else {
-			this.server
-				.getLogger()
-				.debug(this.username + " is logged into Xbox Live");
+			this.server.getLogger().debug(this.username + " is logged into Xbox Live");
 		}
 
 		this.loggedIn = true;
@@ -161,12 +146,8 @@ class Player {
 		packsInfo.forceServerPacks = false;
 		this.dataPacket(packsInfo);
 
-		this.server
-			.getLogger()
-			.info("Player " + this.username + " joined the game");
-		this.server.broadcastMessage(
-			"§6Player " + this.username + " joined the game"
-		);
+		this.server.getLogger().info("Player " + this.username + " joined the game");
+		this.server.broadcastMessage("§6Player " + this.username + " joined the game");
 	}
 
 	handleText(packet) {
@@ -242,12 +223,8 @@ class Player {
 	}
 
 	close(reason, hide_disconnection_screen = false) {
-		this.server
-			.getLogger()
-			.info("Player " + this.username + " disconnected due to " + reason);
-		this.server.broadcastMessage(
-			"§6Player " + this.username + " left the game"
-		);
+		this.server.getLogger().info("Player " + this.username + " disconnected due to " + reason);
+		this.server.broadcastMessage("§6Player " + this.username + " left the game");
 		let pk = new DisconnectPacket();
 		pk.hideDisconnectionScreen = hide_disconnection_screen;
 		pk.message = reason;
@@ -271,21 +248,10 @@ class Player {
 		if (!this.isConnected()) return false;
 
 		if (!this.loggedIn && !packet.canBeSentBeforeLogin) {
-			throw new Error(
-				"Attempted to send " +
-					packet.getName() +
-					" to " +
-					this.getName() +
-					" before they got logged in."
-			);
+			throw new Error("Attempted to send " + packet.getName() + " to " + this.getName() + " before they got logged in.");
 		}
 
-		let identifier = this.server.raknet.sendPacket(
-			this,
-			packet,
-			needACK,
-			immediate
-		);
+		let identifier = this.server.raknet.sendPacket(this, packet, needACK, immediate);
 
 		if (needACK && identifier !== null) {
 			this.needACK[identifier] = false;

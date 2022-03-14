@@ -36,9 +36,7 @@ class DataPacket extends NetworkBinaryStream {
 		let header = this.readUnsignedVarInt();
 		let pid = header & this.constructor.PID_MASK;
 		if (pid !== this.constructor.NETWORK_ID) {
-			throw new Error(
-				`Expected ${this.constructor.NETWORK_ID} for packet ID, got ${pid}`
-			);
+			throw new Error(`Expected ${this.constructor.NETWORK_ID} for packet ID, got ${pid}`);
 		}
 		this.senderSubId =
 			(header >> this.constructor.SENDER_SUBCLIENT_ID_SHIFT) &

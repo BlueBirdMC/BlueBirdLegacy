@@ -81,9 +81,7 @@ class GamePacket extends DataPacket {
 			let pk = handler.raknetAdapter.packetPool.getPacket(buf[0]);
 			if (pk instanceof DataPacket) {
 				if (!pk.canBeBatched) {
-					throw new Error(
-						"Received invalid " + pk.getName() + " inside GamePacket"
-					);
+					throw new Error("Received invalid " + pk.getName() + " inside GamePacket");
 				}
 
 				pk.setBuffer(buf, 1);
