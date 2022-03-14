@@ -16,7 +16,7 @@ const Config = require("../utils/Config");
 
 class Player {
 
-    constructor(server, clientId, ip, port) {
+    constructor(server, clientId, ip, port, identifier) {
         this.server = server;
         this.clientId = clientId;
         this.ip = ip;
@@ -25,6 +25,7 @@ class Player {
         this.username = "";
         this.locale = "en_US";
         this.loggedIn = false;
+        this.identifier = identifier;
         this.sessionAdapter = new PlayerSessionAdapter(this, server);
     }
 
@@ -125,11 +126,11 @@ class Player {
         if (xuid === "" || !xuid instanceof String) {
             if (signedByMojang) {
                 this.server.getLogger().warning(this.username + ' tried to join without XUID');
-		        if (new Config("BlueBird.json", Config.JSON).get('onlinemode') === true) {
-                   this.close('To join this server you must login to your Xbox account')
+                if (new Config("BlueBird.json", Config.JSON).get('onlinemode') === true) {
+                    this.close('To join this server you must login to your Xbox account')
                 }
             }
-	        this.server.getLogger().debug(this.username + ' is not logged into Xbox Live');
+            this.server.getLogger().debug(this.username + ' is not logged into Xbox Live');
         } else {
             this.server.getLogger().debug(this.username + ' is logged into Xbox Live');
         }
@@ -158,13 +159,13 @@ class Player {
             for (let i in message) {
                 let messageElement = message[i];
                 if (messageElement.trim() !== "" && messageElement.length <= 255) {
-                     if (messageElement.startsWith("/")) {
+                    if (messageElement.startsWith("/")) {
                         //TODO: Add player commands
-			            return false;
-                     }
-                     let msg = "<:player> :message".replace(":player", this.getName()).replace(":message", messageElement);
-                     this.server.broadcastMessage(msg);
-                     this.server.getLogger().info(msg);
+                        return false;
+                    }
+                    let msg = "<:player> :message".replace(":player", this.getName()).replace(":message", messageElement);
+                    this.server.broadcastMessage(msg);
+                    this.server.getLogger().info(msg);
                 }
             }
             return true;

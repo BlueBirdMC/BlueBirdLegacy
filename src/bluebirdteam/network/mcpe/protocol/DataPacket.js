@@ -1,6 +1,6 @@
 const NetworkBinaryStream = require("../../NetworkBinaryStream");
 
-class DataPacket extends NetworkBinaryStream{
+class DataPacket extends NetworkBinaryStream {
 
     static NETWORK_ID = 0x00;
 
@@ -15,11 +15,11 @@ class DataPacket extends NetworkBinaryStream{
     recipientSubId = 0;
     canBeBatched = true;
 
-    pid(){
+    pid() {
         return this.constructor.NETWORK_ID;
     }
 
-    getName(){
+    getName() {
         return this.constructor.name;
     }
 
@@ -27,32 +27,33 @@ class DataPacket extends NetworkBinaryStream{
 
     mayHaveUnreadBytes = false;
 
-    decode(){
+    decode() {
         this.offset = 0;
         this.decodeHeader();
         this.decodePayload();
     }
 
-    decodeHeader(){
+    decodeHeader() {
         let header = this.readUnsignedVarInt();
         let pid = header & this.constructor.PID_MASK;
-        if(pid !== this.constructor.NETWORK_ID){
+        if (pid !== this.constructor.NETWORK_ID) {
             throw new Error(`Expected ${this.constructor.NETWORK_ID} for packet ID, got ${pid}`);
         }
         this.senderSubId = (header >> this.constructor.SENDER_SUBCLIENT_ID_SHIFT) & this.constructor.SUBCLIENT_ID_MASK;
         this.recipientSubId = (header >> this.constructor.RECIPIENT_SUBCLIENT_ID_SHIFT) & this.constructor.SUBCLIENT_ID_MASK;
     }
 
-    decodePayload(){}
+    decodePayload() {
+    }
 
-    encode(){
+    encode() {
         this.reset();
         this.encodeHeader();
         this.encodePayload();
         this.isEncoded = true;
     }
 
-    encodeHeader(){
+    encodeHeader() {
         this.writeUnsignedVarInt(
             this.constructor.NETWORK_ID |
             (this.senderSubId << this.constructor.SENDER_SUBCLIENT_ID_SHIFT) |
@@ -60,9 +61,10 @@ class DataPacket extends NetworkBinaryStream{
         );
     }
 
-    encodePayload(){}
+    encodePayload() {
+    }
 
-    clean(){
+    clean() {
         this.isEncoded = false;
         super.reset();
     }
@@ -70,7 +72,7 @@ class DataPacket extends NetworkBinaryStream{
     /**
      * @param handle {PlayerSessionAdapter}
      */
-    handle(handle){
+    handle(handle) {
         return false;
     }
 }

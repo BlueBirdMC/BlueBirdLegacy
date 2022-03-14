@@ -1,7 +1,7 @@
 const DataPacket = require("./DataPacket");
 const ProtocolInfo = require("./ProtocolInfo");
 
-class SetTitle extends DataPacket{
+class SetTitle extends DataPacket {
     static NETWORK_ID = ProtocolInfo.SET_TITLE;
 
     static TYPE_CLEAR_TITLE = 0;

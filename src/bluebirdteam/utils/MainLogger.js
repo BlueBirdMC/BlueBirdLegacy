@@ -5,51 +5,51 @@ class MainLogger {
 
     debuggingLevel = 0;
 
-    alert(message){
+    alert(message) {
         return this.log("ALERT", message, TextFormat.AQUA);
     }
 
-    emergency(message){
+    emergency(message) {
         return this.log("EMERGENCY", message, TextFormat.RED);
     }
 
-    critical(message){
+    critical(message) {
         return this.log("CRITICAL", message, TextFormat.RED);
     }
 
-    error(message){
+    error(message) {
         return this.log("ERROR", message, TextFormat.DARK_RED);
     }
 
-    warning(message){
+    warning(message) {
         return this.log("WARNING", message, TextFormat.YELLOW);
     }
 
-    info(message){
+    info(message) {
         return this.log("INFO", message, TextFormat.WHITE);
     }
 
-    notice(message){
+    notice(message) {
         return this.log("NOTICE", message, TextFormat.BLUE);
     }
 
-    debug(message){
-        if(this.debuggingLevel < 1) return false;
+    debug(message) {
+        if (this.debuggingLevel < 1) return false;
         return this.log("DEBUG", message);
     }
 
-    debugExtensive(message){
-        if(this.debuggingLevel < 2) return false;
+    debugExtensive(message) {
+        if (this.debuggingLevel < 2) return false;
         return this.log("DEBUG", message);
     }
 
-    log(type, message, color = TextFormat.GRAY){
+    log(type, message, color = TextFormat.GRAY) {
         color = TextFormat.toTerminal(color);
         message = TextFormat.toTerminal(message);
         console.log(TextFormat.toTerminal(TextFormat.BLUE) + "[" + TimeStamp("HH:mm:ss") + "]" + TextFormat.toTerminal(TextFormat.RESET) + " " + color + type + " >", message + TextFormat.toTerminal(TextFormat.RESET));
     }
 
-    setDebuggingLevel(level){
+    setDebuggingLevel(level) {
         this.debuggingLevel = level;
     }
 }

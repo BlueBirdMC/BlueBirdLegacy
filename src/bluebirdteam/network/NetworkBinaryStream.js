@@ -3,14 +3,14 @@ const UUID = require("../utils/UUID");
 class NetworkBinaryStream extends require("bluebirdmc-binarystream"){
 
     /**
-     * @return {string}
+     * @return {String}
      */
     readString(){
         return this.read(this.readUnsignedVarInt()).toString();
     }
 
     /**
-     * @param v {string}
+     * @param v {String}
      * @return {NetworkBinaryStream}
      */
     writeString(v){

@@ -18,7 +18,7 @@ class DisconnectPacket extends DataPacket {
 
     encodePayload() {
         this.writeBool(this.hideDisconnectionScreen);
-        if(!this.hideDisconnectionScreen){
+        if (!this.hideDisconnectionScreen) {
             this.writeString(this.message);
         }
     }

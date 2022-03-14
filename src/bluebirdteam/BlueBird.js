@@ -2,7 +2,7 @@ require('./utils/methods/Globals');
 const Path = require("path");
 const Server = require("./Server");
 
-class BlueBird{
+class BlueBird {
 
     constructor() {
         let path = {

@@ -3,6 +3,9 @@ const SessionManager = require("bluebirdmc-raknet/server/SessionManager");
 
 class PlayerSessionAdapter{
 
+    /**
+     * @param player {Player}
+     */
     constructor(player){
         /** @type {Server} */
         this.server = player.server;

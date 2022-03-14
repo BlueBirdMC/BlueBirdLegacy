@@ -10,11 +10,11 @@ const Text = require("./Text");
 const SetTitle = require("./SetTitle");
 const DisconnectPacket = require("./DisconnectPacket");
 
-class PacketPool{
+class PacketPool {
 
     packetPool = new Map();
 
-    init(){
+    init() {
         this.registerPacket(Login);
         this.registerPacket(PlayStatus);
         this.registerPacket(ResourcePacksInfo);
@@ -28,11 +28,11 @@ class PacketPool{
         this.registerPacket(DisconnectPacket);
     }
 
-    registerPacket(packet){
+    registerPacket(packet) {
         this.packetPool.set(packet.NETWORK_ID, packet);
     }
 
-    getPacket(id){
+    getPacket(id) {
         return this.packetPool.has(id) ? new (this.packetPool.get(id))() : null;
     }
 }

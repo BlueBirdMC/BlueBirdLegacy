@@ -23,7 +23,10 @@ class GamePacket extends DataPacket {
     decodePayload() {
         let data = this.readRemaining();
         try {
-            this.payload = new BinaryStream(Zlib.inflateRawSync(data, {level: this.compressionLevel, maxOutputLength: 1024 * 1024 * 2}));
+            this.payload = new BinaryStream(Zlib.inflateRawSync(data, {
+                level: this.compressionLevel,
+                maxOutputLength: 1024 * 1024 * 2
+            }));
         } catch (e) { //zlib decode error
             this.payload = new BinaryStream();
         }

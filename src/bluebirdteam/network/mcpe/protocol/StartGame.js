@@ -1,7 +1,7 @@
 const DataPacket = require("./DataPacket");
 const ProtocolInfo = require("./ProtocolInfo");
 
-class StartGame extends DataPacket{
+class StartGame extends DataPacket {
     static NETWORK_ID = ProtocolInfo.START_GAME;
 
     canBeSentBeforeLogin = true;
