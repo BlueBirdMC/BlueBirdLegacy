@@ -9,6 +9,7 @@ const BiomeDefinitionList = require("./BiomeDefinitionList");
 const Text = require("./Text");
 const SetTitle = require("./SetTitle");
 const DisconnectPacket = require("./DisconnectPacket");
+const PlayerSkin = require("./PlayerSkin");
 
 class PacketPool {
 	packetPool = new Map();
@@ -25,6 +26,7 @@ class PacketPool {
 		this.registerPacket(Text);
 		this.registerPacket(SetTitle);
 		this.registerPacket(DisconnectPacket);
+		// this.registerPacket(PlayerSkin);
 	}
 
 	registerPacket(packet) {

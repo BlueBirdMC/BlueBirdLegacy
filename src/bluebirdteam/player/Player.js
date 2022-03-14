@@ -13,17 +13,27 @@ const Text = require("../network/mcpe/protocol/Text");
 const SetTitle = require("../network/mcpe/protocol/SetTitle");
 const DisconnectPacket = require("../network/mcpe/protocol/DisconnectPacket");
 const Config = require("../utils/Config");
+const PlayerSkin = require("../network/mcpe/protocol/PlayerSkin");
+const UUID = require("../utils/UUID");
+const SkinAdapterSingleton = require("../network/mcpe/protocol/types/SkinAdapterSingleton");
+const SkinImage = require("../network/mcpe/protocol/types/SkinImage");
+const SkinAnimation = require("../network/mcpe/protocol/types/SkinAnimation");
+const PersonaSkinPiece = require("../network/mcpe/protocol/types/PersonaSkinPiece");
+const PersonaPieceTintColor = require("../network/mcpe/protocol/types/PersonaPieceTintColor");
+const SkinData = require("../network/mcpe/protocol/types/SkinData");
 
 class Player {
+
+	username = "";
+	loggedIn = false;
+	locale = "en_US";
+	needACK = {};
+
 	constructor(server, clientId, ip, port, identifier) {
 		this.server = server;
 		this.clientId = clientId;
 		this.ip = ip;
 		this.port = port;
-		this.needACK = {};
-		this.username = "";
-		this.locale = "en_US";
-		this.loggedIn = false;
 		this.identifier = identifier;
 		this.sessionAdapter = new PlayerSessionAdapter(this);
 	}
@@ -38,6 +48,29 @@ class Player {
 
 	isConnected() {
 		return this.sessionAdapter !== null;
+	}
+
+	changeSkin(skin, oldSkinName, newSkinName) {
+		if(!skin.isValid()){
+			return;
+		}
+
+		this.setSkin(skin);
+		this.sendSkin();
+	}
+
+	sendSkin(targets_1 = null){
+		let targets = targets_1 === null ? this.server.getOnlinePlayers() : targets_1;
+		let pk = new PlayerSkin();
+		pk.uuid = this.uuid;
+		pk.skin = SkinAdapterSingleton.get().toSkinData(this.skin);
+		this.server.broadcastPacket(targets, pk);
+	}
+
+	setSkin(skin){
+		skin.validate();
+		this.skin = skin;
+		this.skin.debloatGeometryData();
 	}
 
 	handleLogin(packet) {
@@ -63,6 +96,83 @@ class Player {
 		if (packet.locale !== null) {
 			this.locale = packet.locale;
 		}
+
+		this.uuid = UUID.fromString(packet.clientUUID);
+
+		let animations = [];
+
+		packet.clientData["AnimatedImageData"].forEach(animation => {
+			animations.push(new SkinAnimation(
+				new SkinImage(
+					animation["ImageHeight"],
+					animation["ImageWidth"],
+					base64_decode(animation["Image"], true)),
+				animation["Type"],
+				animation["Frames"],
+				animation["AnimationExpression"]
+			));
+		});
+
+		let personaPieces = [];
+
+		packet.clientData["PersonaPieces"].forEach(piece => {
+			personaPieces.push(new PersonaSkinPiece(
+				piece["PieceId"],
+				piece["PieceType"],
+				piece["PackId"],
+				piece["IsDefault"],
+				piece["ProductId"]
+			));
+		});
+
+		let pieceTintColors = [];
+
+		packet.clientData["PieceTintColors"].forEach(tintColors => {
+			pieceTintColors.push(new PersonaPieceTintColor(tintColors["PieceType"], tintColors["Colors"]));
+		});
+
+		let skinData = new SkinData(
+			packet.clientData["SkinId"],
+			packet.clientData["PlayFabId"],
+			base64_decode(packet.clientData["SkinResourcePatch"] ?? "", true),
+			new SkinImage(
+				packet.clientData["SkinImageHeight"],
+				packet.clientData["SkinImageWidth"],
+				base64_decode(packet.clientData["SkinData"], true)
+			),
+			animations,
+			new SkinImage(
+				packet.clientData["CapeImageHeight"],
+				packet.clientData["CapeImageWidth"],
+				base64_decode(packet.clientData["CapeData"] ?? "", true)
+			),
+			base64_decode(packet.clientData["SkinGeometryData"] ?? "", true),
+			base64_decode(packet.clientData["SkinGeometryDataEngineVersion"], true),
+			base64_decode(packet.clientData["SkinAnimationData"] ?? "", true),
+			packet.clientData["CapeId"] ?? "",
+			null,
+			packet.clientData["ArmSize"] ?? SkinData.ARM_SIZE_WIDE,
+			packet.clientData["SkinColor"] ?? "",
+			personaPieces,
+			pieceTintColors,
+			true,
+			packet.clientData["PremiumSkin"] ?? false,
+			packet.clientData["PersonaSkin"] ?? false,
+			packet.clientData["CapeOnClassicSkin"] ?? false,
+			true,
+		);
+
+		let skin;
+		try{
+			skin = SkinAdapterSingleton.get().fromSkinData(skinData);
+			skin.validate();
+		}catch(e){
+			console.log(e);
+			this.close("Invalid Skin");
+			return;
+		}
+
+		this.setSkin(skin);
 
 		this.onVerifyCompleted(packet, null, true);
 	}
@@ -94,9 +204,6 @@ class Player {
 				play_status.status = PlayStatus.PLAYER_SPAWN;
 				this.dataPacket(play_status);
 				break;
-
-			default:
-				return false;
 		}
 		return true;
 	}

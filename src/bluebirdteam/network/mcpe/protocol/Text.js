@@ -41,6 +41,8 @@ class Text extends DataPacket {
 	/** @type {string} */
 	platformChatId = "";
 
+	canBeSentBeforeLogin = true;
+
 	decodePayload() {
 		this.type = this.readByte();
 		this.needsTranslation = this.readBool();

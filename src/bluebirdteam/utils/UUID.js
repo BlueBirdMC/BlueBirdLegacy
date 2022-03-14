@@ -1,12 +1,18 @@
-const BinaryStream = require("../network/NetworkBinaryStream");
+const BinaryStream = require("bluebirdmc-binarystream");
+const lib = require("uuid-js");
+const {bin2hex} = require("locutus/php/strings");
 
 class UUID {
-	parts = [0, 0, 0, 0];
+
+	/** @type {number[]} */
+	parts;
+	/** @type {number} */
 	version;
 
 	constructor(part1 = 0, part2 = 0, part3 = 0, part4 = 0, version = null) {
 		this.parts = [part1, part2, part3, part4];
-		this.version = version ? version : (part2 & 0xf000) >> 12;
+
+		this.version = version || (this.parts[1] & 0xf000) >> 12;
 	}
 
 	getVersion() {
@@ -14,38 +20,44 @@ class UUID {
 	}
 
 	equals(uuid) {
-		if (uuid instanceof UUID) {
-			return (
-				uuid.parts[0] === this.parts[0] &&
-				uuid.parts[1] === this.parts[1] &&
-				uuid.parts[2] === this.parts[2] &&
-				uuid.parts[3] === this.parts[3]
-			);
-		}
-		return false;
+		return uuid.parts === this.parts;
 	}
 
-	static fromString(uuid, version) {
-		return UUID.fromBinary(Buffer.from(uuid.trim().replace(/-/g, "")), version);
+	static fromString(uuid, version = null) {
+		return UUID.fromBinary(Buffer.from(uuid.trim().replace(/-/g, ""), "hex"), version);
 	}
 
-	static fromBinary(buffer, version) {
-		if (buffer.length !== 16) {
+	static fromBinary(uuid, version) {
+		if (uuid.length !== 16) {
 			throw new TypeError("UUID buffer must be exactly 16 bytes");
 		}
-		let stream = new BinaryStream(buffer);
-
-		return new UUID(
-			stream.readInt(),
-			stream.readInt(),
-			stream.readInt(),
-			stream.readInt(),
-			version
-		);
+		let stream = new BinaryStream(Buffer.from(uuid));
+		return new UUID(stream.readInt(), stream.readInt(), stream.readInt(), stream.readInt(), version);
 	}
 
-	getPart(i) {
-		return this.parts[i] ? this.parts[i] : null;
+	static fromRandom() {
+		return lib.create(4);
+	}
+
+	toBinary(){
+		let stream = new BinaryStream();
+		return stream.writeInt(this.parts[0] + this.parts[1] + this.parts[2] + this.parts[3]);
+	}
+
+	toString(){
+		let b = bin2hex(this.toBinary());
+		return b.substr(0, 8) + "-" + b.substr(8, 4) + b.substr(12, 4) + "-" + b.substr(16, 4) + b.substr(20, 12);
+	}
+
+	getPart(partNumber) {
+		if (partNumber < 0 || partNumber > 3) {
+			throw new Error(`Invalid UUID part index ${partNumber}`);
+		}
+		return this.parts[partNumber];
+	}
+
+	getParts() {
+		return this.parts;
 	}
 }
 

@@ -1,5 +1,6 @@
 const DataPacket = require("./protocol/DataPacket");
 const SessionManager = require("bluebirdmc-raknet/server/SessionManager");
+const SkinAdapterSingleton = require("./protocol/types/SkinAdapterSingleton");
 
 class PlayerSessionAdapter {
 	/**
@@ -41,6 +42,10 @@ class PlayerSessionAdapter {
 
 	handleResourcePackClientResponse(packet) {
 		return this.player.handleResourcePackClientResponse(packet);
+	}
+
+	handlePlayerSkin(packet) {
+		return this.player.changeSkin(SkinAdapterSingleton.get().fromSkinData(packet.skin), packet.oldSkinName, packet.newSkinName);
 	}
 
 	toString() {

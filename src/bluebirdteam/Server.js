@@ -113,9 +113,16 @@ class Server {
 		}
 	}
 
+	broadcastPacket(targets, packet){
+		packet.encode();
+		this.batchPackets(targets, [packet]);
+	}
+
 	broadcastMessage(message) {
 		let players = this.getOnlinePlayers();
-		players.forEach((players) => players.sendMessage(message));
+		players.forEach(players => {
+			players.sendMessage(message)
+		});
 
 		return players.length;
 	}

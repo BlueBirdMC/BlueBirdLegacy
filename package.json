@@ -6,7 +6,8 @@
   "dependencies": {
     "bluebirdmc-binarystream": "git+https://github.com/BlueBirdMC/NodeBinaryStream.git",
     "bluebirdmc-raknet": "git+https://github.com/BlueBirdMC/PRakNet.git",
-    "locutus": "^2.0.11"
+    "locutus": "^2.0.11",
+    "uuid-js": "^0.7.5"
   },
   "author": "DRAGKILLS",
   "license": "MIT",
