@@ -17,11 +17,7 @@ class ConsoleCommandReader {
 					this.server.getLogger().info("reportbug: to report a bug");
 					break;
 				case "reportbug":
-					this.server
-						.getLogger()
-						.info(
-							"You can report bugs or issues here: https://github.com/BlueBirdMC/BlueBird/issues"
-						);
+					this.server.getLogger().info("You can report bugs or issues here: https://github.com/BlueBirdMC/BlueBird/issues");
 					break;
 				case "stop":
 					this.server.getLogger().info("Stopping server...");
@@ -37,12 +33,7 @@ class ConsoleCommandReader {
 					break;
 				default:
 					if (input.trim() !== "") {
-						this.server
-							.getLogger()
-							.info(
-								Textformat.RED +
-									"Unknown command. Type 'help' for a list of commands"
-							);
+						this.server.getLogger().info(Textformat.RED + "Unknown command. Type 'help' for a list of commands");
 					}
 					break;
 			}
