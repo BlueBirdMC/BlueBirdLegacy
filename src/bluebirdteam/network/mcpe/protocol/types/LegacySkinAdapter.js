@@ -2,7 +2,7 @@ const {is_array} = require("locutus/php/var");
 const SkinData = require("./SkinData");
 const SkinImage = require("./SkinImage");
 const Skin = require("../../../../entity/Skin");
-const crypto = require('crypto')
+const crypto = require('crypto');
 
 class LegacySkinAdapter {
 
