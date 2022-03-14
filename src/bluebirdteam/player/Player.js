@@ -164,7 +164,7 @@ class Player {
                      }
                      let msg = "<:player> :message".replace(":player", this.getName()).replace(":message", messageElement);
                      this.server.broadcastMessage(msg);
-                     this.server.getLogger().info(message);
+                     this.server.getLogger().info(msg);
                 }
             }
             return true;
