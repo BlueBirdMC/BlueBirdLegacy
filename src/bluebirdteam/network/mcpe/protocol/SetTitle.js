@@ -2,17 +2,17 @@ const DataPacket = require("./DataPacket");
 const ProtocolInfo = require("./ProtocolInfo");
 
 class SetTitle extends DataPacket{
-    static get NETWORK_ID(){ return ProtocolInfo.SET_TITLE; }
+    static NETWORK_ID = ProtocolInfo.SET_TITLE;
 
-    static get TYPE_CLEAR_TITLE(){ return 0; }
-    static get TYPE_RESET_TITLE(){ return 1; }
-    static get TYPE_SET_TITLE(){ return 2; }
-    static get TYPE_SET_SUBTITLE(){ return 3; }
-    static get TYPE_SET_ACTIONBAR_MESSAGE(){ return 4; }
-    static get TYPE_SET_ANIMATION_TIMES(){ return 5; }
-    static get TYPE_SET_TITLE_JSON(){ return 6; }
-    static get TYPE_SET_SUBTITLE_JSON(){ return 7; }
-    static get TYPE_SET_ACTIONBAR_MESSAGE_JSON(){ return 8; }
+    static TYPE_CLEAR_TITLE = 0;
+    static TYPE_RESET_TITLE = 1;
+    static TYPE_SET_TITLE = 2;
+    static TYPE_SET_SUBTITLE = 3;
+    static TYPE_SET_ACTIONBAR_MESSAGE = 4;
+    static TYPE_SET_ANIMATION_TIMES = 5;
+    static TYPE_SET_TITLE_JSON = 6;
+    static TYPE_SET_SUBTITLE_JSON = 7;
+    static TYPE_SET_ACTIONBAR_MESSAGE_JSON = 8;
 
     type;
 

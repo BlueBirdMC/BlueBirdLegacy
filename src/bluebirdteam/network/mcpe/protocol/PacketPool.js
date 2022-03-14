@@ -12,9 +12,7 @@ const DisconnectPacket = require("./DisconnectPacket");
 
 class PacketPool{
 
-    constructor() {
-        this.packetPool = new Map();
-    }
+    packetPool = new Map();
 
     init(){
         this.registerPacket(Login);

@@ -164,6 +164,7 @@ class Player {
                      }
                      let msg = "<:player> :message".replace(":player", this.getName()).replace(":message", messageElement);
                      this.server.broadcastMessage(msg);
+                     this.server.getLogger().info(message);
                 }
             }
             return true;
@@ -244,7 +245,7 @@ class Player {
     sendDataPacket(packet, needACK = false, immediate = false) {
         if (!this.isConnected()) return false;
 
-        if (!this.loggedIn && !packet.canBeSentBeforeLogin()) {
+        if (!this.loggedIn && !packet.canBeSentBeforeLogin) {
             throw new Error("Attempted to send " + packet.getName() + " to " + this.getName() + " before they got logged in.");
         }
 

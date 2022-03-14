@@ -2,51 +2,29 @@ const DataPacket = require("./DataPacket");
 const ProtocolInfo = require("./ProtocolInfo");
 
 class Text extends DataPacket{
-    static get NETWORK_ID(){ return ProtocolInfo.TEXT; }
+    static NETWORK_ID = ProtocolInfo.TEXT;
 
-    static get TYPE_RAW() {
-        return 0;
-    }
+    static TYPE_RAW = 0;
 
-    static get TYPE_CHAT() {
-        return 1;
-    }
+    static TYPE_CHAT = 1;
 
-    static get TYPE_TRANSLATION() {
-        return 2;
-    }
+    static TYPE_TRANSLATION = 2;
 
-    static get TYPE_POPUP() {
-        return 3;
-    }
+    static TYPE_POPUP = 3;
 
-    static get TYPE_JUKEBOX_POPUP() {
-        return 4;
-    }
+    static TYPE_JUKEBOX_POPUP = 4;
 
-    static get TYPE_TIP() {
-        return 5;
-    }
+    static TYPE_TIP = 5;
 
-    static get TYPE_SYSTEM() {
-        return 6;
-    }
+    static TYPE_SYSTEM = 6;
 
-    static get TYPE_WHISPER() {
-        return 7;
-    }
+    static TYPE_WHISPER = 7;
 
-    static get TYPE_ANNOUNCEMENT() {
-        return 8;
-    }
+    static TYPE_ANNOUNCEMENT = 8;
 
-    static get TYPE_JSON_WHISPER() {
-        return 9;
-    }
+    static TYPE_JSON_WHISPER = 9;
 
-    static get TYPE_JSON() {
-        return 10;
-    }
+    static TYPE_JSON = 10;
 
     /** @type {number} */
     type;

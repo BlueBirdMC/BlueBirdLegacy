@@ -6,7 +6,7 @@ const Utils = require("../../../utils/Utils");
 
 class Login extends DataPacket {
 
-    static get NETWORK_ID() { return ProtocolInfo.LOGIN; }
+    static NETWORK_ID = ProtocolInfo.LOGIN;
 
     /** @type {string} */
     username = '';
@@ -29,9 +29,7 @@ class Login extends DataPacket {
     /** @type {any} */
     clientData;
 
-    canBeSentBeforeLogin() {
-        return true;
-    }
+    canBeSentBeforeLogin = true;
 
     mayHaveUnreadBytes = this.protocol !== ProtocolInfo.CURRENT_PROTOCOL;
 

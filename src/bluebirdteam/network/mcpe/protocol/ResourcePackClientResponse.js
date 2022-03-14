@@ -2,23 +2,15 @@ const DataPacket = require("./DataPacket");
 const ProtocolInfo = require("./ProtocolInfo");
 
 class ResourcePackClientResponse extends DataPacket {
-    static get NETWORK_ID(){ return ProtocolInfo.RESOURCE_PACK_CLIENT_RESPONSE; }
+    static NETWORK_ID = ProtocolInfo.RESOURCE_PACK_CLIENT_RESPONSE;
 
-    static get STATUS_REFUSED() {
-        return 1;
-    }
+    static STATUS_REFUSED = 1;
 
-    static get STATUS_SEND_PACKS() {
-        return 2;
-    }
+    static STATUS_SEND_PACKS = 2;
 
-    static get STATUS_HAVE_ALL_PACKS() {
-        return 3;
-    }
+    static STATUS_HAVE_ALL_PACKS = 3;
 
-    static get STATUS_COMPLETED() {
-        return 4;
-    }
+    static STATUS_COMPLETED = 4;
 
     /** @type {number} */
     status = 0;

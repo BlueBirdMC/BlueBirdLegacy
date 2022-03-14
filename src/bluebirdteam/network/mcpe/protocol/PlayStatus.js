@@ -3,42 +3,26 @@ const ProtocolInfo = require("./ProtocolInfo");
 
 class PlayStatus extends DataPacket {
 
-    static get NETWORK_ID(){ return ProtocolInfo.PLAY_STATUS; }
+    static NETWORK_ID = ProtocolInfo.PLAY_STATUS;
 
     /** @type {number} */
     status;
 
-    static get LOGIN_SUCCESS() {
-        return 0;
-    }
+    static LOGIN_SUCCESS = 0;
 
-    static get LOGIN_FAILED_CLIENT() {
-        return 1;
-    }
+    static LOGIN_FAILED_CLIENT = 1;
 
-    static get LOGIN_FAILED_SERVER() {
-        return 2;
-    }
+    static LOGIN_FAILED_SERVER = 2;
 
-    static get PLAYER_SPAWN() {
-        return 3;
-    }
+    static PLAYER_SPAWN = 3;
 
-    static get LOGIN_FAILED_INVALID_TENANT() {
-        return 4;
-    }
+    static LOGIN_FAILED_INVALID_TENANT = 4;
 
-    static get LOGIN_FAILED_VANILLA_EDU() {
-        return 5;
-    }
+    static LOGIN_FAILED_VANILLA_EDU = 5;
 
-    static get LOGIN_FAILED_EDU_VANILLA() {
-        return 6;
-    }
+    static LOGIN_FAILED_EDU_VANILLA = 6;
 
-    canBeSentBeforeLogin() {
-        return true;
-    }
+    canBeSentBeforeLogin = true;
 
     decodePayload() {
         this.status = this.readInt();

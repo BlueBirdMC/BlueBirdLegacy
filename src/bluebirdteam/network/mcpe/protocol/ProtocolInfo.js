@@ -1,5 +1,5 @@
-module.exports = ProtocolInfo = {
-    /** minecraft protocol */
+let ProtocolInfo = {
+    /** Minecraft protocol */
     CURRENT_PROTOCOL: 486,
     /** the display version will be showed */
     MINECRAFT_VERSION: '1.18.11',
@@ -16,3 +16,5 @@ module.exports = ProtocolInfo = {
     SET_TITLE: 0x58,
     DISCONNECT_PACKET: 0x05
 };
+
+module.exports = ProtocolInfo;

@@ -2,7 +2,7 @@ const DataPacket = require("./DataPacket");
 const ProtocolInfo = require("./ProtocolInfo");
 
 class ResourcePackStack extends DataPacket {
-    static get NETWORK_ID(){ return ProtocolInfo.RESOURCE_PACK_STACK; }
+    static NETWORK_ID = ProtocolInfo.RESOURCE_PACK_STACK;
 
     /** @type {boolean} */
     mustAccept = false;
@@ -17,9 +17,7 @@ class ResourcePackStack extends DataPacket {
     /** @type {boolean} */
     experimentsPreviouslyUsed = false;
 
-    canBeSentBeforeLogin() {
-        return true;
-    }
+    canBeSentBeforeLogin = true;
 
     decodePayload() {
         this.mustAccept = this.readBool();

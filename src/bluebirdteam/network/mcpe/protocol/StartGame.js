@@ -2,11 +2,9 @@ const DataPacket = require("./DataPacket");
 const ProtocolInfo = require("./ProtocolInfo");
 
 class StartGame extends DataPacket{
-    static get NETWORK_ID(){ return ProtocolInfo.START_GAME; }
+    static NETWORK_ID = ProtocolInfo.START_GAME;
 
-    canBeSentBeforeLogin() {
-        return true;
-    }
+    canBeSentBeforeLogin = true;
 
     encodePayload() {
         this.writeVarLong(0); // Entity id

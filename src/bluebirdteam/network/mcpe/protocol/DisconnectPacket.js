@@ -2,14 +2,12 @@ const DataPacket = require("./DataPacket");
 const ProtocolInfo = require("./ProtocolInfo");
 
 class DisconnectPacket extends DataPacket {
-    static get NETWORK_ID() { return ProtocolInfo.DISCONNECT_PACKET; }
+    static NETWORK_ID = ProtocolInfo.DISCONNECT_PACKET;
 
     hideDisconnectionScreen = false;
     message = "";
 
-    canBeSentBeforeLogin() {
-        return true;
-    }
+    canBeSentBeforeLogin = true;
 
     decodePayload() {
         this.hideDisconnectionScreen = this.readBool();

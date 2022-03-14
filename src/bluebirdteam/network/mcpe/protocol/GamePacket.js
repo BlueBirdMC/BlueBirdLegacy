@@ -5,7 +5,7 @@ const BinaryStream = require("../../NetworkBinaryStream");
 
 class GamePacket extends DataPacket {
 
-    static get NETWORK_ID() { return 0xFE; }
+    static NETWORK_ID = 0xFE;
 
     payload = new BinaryStream();
 
@@ -13,9 +13,7 @@ class GamePacket extends DataPacket {
 
     canBeBatched = false;
 
-    canBeSentBeforeLogin() {
-        return true;
-    }
+    canBeSentBeforeLogin = true;
 
     decodeHeader() {
         let pid = this.readByte();

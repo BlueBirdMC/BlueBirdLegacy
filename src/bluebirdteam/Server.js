@@ -76,6 +76,9 @@ class Server {
         return this.path.data;
     }
 
+    /**
+     * @returns {MainLogger}
+     */
     getLogger() {
         return this.logger;
     }
@@ -112,7 +115,6 @@ class Server {
     broadcastMessage(message) {
         let players = this.getOnlinePlayers();
         players.forEach(players => players.sendMessage(message));
-        this.getLogger().info(message);
 
         return players.length;
     }

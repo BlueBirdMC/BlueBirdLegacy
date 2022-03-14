@@ -2,16 +2,15 @@ const NetworkBinaryStream = require("../../NetworkBinaryStream");
 
 class DataPacket extends NetworkBinaryStream{
 
-    static get NETWORK_ID(){ return 0x00; }
+    static NETWORK_ID = 0x00;
 
-    static get PID_MASK (){ return 0x3ff; }
+    static PID_MASK = 0x3ff;
 
-    static get SUBCLIENT_ID_MASK(){ return 0x03; }
-    static get SENDER_SUBCLIENT_ID_SHIFT(){ return 10; }
-    static get RECIPIENT_SUBCLIENT_ID_SHIFT(){ return 12; }
+    static SUBCLIENT_ID_MASK = 0x03;
+    static SENDER_SUBCLIENT_ID_SHIFT = 10;
+    static RECIPIENT_SUBCLIENT_ID_SHIFT = 12;
 
     isEncoded = false;
-    __encapsulatedPacket = null;
     senderSubId = 0;
     recipientSubId = 0;
     canBeBatched = true;
@@ -24,13 +23,9 @@ class DataPacket extends NetworkBinaryStream{
         return this.constructor.name;
     }
 
-    canBeSentBeforeLogin(){
-        return false;
-    }
+    canBeSentBeforeLogin = false;
 
-    mayHaveUnreadBytes(){
-        return false;
-    }
+    mayHaveUnreadBytes = false;
 
     decode(){
         this.offset = 0;
