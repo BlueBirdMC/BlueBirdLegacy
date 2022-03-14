@@ -56,8 +56,9 @@ class Server {
 	batchPackets(players, packets, forceSync = false, immediate = false) {
 		let targets = [];
 		players.forEach((player) => {
-			if (player.isConnected())
+			if (player.isConnected()){
 				targets.push(this.raknet.players.getPlayerIdentifier(player));
+			}
 		});
 
 		if (targets.length > 0) {
