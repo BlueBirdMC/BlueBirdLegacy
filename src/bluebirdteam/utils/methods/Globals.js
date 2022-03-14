@@ -10,8 +10,8 @@ global.base64_decode = function (str, strict) {
     for (let i = 0; i < str.length; i++) {
         if (characters.indexOf(str[i]) === -1) yes = false;
     }
-    if(strict === true) {
-        if(yes === true) {
+    if (strict === true) {
+        if (yes === true) {
             return Buffer.from(str, "base64").toString("binary");
         } else {
             return false;
