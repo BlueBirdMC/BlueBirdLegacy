@@ -24,6 +24,7 @@ class LegacySkinAdapter {
     }
 
     fromSkinData(data) {
+
         if (data.isPersona()) {
             return new Skin('Standard_Custom', crypto.randomBytes(3).toString('hex') + '\xff'.repeat(4096));
         }
@@ -32,10 +33,11 @@ class LegacySkinAdapter {
 
         let geometryName = "";
         let resourcePatch = JSON.parse(data.getResourcePatch(), true);
+
         if (is_array(resourcePatch) && typeof resourcePatch['geometry']['default'] !== 'undefined' && typeof resourcePatch['geometry']['default'] === 'string') {
             geometryName = resourcePatch['geometry']['default'];
-        }else{
-            throw new Error("missing geometry name field");
+        } else {
+            throw new Error("Missing geometry name field");
         }
 
         return new Skin(data.getSkinId(), data.getSkinImage().getData(), capeData, geometryName, data.getGeometryData());
