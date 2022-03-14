@@ -9,115 +9,125 @@ const fs = require("fs");
 const version = "1.0.2";
 
 class Server {
+	constructor(path) {
+		let start_time = Date.now();
+		this.id = 0;
+		this.logger = new Logger();
+		this.getLogger().info("Starting Server...");
+		this.getLogger().info("Loading BlueBird.json");
+		this.path = path;
+		if (!fs.existsSync("BlueBird.json")) {
+			fs.copyFileSync(
+				this.path.file + "bluebirdteam/resources/BlueBird.json",
+				this.path.data + "BlueBird.json"
+			);
+		}
+		this.raknet = new RakNetAdapter(this);
+		this.getLogger().info("This server is running BlueBird " + version);
+		this.getLogger().info("BlueBird is distributed under GPLv3 License");
+		this.getLogger().info(
+			"Opening server on *:" +
+				new Config("BlueBird.json", Config.JSON).get("port")
+		);
+		this.getLogger().info("Done in (" + (Date.now() - start_time) + "ms).");
+		let reader = new ConsoleCommandReader(this);
+		reader.read();
+		setInterval(() => {
+			if (!this.raknet.raknet.isShutdown()) {
+				this.listen();
+			} else {
+				clearInterval();
+			}
+		}, SessionManager.RAKNET_TICK_LENGTH * 1000);
+	}
 
-    constructor(path) {
-        let start_time = Date.now();
-        this.id = 0;
-        this.logger = new Logger();
-        this.getLogger().info("Starting Server...");
-        this.getLogger().info("Loading BlueBird.json");
-        this.path = path;
-        if (!fs.existsSync("BlueBird.json")) {
-            fs.copyFileSync(this.path.file + "bluebirdteam/resources/BlueBird.json", this.path.data + "BlueBird.json");
-        }
-        this.raknet = new RakNetAdapter(this);
-        this.getLogger().info("This server is running BlueBird " + version);
-        this.getLogger().info("BlueBird is distributed under GPLv3 License");
-        this.getLogger().info("Opening server on *:" + new Config("BlueBird.json", Config.JSON).get("port"));
-        this.getLogger().info("Done in (" + (Date.now() - start_time) + "ms).");
-        let reader = new ConsoleCommandReader(this);
-        reader.read();
-        setInterval(() => {
-            if (!this.raknet.raknet.isShutdown()) {
-                this.listen();
-            } else {
-                clearInterval();
-            }
-        }, SessionManager.RAKNET_TICK_LENGTH * 1000);
-    }
+	async listen() {
+		let err = true;
+		try {
+			await this.raknet.tick();
+			err = false;
+		} catch (e) {
+			if (err === true) {
+				// to fix console spam
+				console.log(e);
+				throw new Error(
+					"Failed to bind the server on the port " +
+						new Config("BlueBird.json", Config.JSON).get("port")
+				);
+			}
+		}
+	}
 
-    async listen() {
-        let err = true;
-        try {
-            await this.raknet.tick();
-            err = false;
-        } catch (e) {
-            if (err === true) { // to fix console spam
-                console.log(e);
-                throw new Error("Failed to bind the server on the port " + new Config("BlueBird.json", Config.JSON).get("port"));
-            }
-        }
-    }
+	getId() {
+		return this.id;
+	}
 
-    getId() {
-        return this.id;
-    }
+	batchPackets(players, packets, forceSync = false, immediate = false) {
+		let targets = [];
+		players.forEach((player) => {
+			if (player.isConnected())
+				targets.push(this.raknet.players.getPlayerIdentifier(player));
+		});
 
-    batchPackets(players, packets, forceSync = false, immediate = false) {
-        let targets = [];
-        players.forEach(player => {
-            if (player.isConnected()) targets.push(this.raknet.players.getPlayerIdentifier(player));
-        });
+		if (targets.length > 0) {
+			let pk = new GamePacket();
 
-        if (targets.length > 0) {
-            let pk = new GamePacket();
+			packets.forEach((packet) => pk.addPacket(packet));
 
-            packets.forEach(packet => pk.addPacket(packet));
+			if (!forceSync && !immediate) {
+				this.broadcastPackets(pk, targets, false);
+			} else {
+				this.broadcastPackets(pk, targets, immediate);
+			}
+		}
+	}
 
-            if (!forceSync && !immediate) {
-                this.broadcastPackets(pk, targets, false);
-            } else {
-                this.broadcastPackets(pk, targets, immediate);
-            }
-        }
-    }
+	getDataPath() {
+		return this.path.data;
+	}
 
-    getDataPath() {
-        return this.path.data;
-    }
+	/**
+	 * @returns {MainLogger}
+	 */
+	getLogger() {
+		return this.logger;
+	}
 
-    /**
-     * @returns {MainLogger}
-     */
-    getLogger() {
-        return this.logger;
-    }
+	shutdown() {
+		this.raknet.shutdown();
+		process.exit(1);
+	}
 
-    shutdown() {
-        this.raknet.shutdown();
-        process.exit(1);
-    }
+	getOnlinePlayers() {
+		return Array.from(this.raknet.players.values());
+	}
 
-    getOnlinePlayers() {
-        return Array.from(this.raknet.players.values());
-    }
+	broadcastPackets(pk, targets, immediate) {
+		if (!pk.isEncoded) {
+			pk.encode();
+		}
 
-    broadcastPackets(pk, targets, immediate) {
-        if (!pk.isEncoded) {
-            pk.encode();
-        }
+		if (immediate) {
+			targets.forEach((id) => {
+				if (this.raknet.players.has(id)) {
+					this.raknet.players.getPlayer(id).directDataPacket(pk);
+				}
+			});
+		} else {
+			targets.forEach((id) => {
+				if (this.raknet.players.has(id)) {
+					this.raknet.players.getPlayer(id).dataPacket(pk);
+				}
+			});
+		}
+	}
 
-        if (immediate) {
-            targets.forEach(id => {
-                if (this.raknet.players.has(id)) {
-                    this.raknet.players.getPlayer(id).directDataPacket(pk);
-                }
-            });
-        } else {
-            targets.forEach(id => {
-                if (this.raknet.players.has(id)) {
-                    this.raknet.players.getPlayer(id).dataPacket(pk);
-                }
-            });
-        }
-    }
+	broadcastMessage(message) {
+		let players = this.getOnlinePlayers();
+		players.forEach((players) => players.sendMessage(message));
 
-    broadcastMessage(message) {
-        let players = this.getOnlinePlayers();
-        players.forEach(players => players.sendMessage(message));
-
-        return players.length;
-    }
+		return players.length;
+	}
 }
 
 module.exports = Server;

@@ -11,30 +11,29 @@ const SetTitle = require("./SetTitle");
 const DisconnectPacket = require("./DisconnectPacket");
 
 class PacketPool {
+	packetPool = new Map();
 
-    packetPool = new Map();
+	init() {
+		this.registerPacket(Login);
+		this.registerPacket(PlayStatus);
+		this.registerPacket(ResourcePacksInfo);
+		this.registerPacket(ResourcePackClientResponse);
+		this.registerPacket(ResourcePackStack);
+		this.registerPacket(StartGame);
+		this.registerPacket(BiomeDefinitionList);
+		this.registerPacket(CreativeContent);
+		this.registerPacket(Text);
+		this.registerPacket(SetTitle);
+		this.registerPacket(DisconnectPacket);
+	}
 
-    init() {
-        this.registerPacket(Login);
-        this.registerPacket(PlayStatus);
-        this.registerPacket(ResourcePacksInfo);
-        this.registerPacket(ResourcePackClientResponse);
-        this.registerPacket(ResourcePackStack);
-        this.registerPacket(StartGame);
-        this.registerPacket(BiomeDefinitionList);
-        this.registerPacket(CreativeContent);
-        this.registerPacket(Text);
-        this.registerPacket(SetTitle);
-        this.registerPacket(DisconnectPacket);
-    }
+	registerPacket(packet) {
+		this.packetPool.set(packet.NETWORK_ID, packet);
+	}
 
-    registerPacket(packet) {
-        this.packetPool.set(packet.NETWORK_ID, packet);
-    }
-
-    getPacket(id) {
-        return this.packetPool.has(id) ? new (this.packetPool.get(id))() : null;
-    }
+	getPacket(id) {
+		return this.packetPool.has(id) ? new (this.packetPool.get(id))() : null;
+	}
 }
 
 module.exports = PacketPool;

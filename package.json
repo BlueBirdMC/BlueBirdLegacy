@@ -3,6 +3,9 @@
   "version": "1.0.1",
   "description": "A server software for Minecraft: Bedrock edition",
   "main": "src/bluebirdteam/BlueBird.js",
+  "scripts": {
+    "format": "prettier --write --use-tabs src/bluebirdteam/* src/bluebirdteam/command/* src/bluebirdteam/network/* src/bluebirdteam/network/mcpe/protocol/* src/bluebirdteam/utils/* src/bluebirdteam/utils/methods/* src/bluebirdteam/player/* src/bluebirdteam/resources/*"
+  },
   "dependencies": {
     "bluebirdmc-binarystream": "git+https://github.com/BlueBirdMC/NodeBinaryStream.git",
     "bluebirdmc-raknet": "git+https://github.com/BlueBirdMC/PRakNet.git",
@@ -11,18 +14,19 @@
   "author": "DRAGKILLS",
   "license": "MIT",
   "devDependencies": {
+    "prettier": "2.5.1",
     "time-stamp": "^2.2.0"
   },
-   "repository":{
-      "type":"git",
-      "url":"https://github.com/BlueBirdMC/BlueBird"
-   },
-   "keywords":[
-      "mcpe",
-      "mcpe server"
-   ],
-   "bugs":{
-      "url":"https://github.com/BlueBirdMC/BlueBird/issues"
-   },
-   "homepage":"https://github.com/BlueBirdMC/BlueBird"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BlueBirdMC/BlueBird"
+  },
+  "keywords": [
+    "mcpe",
+    "mcpe server"
+  ],
+  "bugs": {
+    "url": "https://github.com/BlueBirdMC/BlueBird/issues"
+  },
+  "homepage": "https://github.com/BlueBirdMC/BlueBird"
 }

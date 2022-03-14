@@ -51,90 +51,99 @@ TerminalColors.ITALIC = TerminalColors.ESCAPE + "[3m";
 TerminalColors.RESET = TerminalColors.ESCAPE + "[0m";
 
 TextFormat.tokenize = function (str) {
-    return str.toString().split(new RegExp("(" + TextFormat.ESCAPE + "[0123456789abcdefklmnor])")).filter(v => v !== "");
+	return str
+		.toString()
+		.split(new RegExp("(" + TextFormat.ESCAPE + "[0123456789abcdefklmnor])"))
+		.filter((v) => v !== "");
 };
 
 TextFormat.clean = function (str, removeFormat = true) {
-    if (removeFormat) {
-        return str.replace(new RegExp(TextFormat.ESCAPE + "[0123456789abcdefklmnor]", "g"), "").replace(/\x1b[\\(\\][[0-9;\\[\\(]+[Bm]/g, "").replace(new RegExp(TextFormat.ESCAPE, "g"), "");
-    }
-    return str.replace(/\x1b[\\(\\][[0-9;\\[\\(]+[Bm]/g, "").replace(/\x1b/g, "");
-}
+	if (removeFormat) {
+		return str
+			.replace(
+				new RegExp(TextFormat.ESCAPE + "[0123456789abcdefklmnor]", "g"),
+				""
+			)
+			.replace(/\x1b[\\(\\][[0-9;\\[\\(]+[Bm]/g, "")
+			.replace(new RegExp(TextFormat.ESCAPE, "g"), "");
+	}
+	return str.replace(/\x1b[\\(\\][[0-9;\\[\\(]+[Bm]/g, "").replace(/\x1b/g, "");
+};
 
 TextFormat.toTerminal = function (str) {
-    str = TextFormat.tokenize(str);
-    str.forEach((v, k) => {
-        switch (v) {
-            case TextFormat.BLACK:
-                str[k] = TerminalColors.BLACK;
-                break;
-            case TextFormat.DARK_BLUE:
-                str[k] = TerminalColors.DARK_BLUE;
-                break;
-            case TextFormat.DARK_GREEN:
-                str[k] = TerminalColors.DARK_GREEN;
-                break;
-            case TextFormat.DARK_AQUA:
-                str[k] = TerminalColors.DARK_AQUA;
-                break;
-            case TextFormat.DARK_RED:
-                str[k] = TerminalColors.DARK_RED;
-                break;
-            case TextFormat.DARK_PURPLE:
-                str[k] = TerminalColors.DARK_PURPLE;
-                break;
-            case TextFormat.GOLD:
-                str[k] = TerminalColors.GOLD;
-                break;
-            case TextFormat.GRAY:
-                str[k] = TerminalColors.GRAY;
-                break;
-            case TextFormat.DARK_GRAY:
-                str[k] = TerminalColors.DARK_GRAY;
-                break;
-            case TextFormat.BLUE:
-                str[k] = TerminalColors.BLUE;
-                break;
-            case TextFormat.GREEN:
-                str[k] = TerminalColors.GREEN;
-                break;
-            case TextFormat.AQUA:
-                str[k] = TerminalColors.AQUA;
-                break;
-            case TextFormat.RED:
-                str[k] = TerminalColors.RED;
-                break;
-            case TextFormat.LIGHT_PURPLE:
-                str[k] = TerminalColors.LIGHT_PURPLE;
-                break;
-            case TextFormat.YELLOW:
-                str[k] = TerminalColors.YELLOW;
-                break;
-            case TextFormat.WHITE:
-                str[k] = TerminalColors.WHITE;
-                break;
-            case TextFormat.BOLD:
-                str[k] = TerminalColors.BOLD;
-                break;
-            case TextFormat.OBFUSCATED:
-                str[k] = TerminalColors.OBFUSCATED;
-                break;
-            case TextFormat.ITALIC:
-                str[k] = TerminalColors.ITALIC;
-                break;
-            case TextFormat.UNDERLINE:
-                str[k] = TerminalColors.UNDERLINE;
-                break;
-            case TextFormat.STRIKETHROUGH:
-                str[k] = TerminalColors.STRIKETHROUGH;
-                break;
-            case TextFormat.RESET:
-                str[k] = TerminalColors.RESET;
-                break;
-        }
-    });
+	str = TextFormat.tokenize(str);
+	str.forEach((v, k) => {
+		switch (v) {
+			case TextFormat.BLACK:
+				str[k] = TerminalColors.BLACK;
+				break;
+			case TextFormat.DARK_BLUE:
+				str[k] = TerminalColors.DARK_BLUE;
+				break;
+			case TextFormat.DARK_GREEN:
+				str[k] = TerminalColors.DARK_GREEN;
+				break;
+			case TextFormat.DARK_AQUA:
+				str[k] = TerminalColors.DARK_AQUA;
+				break;
+			case TextFormat.DARK_RED:
+				str[k] = TerminalColors.DARK_RED;
+				break;
+			case TextFormat.DARK_PURPLE:
+				str[k] = TerminalColors.DARK_PURPLE;
+				break;
+			case TextFormat.GOLD:
+				str[k] = TerminalColors.GOLD;
+				break;
+			case TextFormat.GRAY:
+				str[k] = TerminalColors.GRAY;
+				break;
+			case TextFormat.DARK_GRAY:
+				str[k] = TerminalColors.DARK_GRAY;
+				break;
+			case TextFormat.BLUE:
+				str[k] = TerminalColors.BLUE;
+				break;
+			case TextFormat.GREEN:
+				str[k] = TerminalColors.GREEN;
+				break;
+			case TextFormat.AQUA:
+				str[k] = TerminalColors.AQUA;
+				break;
+			case TextFormat.RED:
+				str[k] = TerminalColors.RED;
+				break;
+			case TextFormat.LIGHT_PURPLE:
+				str[k] = TerminalColors.LIGHT_PURPLE;
+				break;
+			case TextFormat.YELLOW:
+				str[k] = TerminalColors.YELLOW;
+				break;
+			case TextFormat.WHITE:
+				str[k] = TerminalColors.WHITE;
+				break;
+			case TextFormat.BOLD:
+				str[k] = TerminalColors.BOLD;
+				break;
+			case TextFormat.OBFUSCATED:
+				str[k] = TerminalColors.OBFUSCATED;
+				break;
+			case TextFormat.ITALIC:
+				str[k] = TerminalColors.ITALIC;
+				break;
+			case TextFormat.UNDERLINE:
+				str[k] = TerminalColors.UNDERLINE;
+				break;
+			case TextFormat.STRIKETHROUGH:
+				str[k] = TerminalColors.STRIKETHROUGH;
+				break;
+			case TextFormat.RESET:
+				str[k] = TerminalColors.RESET;
+				break;
+		}
+	});
 
-    return str.join("");
+	return str.join("");
 };
 
 module.exports = TextFormat;
