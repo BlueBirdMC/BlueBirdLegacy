@@ -3,6 +3,7 @@ const {in_array} = require("locutus/php/array");
 class Skin {
     static ACCEPTED_SKIN_SIZES = [
         4102,
+	64 * 32 * 4,
         64 * 64 * 4,
         128 * 128 * 4
     ];
