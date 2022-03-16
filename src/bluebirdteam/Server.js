@@ -37,9 +37,11 @@ class Server {
 		this.raknet = new RakNetAdapter(this);
 		if (this.raknet.raknet.isRunning === true) {
 			this.raknet.handle();
-			this.getLogger().info("Opening server on " + new Config("BlueBird.json", Config.JSON).get("interface") + ":" + new Config("BlueBird.json", Config.JSON).get("port"));
+			this.raknet.raknet.socket.on("listening", () => {
+				this.getLogger().info("Server listened on " + new Config("BlueBird.json", Config.JSON).get("interface") + ":" + new Config("BlueBird.json", Config.JSON).get("port"))
+				this.getLogger().info("Done in (" + (Date.now() - start_time) + "ms).");
+			});
 		}
-		this.getLogger().info("Done in (" + (Date.now() - start_time) + "ms).");
 		let reader = new ConsoleCommandReader(this);
 		reader.read();
 	}
