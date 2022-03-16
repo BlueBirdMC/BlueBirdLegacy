@@ -3,7 +3,8 @@
 > BlueBird is a new Minecraft: Bedrock Edition Server Software written on JavaScript
 
 ## Pictures
-<img src="https://media.discordapp.net/attachments/947005759537971270/948471077892415518/unknown.png" alt="BlueBird">
+<img src="https://media.discordapp.net/attachments/947005759537971270/948471077892415518/unknown.png" alt="firstpic">
+<img src="https://media.discordapp.net/attachments/923531922553057291/953659624899371048/unknown-45.png" alt="secpic">
 
 ## Quick Links
 
