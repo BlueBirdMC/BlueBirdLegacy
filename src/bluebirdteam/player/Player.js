@@ -217,8 +217,6 @@ class Player {
 				let play_status = new PlayStatus();
 				play_status.status = PlayStatus.PLAYER_SPAWN;
 				this.sendDataPacket(play_status);
-
-				console.log("RPCP -> reached");
 				break;
 		}
 		return true;
