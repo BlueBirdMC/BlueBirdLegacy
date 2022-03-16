@@ -16,8 +16,6 @@
 const DataPacket = require("./DataPacket");
 const ProtocolInfo = require("./ProtocolInfo");
 
-"use strict";
-
 class BiomeDefinitionList extends DataPacket {
 	static NETWORK_ID = ProtocolInfo.BIOME_DEFINITION_LIST;
 
