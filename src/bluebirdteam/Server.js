@@ -10,6 +10,7 @@ const version = "1.0.2";
 
 class Server {
 	constructor(path) {
+		throw new Error("updating to the new things dont use it");
 		let start_time = Date.now();
 		this.id = 0;
 		this.logger = new Logger();
