@@ -14,5 +14,6 @@ Added skin packet and handling - not finished
 fixed joining will cause skin is invalid
 
 1.0.3:
+All the forks has been breaked
 changed the raknet
 changed the binarystream
