@@ -56,15 +56,12 @@ class NetworkBinaryStream extends require("bbmc-binarystream") {
 
 	/**
 	 * @param uuid {UUID}
-	 * @return {NetworkBinaryStream}
 	 */
 	writeUUID(uuid) {
 		this.writeIntLE(uuid.getPart(1));
 		this.writeIntLE(uuid.getPart(0));
 		this.writeIntLE(uuid.getPart(3));
 		this.writeIntLE(uuid.getPart(2));
-
-		return this;
 	}
 
 	readSkin() {
@@ -121,6 +118,9 @@ class NetworkBinaryStream extends require("bbmc-binarystream") {
 		return new SkinData(skinId, skinPlayFabId, skinResourcePatch, skinData, animations, capeData, geometryData, geometryDataVersion, animationData, capeId, fullSkinId, armSize, skinColor, personaPieces, pieceTintColors, true, premium, persona, capeOnClassic, isPrimaryUser);
 	}
 
+	/**
+	 * @param skin {SkinData}
+	 */
 	writeSkin(skin){
 		this.writeString(skin.getSkinId());
 		this.writeString(skin.getPlayFabId());

@@ -23,11 +23,17 @@ const BinaryStream = require("bbmc-binarystream");
 const RakNetHandler = require("./handler/RakNetHandler");
 
 class RakNetInterface {
+	/** @type MainLogger */
 	logger;
+	/** @type PlayerList */
 	players;
+	/** @type PacketPool */
 	packetPool;
+	/** @type {RakNetServer, EventEmitter} */
 	raknet;
+	/** @type Config */
 	bluebirdcfg;
+	/** @type Server */
 	server;
 
 	constructor(server) {

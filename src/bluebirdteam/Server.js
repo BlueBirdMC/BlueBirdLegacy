@@ -15,7 +15,7 @@
 
 const GamePacket = require("./network/mcpe/protocol/GamePacket");
 const Config = require("./utils/Config");
-const RakNetAdapter = require("./network/RakNetInterface");
+const RakNetInterface = require("./network/RakNetInterface");
 const Logger = require("./utils/MainLogger");
 const ConsoleCommandReader = require("./command/ConsoleCommandReader");
 const fs = require("fs");
@@ -23,6 +23,11 @@ const fs = require("fs");
 const version = "1.0.3";
 
 class Server {
+	/** @type Logger */
+	logger;
+	/** @type RakNetInterface */
+	raknet;
+
 	constructor(path) {
 		let start_time = Date.now();
 		this.logger = new Logger();
@@ -34,7 +39,7 @@ class Server {
 		}
 		this.getLogger().info("This server is running BlueBird " + version);
 		this.getLogger().info("BlueBird is distributed under GPLv3 License");
-		this.raknet = new RakNetAdapter(this);
+		this.raknet = new RakNetInterface(this);
 		if (this.raknet.raknet.isRunning === true) {
 			this.raknet.handle();
 			this.raknet.raknet.socket.on("listening", () => {
@@ -46,6 +51,12 @@ class Server {
 		reader.read();
 	}
 
+	/**
+	 * @param players {Player[]}
+	 * @param packets {DataPacket[]}
+	 * @param forceSync {Boolean}
+	 * @param immediate {Boolean}
+	 */
 	batchPackets(players, packets, forceSync = false, immediate = false) {
 		let targets = [];
 		players.forEach((player) => {
@@ -67,10 +78,6 @@ class Server {
 		}
 	}
 
-	getDataPath() {
-		return this.path.data;
-	}
-
 	/**
 	 * @returns {MainLogger}
 	 */
@@ -78,15 +85,26 @@ class Server {
 		return this.logger;
 	}
 
+	/**
+	 * @returns {void}
+	 */
 	shutdown() {
 		this.raknet.shutdown();
 		process.exit(1);
 	}
 
+	/**
+	 * @return {Array}
+	 */
 	getOnlinePlayers() {
 		return Array.from(this.raknet.players.values());
 	}
 
+	/**
+	 * @param pk {DataPacket}
+	 * @param targets {Player[]}
+	 * @param immediate {Boolean}
+	 */
 	broadcastPackets(pk, targets, immediate) {
 		if (!pk.isEncoded) {
 			pk.encode();
@@ -107,17 +125,24 @@ class Server {
 		}
 	}
 
+	/**
+	 * @param targets {Player[]}
+	 * @param packet {DataPacket}
+	 */
 	broadcastPacket(targets, packet){
 		packet.encode();
 		this.batchPackets(targets, [packet]);
 	}
 
+	/**
+	 * @param message {String}
+	 * @return {number}
+	 */
 	broadcastMessage(message) {
 		let players = this.getOnlinePlayers();
 		players.forEach(players => {
 			players.sendMessage(message)
 		});
-
 		return players.length;
 	}
 }

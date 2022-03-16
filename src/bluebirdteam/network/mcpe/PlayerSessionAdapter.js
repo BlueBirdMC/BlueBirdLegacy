@@ -62,6 +62,9 @@ class PlayerSessionAdapter {
 		return this.player.changeSkin(SkinAdapterSingleton.get().fromSkinData(packet.skin), packet.oldSkinName, packet.newSkinName);
 	}
 
+	/**
+	 * @return {String}
+	 */
 	toString() {
 		return this.player.getName() !== "" ? this.player.getName() : this.player.ip + ":" + this.player.port;
 	}

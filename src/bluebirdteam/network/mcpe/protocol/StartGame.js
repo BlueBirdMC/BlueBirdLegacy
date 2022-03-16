@@ -43,7 +43,7 @@ class StartGame extends DataPacket {
 		this.writeSignedVarInt(0); // Spawn x
 		this.writeVarInt(4); // Spawn y
 		this.writeSignedVarInt(0); // Spawn z
-		this.writeBool(false); // Achivements Disabled
+		this.writeBool(false); // Achievements Disabled
 		this.writeSignedVarInt(0); // Day Cycle Stop Time
 		this.writeSignedVarInt(0); // Edu offser
 		this.writeBool(false); // Edu features enabled
@@ -85,7 +85,7 @@ class StartGame extends DataPacket {
 		this.writeBool(false); // Is trial
 		this.writeSignedVarInt(0); // Movement authority
 		this.writeSignedVarInt(0); // Rewind history
-		this.writeBool(false); // Server authorative block breaking
+		this.writeBool(false); // Server authoritative block breaking
 		this.writeLongLE(BigInt(0)); // Current tick
 
 		this.writeSignedVarInt(0); // Enchantment seed
@@ -94,7 +94,7 @@ class StartGame extends DataPacket {
 		this.writeVarInt(0); // Item states count
 
 		this.writeString(""); // Multiplayer correction id
-		this.writeBool(false); // Server authorative inventory
+		this.writeBool(false); // Server authoritative inventory
 		this.writeString("BlueBird"); // Engine
 		this.writeLongLE(BigInt(0)); // Block palette checksum
 	}
