@@ -1,3 +1,18 @@
+/******************************************\
+ *  ____  _            ____  _         _  *
+ * | __ )| |_   _  ___| __ )(_)_ __ __| | *
+ * |  _ \| | | | |/ _ \  _ \| | '__/ _` | *
+ * | |_) | | |_| |  __/ |_) | | | | (_| | *
+ * |____/|_|\__,_|\___|____/|_|_|  \__,_| *
+ *                                        *
+ * This file is licensed under the GNU    *
+ * General Public License 3. To use or    *
+ * modify it you must accept the terms    *
+ * of the license.                        *
+ * ___________________________            *
+ * \ @author BlueBirdMC Team /            *
+ \******************************************/
+
 const DataPacket = require("./DataPacket");
 const assert = require("assert");
 const Zlib = require("zlib");
@@ -15,19 +30,14 @@ class GamePacket extends DataPacket {
 	canBeSentBeforeLogin = true;
 
 	decodeHeader() {
-		let pid = this.readByte();
+		let pid = this.readUnsignedByte();
 		assert(pid === this.constructor.NETWORK_ID);
 	}
 
 	decodePayload() {
 		let data = this.readRemaining();
 		try {
-			this.payload = new BinaryStream(
-				Zlib.inflateRawSync(data, {
-					level: this.compressionLevel,
-					maxOutputLength: 1024 * 1024 * 2,
-				})
-			);
+			this.payload = new BinaryStream(Zlib.inflateRawSync(data, {level: this.compressionLevel, maxOutputLength: 1024 * 1024 * 2}));
 		} catch (e) {
 			//zlib decode error
 			this.payload = new BinaryStream();
@@ -35,14 +45,12 @@ class GamePacket extends DataPacket {
 	}
 
 	encodeHeader() {
-		this.writeByte(this.constructor.NETWORK_ID);
+		this.writeUnsignedByte(this.constructor.NETWORK_ID);
 	}
 
 	encodePayload() {
-		let buf = Zlib.deflateRawSync(this.payload.getBuffer(), {
-			level: this.compressionLevel,
-		});
-		this.append(buf);
+		let buf = Zlib.deflateRawSync(this.payload.buffer, {level: this.compressionLevel});
+		this.write(buf);
 	}
 
 	addPacket(packet) {
@@ -53,41 +61,33 @@ class GamePacket extends DataPacket {
 			packet.encode();
 		}
 
-		this.payload.writeUnsignedVarInt(packet.buffer.length);
-		this.payload.append(packet.getBuffer());
+		this.payload.writeVarInt(packet.buffer.length);
+		this.payload.write(packet.buffer);
 	}
 
 	getPackets() {
 		let pks = [];
-		while (!this.payload.feof()) {
-			pks.push(this.payload.read(this.payload.readUnsignedVarInt()));
+		while (!this.payload.feos()) {
+			pks.push(this.payload.read(this.payload.readVarInt()));
 		}
 		return pks;
 	}
 
-	getCompressionLevel() {
-		return this.compressionLevel;
-	}
-
-	setCompressionLevel(level) {
-		this.compressionLevel = level;
-	}
-
 	handle(handler) {
-		if (this.payload.length === 0) {
+		if (this.payload.buffer.length === 0) {
+			console.log("jl");
 			return false;
 		}
 		this.getPackets().forEach((buf) => {
 			let pk = handler.raknetAdapter.packetPool.getPacket(buf[0]);
+			console.log("MINECRAFT PACKET: 0x" + buf.slice(0, 1).toString("hex"));
 			if (pk instanceof DataPacket) {
 				if (!pk.canBeBatched) {
 					throw new Error("Received invalid " + pk.getName() + " inside GamePacket");
 				}
-
 				pk.setBuffer(buf, 1);
 				handler.handleDataPacket(pk);
 			} else {
-				console.log("MINECRAFT PACKET: 0x" + buf.slice(0, 1).toString("hex"));
 				console.log(buf);
 			}
 		});

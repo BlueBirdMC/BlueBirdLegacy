@@ -1,18 +1,30 @@
+/******************************************\
+ *  ____  _            ____  _         _  *
+ * | __ )| |_   _  ___| __ )(_)_ __ __| | *
+ * |  _ \| | | | |/ _ \  _ \| | '__/ _` | *
+ * | |_) | | |_| |  __/ |_) | | | | (_| | *
+ * |____/|_|\__,_|\___|____/|_|_|  \__,_| *
+ *                                        *
+ * This file is licensed under the GNU    *
+ * General Public License 3. To use or    *
+ * modify it you must accept the terms    *
+ * of the license.                        *
+ * ___________________________            *
+ * \ @author BlueBirdMC Team /            *
+ \******************************************/
+
 const GamePacket = require("./network/mcpe/protocol/GamePacket");
-const SessionManager = require("bluebirdmc-raknet/server/SessionManager");
 const Config = require("./utils/Config");
 const RakNetAdapter = require("./network/RakNetInterface");
 const Logger = require("./utils/MainLogger");
 const ConsoleCommandReader = require("./command/ConsoleCommandReader");
 const fs = require("fs");
 
-const version = "1.0.2";
+const version = "1.0.3";
 
 class Server {
 	constructor(path) {
-		throw new Error("updating to the new things dont use it");
 		let start_time = Date.now();
-		this.id = 0;
 		this.logger = new Logger();
 		this.getLogger().info("Starting Server...");
 		this.getLogger().info("Loading BlueBird.json");
@@ -20,45 +32,23 @@ class Server {
 		if (!fs.existsSync("BlueBird.json")) {
 			fs.copyFileSync(this.path.file + "bluebirdteam/resources/BlueBird.json", this.path.data + "BlueBird.json");
 		}
-		this.raknet = new RakNetAdapter(this);
 		this.getLogger().info("This server is running BlueBird " + version);
 		this.getLogger().info("BlueBird is distributed under GPLv3 License");
-		this.getLogger().info("Opening server on *:" + new Config("BlueBird.json", Config.JSON).get("port"));
+		this.raknet = new RakNetAdapter(this);
+		if (this.raknet.raknet.isRunning === true) {
+			this.raknet.handle();
+			this.getLogger().info("Opening server on " + new Config("BlueBird.json", Config.JSON).get("interface") + ":" + new Config("BlueBird.json", Config.JSON).get("port"));
+		}
 		this.getLogger().info("Done in (" + (Date.now() - start_time) + "ms).");
 		let reader = new ConsoleCommandReader(this);
 		reader.read();
-		setInterval(() => {
-			if (!this.raknet.raknet.isShutdown()) {
-				this.listen();
-			} else {
-				clearInterval();
-			}
-		}, SessionManager.RAKNET_TICK_LENGTH * 1000);
-	}
-
-	async listen() {
-		let err = true;
-		try {
-			await this.raknet.tick();
-			err = false;
-		} catch (e) {
-			if (err === true) {
-				// to fix console spam
-				console.log(e);
-				throw new Error("Failed to bind the server on the port " + new Config("BlueBird.json", Config.JSON).get("port"));
-			}
-		}
-	}
-
-	getId() {
-		return this.id;
 	}
 
 	batchPackets(players, packets, forceSync = false, immediate = false) {
 		let targets = [];
 		players.forEach((player) => {
 			if (player.isConnected()){
-				targets.push(this.raknet.players.getPlayerIdentifier(player));
+				targets.push(this.raknet.players.getPlayerAddrNPort(player));
 			}
 		});
 
@@ -103,13 +93,13 @@ class Server {
 		if (immediate) {
 			targets.forEach((id) => {
 				if (this.raknet.players.has(id)) {
-					this.raknet.players.getPlayer(id).directDataPacket(pk);
+					this.raknet.players.getPlayer(id).sendDataPacket(pk, true);
 				}
 			});
 		} else {
 			targets.forEach((id) => {
 				if (this.raknet.players.has(id)) {
-					this.raknet.players.getPlayer(id).dataPacket(pk);
+					this.raknet.players.getPlayer(id).sendDataPacket(pk);
 				}
 			});
 		}

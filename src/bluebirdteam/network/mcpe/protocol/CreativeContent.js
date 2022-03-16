@@ -1,3 +1,18 @@
+/******************************************\
+ *  ____  _            ____  _         _  *
+ * | __ )| |_   _  ___| __ )(_)_ __ __| | *
+ * |  _ \| | | | |/ _ \  _ \| | '__/ _` | *
+ * | |_) | | |_| |  __/ |_) | | | | (_| | *
+ * |____/|_|\__,_|\___|____/|_|_|  \__,_| *
+ *                                        *
+ * This file is licensed under the GNU    *
+ * General Public License 3. To use or    *
+ * modify it you must accept the terms    *
+ * of the license.                        *
+ * ___________________________            *
+ * \ @author BlueBirdMC Team /            *
+ \******************************************/
+
 const DataPacket = require("./DataPacket");
 const ProtocolInfo = require("./ProtocolInfo");
 
@@ -9,8 +24,8 @@ class CreativeContent extends DataPacket {
 	canBeSentBeforeLogin = true;
 
 	encodePayload() {
-		this.writeUnsignedVarInt(0);
-		// this.append(base64_decode(CreativeContent.HARDCODED_CC_BLOB));
+		// this.writeVarInt(0);
+		this.write(Buffer.from(CreativeContent.HARDCODED_CC_BLOB, 'base64'));
 	}
 }
 

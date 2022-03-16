@@ -1,3 +1,18 @@
+/******************************************\
+ *  ____  _            ____  _         _  *
+ * | __ )| |_   _  ___| __ )(_)_ __ __| | *
+ * |  _ \| | | | |/ _ \  _ \| | '__/ _` | *
+ * | |_) | | |_| |  __/ |_) | | | | (_| | *
+ * |____/|_|\__,_|\___|____/|_|_|  \__,_| *
+ *                                        *
+ * This file is licensed under the GNU    *
+ * General Public License 3. To use or    *
+ * modify it you must accept the terms    *
+ * of the license.                        *
+ * ___________________________            *
+ * \ @author BlueBirdMC Team /            *
+ \******************************************/
+
 const FileSystem = require("fs");
 const Path = require("path");
 
@@ -9,8 +24,6 @@ class Config {
 	static get JSON() {
 		return 1;
 	}
-
-	//TODO: YAML
 
 	/**
 	 * @param file String
@@ -47,7 +60,6 @@ class Config {
 					case Config.JSON:
 						this.config = eval("(" + content + ")");
 						break;
-
 					default:
 						this.correct = false;
 						return false;
@@ -89,9 +101,7 @@ class Config {
 	}
 
 	get(k, def = false) {
-		return this.correct && typeof this.config[k] !== "undefined"
-			? this.config[k]
-			: def;
+		return this.correct && typeof this.config[k] !== "undefined" ? this.config[k] : def;
 	}
 
 	getNested(k, def) {

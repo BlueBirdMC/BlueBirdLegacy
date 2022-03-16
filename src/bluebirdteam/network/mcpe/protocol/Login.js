@@ -1,3 +1,18 @@
+/******************************************\
+ *  ____  _            ____  _         _  *
+ * | __ )| |_   _  ___| __ )(_)_ __ __| | *
+ * |  _ \| | | | |/ _ \  _ \| | '__/ _` | *
+ * | |_) | | |_| |  __/ |_) | | | | (_| | *
+ * |____/|_|\__,_|\___|____/|_|_|  \__,_| *
+ *                                        *
+ * This file is licensed under the GNU    *
+ * General Public License 3. To use or    *
+ * modify it you must accept the terms    *
+ * of the license.                        *
+ * ___________________________            *
+ * \ @author BlueBirdMC Team /            *
+ \******************************************/
+
 const DataPacket = require("./DataPacket");
 const ProtocolInfo = require("./ProtocolInfo");
 
@@ -33,7 +48,7 @@ class Login extends DataPacket {
 	mayHaveUnreadBytes = this.protocol !== ProtocolInfo.CURRENT_PROTOCOL;
 
 	decodePayload() {
-		this.protocol = this.readInt();
+		this.protocol = this.readIntBE();
 
 		try {
 			this.decodeConnectionRequest();
@@ -43,8 +58,8 @@ class Login extends DataPacket {
 	}
 
 	decodeConnectionRequest() {
-		let buffer = new BinaryStream(this.read(this.readUnsignedVarInt()));
-		this.chainData = JSON.parse(buffer.read(buffer.readLInt()).toString());
+		let buffer = new BinaryStream(this.read(this.readVarInt()));
+		this.chainData = JSON.parse(buffer.read(buffer.readIntLE()).toString());
 
 		let hasExtraData = false;
 		this.chainData["chain"].forEach((chain) => {
@@ -73,7 +88,7 @@ class Login extends DataPacket {
 			}
 		});
 
-		this.clientDataJwt = buffer.read(buffer.readLInt()).toString();
+		this.clientDataJwt = buffer.read(buffer.readIntLE()).toString();
 		this.clientData = Utils.decodeJWT(this.clientDataJwt);
 
 		this.clientId = this.clientData["ClientRandomId"] ?? null;

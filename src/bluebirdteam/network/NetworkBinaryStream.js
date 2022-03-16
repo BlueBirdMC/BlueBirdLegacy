@@ -1,3 +1,18 @@
+/******************************************\
+ *  ____  _            ____  _         _  *
+ * | __ )| |_   _  ___| __ )(_)_ __ __| | *
+ * |  _ \| | | | |/ _ \  _ \| | '__/ _` | *
+ * | |_) | | |_| |  __/ |_) | | | | (_| | *
+ * |____/|_|\__,_|\___|____/|_|_|  \__,_| *
+ *                                        *
+ * This file is licensed under the GNU    *
+ * General Public License 3. To use or    *
+ * modify it you must accept the terms    *
+ * of the license.                        *
+ * ___________________________            *
+ * \ @author BlueBirdMC Team /            *
+ \******************************************/
+
 const UUID = require("../utils/UUID");
 const PersonaPieceTintColor = require("./mcpe/protocol/types/PersonaPieceTintColor");
 const SkinData = require("./mcpe/protocol/types/SkinData");
@@ -6,12 +21,12 @@ const SkinAnimation = require("./mcpe/protocol/types/SkinAnimation");
 const {count} = require("locutus/php/array");
 const SkinImage = require("./mcpe/protocol/types/SkinImage");
 
-class NetworkBinaryStream extends require("bluebirdmc-binarystream") {
+class NetworkBinaryStream extends require("bbmc-binarystream") {
 	/**
 	 * @return {String}
 	 */
 	readString() {
-		return this.read(this.readUnsignedVarInt()).toString();
+		return this.read(this.readVarInt()).toString();
 	}
 
 	/**
@@ -19,11 +34,11 @@ class NetworkBinaryStream extends require("bluebirdmc-binarystream") {
 	 * @return {NetworkBinaryStream}
 	 */
 	writeString(v) {
-		this.writeUnsignedVarInt(Buffer.byteLength(v));
+		this.writeVarInt(Buffer.byteLength(v));
 		if (v.length === 0) {
 			return this;
 		}
-		this.append(Buffer.from(v, "utf8"));
+		this.write(Buffer.from(v, "utf8"));
 		return this;
 	}
 
@@ -32,10 +47,10 @@ class NetworkBinaryStream extends require("bluebirdmc-binarystream") {
 	 */
 	readUUID() {
 		let [p1, p0, p3, p2] = [
-			this.readLInt(),
-			this.readLInt(),
-			this.readLInt(),
-			this.readLInt(),
+			this.readIntLE(),
+			this.readIntLE(),
+			this.readIntLE(),
+			this.readIntLE(),
 		];
 
 		return new UUID(p0, p1, p2, p3);
@@ -46,10 +61,10 @@ class NetworkBinaryStream extends require("bluebirdmc-binarystream") {
 	 * @return {NetworkBinaryStream}
 	 */
 	writeUUID(uuid) {
-		this.writeLInt(uuid.getPart(1));
-		this.writeLInt(uuid.getPart(0));
-		this.writeLInt(uuid.getPart(3));
-		this.writeLInt(uuid.getPart(2));
+		this.writeIntLE(uuid.getPart(1));
+		this.writeIntLE(uuid.getPart(0));
+		this.writeIntLE(uuid.getPart(3));
+		this.writeIntLE(uuid.getPart(2));
 
 		return this;
 	}
@@ -59,13 +74,13 @@ class NetworkBinaryStream extends require("bluebirdmc-binarystream") {
 		let skinPlayFabId = this.readString();
 		let skinResourcePatch = this.readString();
 		let skinData = this.readSkinImage();
-		let animationCount = this.readLInt();
+		let animationCount = this.readIntLE();
 		let animations = [];
 		for(let i = 0; i < animationCount; ++i){
 			let skinImage = this.readSkinImage();
-			let animationType = this.readLInt();
-			let animationFrames = this.readLFloat();
-			let expressionType = this.readLInt();
+			let animationType = this.readIntLE();
+			let animationFrames = this.readFloatLE();
+			let expressionType = this.readIntLE();
 			animations.push(new SkinAnimation(skinImage, animationType, animationFrames, expressionType));
 		}
 		let capeData = this.readSkinImage();
@@ -76,7 +91,7 @@ class NetworkBinaryStream extends require("bluebirdmc-binarystream") {
 		let fullSkinId = this.readString();
 		let armSize = this.readString();
 		let skinColor = this.readString();
-		let personaPieceCount = this.readLInt();
+		let personaPieceCount = this.readIntLE();
 		let personaPieces = [];
 		for(let i = 0; i < personaPieceCount; ++i){
 			let pieceId = this.readString();
@@ -86,11 +101,11 @@ class NetworkBinaryStream extends require("bluebirdmc-binarystream") {
 			let productId = this.readString();
 			personaPieces.push(new PersonaSkinPiece(pieceId, pieceType, packId, isDefaultPiece, productId));
 		}
-		let pieceTintColorCount = this.readLInt();
+		let pieceTintColorCount = this.readIntLE();
 		let pieceTintColors = [];
 		for(let i = 0; i < pieceTintColorCount; ++i){
 			let pieceType = this.readString();
-			let colorCount = this.readLInt();
+			let colorCount = this.readIntLE();
 			let colors = [];
 			for(let j = 0; j < colorCount; ++j){
 				colors.push(this.readString());
@@ -113,12 +128,12 @@ class NetworkBinaryStream extends require("bluebirdmc-binarystream") {
 		this.writeString(skin.getPlayFabId());
 		this.writeString(skin.getResourcePatch());
 		this.writeSkinImage(skin.getSkinImage());
-		this.writeLInt(count(skin.getAnimations()));
+		this.writeIntLE(count(skin.getAnimations()));
 		skin.getAnimations().forEach(animation => {
 			this.writeSkinImage(animation.getImage());
-			this.writeLInt(animation.getType());
-			this.writeLFloat(animation.getFrames());
-			this.writeLInt(animation.getExpressionType());
+			this.writeIntLE(animation.getType());
+			this.writeFloatLE(animation.getFrames());
+			this.writeIntLE(animation.getExpressionType());
 		});
 		this.writeSkinImage(skin.getCapeImage());
 		this.writeString(skin.getGeometryData());
@@ -128,7 +143,7 @@ class NetworkBinaryStream extends require("bluebirdmc-binarystream") {
 		this.writeString(skin.getFullSkinId());
 		this.writeString(skin.getArmSize());
 		this.writeString(skin.getSkinColor());
-		this.writeLInt(count(skin.getPersonaPieces()));
+		this.writeIntLE(count(skin.getPersonaPieces()));
 		skin.getPersonaPieces().forEach(piece => {
 			this.writeString(piece.getPieceId());
 			this.writeString(piece.getPieceType());
@@ -136,17 +151,17 @@ class NetworkBinaryStream extends require("bluebirdmc-binarystream") {
 			this.writeBool(piece.isDefaultPiece());
 			this.writeString(piece.getProductId());
 		});
-		this.writeLInt(count(skin.getPieceTintColors()));
+		this.writeIntLE(count(skin.getPieceTintColors()));
 		skin.getPieceTintColors().forEach(tint => {
 			this.writeString(tint.getPieceType());
-			this.writeLInt(count(tint.getColors()));
+			this.writeIntLE(count(tint.getColors()));
 			tint.getColors().forEach(color => {
 				this.writeString(color);
 			});
 		});
 		skin.getPieceTintColors().forEach(tint => {
 			this.writeString(tint.getPieceType());
-			this.writeLInt(count(tint.getColors()));
+			this.writeIntLE(count(tint.getColors()));
 			tint.getColors().forEach(color => {
 				this.writeString(color);
 			});
@@ -158,15 +173,15 @@ class NetworkBinaryStream extends require("bluebirdmc-binarystream") {
 	}
 
 	readSkinImage(){
-		let width = this.readLInt();
-		let height = this.readLInt();
+		let width = this.readIntLE();
+		let height = this.readIntLE();
 		let data = this.readString();
 		return new SkinImage(height, width, data);
 	}
 
 	writeSkinImage(image){
-		this.writeLInt(image.getWidth());
-		this.writeLInt(image.getHeight());
+		this.writeIntLE(image.getWidth());
+		this.writeIntLE(image.getHeight());
 		this.writeString(image.getData());
 	}
 }

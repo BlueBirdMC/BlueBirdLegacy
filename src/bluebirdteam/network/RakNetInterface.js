@@ -1,125 +1,90 @@
-const RakNetServer = require("bluebirdmc-raknet/server/RakNetServer");
-const EncapsulatedPacket = require("bluebirdmc-raknet/protocol/EncapsulatedPacket");
-const PacketReliability = require("bluebirdmc-raknet/protocol/PacketReliability");
+/******************************************\
+ *  ____  _            ____  _         _  *
+ * | __ )| |_   _  ___| __ )(_)_ __ __| | *
+ * |  _ \| | | | |/ _ \  _ \| | '__/ _` | *
+ * | |_) | | |_| |  __/ |_) | | | | (_| | *
+ * |____/|_|\__,_|\___|____/|_|_|  \__,_| *
+ *                                        *
+ * This file is licensed under the GNU    *
+ * General Public License 3. To use or    *
+ * modify it you must accept the terms    *
+ * of the license.                        *
+ * ___________________________            *
+ * \ @author BlueBirdMC Team /            *
+ \******************************************/
+
+const { RakNetServer, InternetAddress, Frame, ReliabilityTool } = require("bbmc-raknet");
 const GamePacket = require("./mcpe/protocol/GamePacket");
 const PlayerList = require("../player/PlayerList");
-const Player = require("../player/Player");
 const Logger = require("../utils/MainLogger");
-const ProtocolInfo = require("../network/mcpe/protocol/ProtocolInfo");
 const PacketPool = require("./mcpe/protocol/PacketPool");
-const SessionManager = require("bluebirdmc-raknet/server/SessionManager");
 const Config = require("../utils/Config");
+const BinaryStream = require("bbmc-binarystream");
+const RakNetHandler = require("./handler/RakNetHandler");
 
 class RakNetInterface {
+	logger;
+	players;
+	packetPool;
+	raknet;
+	bluebirdcfg;
+	server;
+
 	constructor(server) {
 		this.server = server;
 		this.bluebirdcfg = new Config("BlueBird.json", Config.JSON);
-		this.playersCount = 0;
 		this.logger = new Logger();
-		this.raknet = new RakNetServer(this.bluebirdcfg.get("port"), this.logger);
-		setInterval(() => {
-			if (!this.raknet.isShutdown()) {
-				this.raknet
-					.getServerName()
-					.setMotd(this.bluebirdcfg.get("motd"))
-					.setName("BlueBird Server")
-					.setProtocol(ProtocolInfo.CURRENT_PROTOCOL)
-					.setVersion(ProtocolInfo.MINECRAFT_VERSION)
-					.setOnlinePlayers(this.playersCount)
-					.setMaxPlayers(this.bluebirdcfg.get("maxplayers"))
-					.setServerId(server.getId())
-					.setGamemode("Creative");
-			} else {
-				clearInterval();
-			}
-		}, SessionManager.RAKNET_TICK_LENGTH * 1000);
+		this.raknet = new RakNetServer(new InternetAddress(this.bluebirdcfg.get("interface"), this.bluebirdcfg.get("port"), 4), 10);
+		this.players = new PlayerList();
 		this.packetPool = new PacketPool();
 		this.packetPool.init();
-		this.players = new PlayerList();
 		this.logger.setDebuggingLevel(this.bluebirdcfg.get("debug_level"));
 	}
 
-	identifiersACK = [];
-
-	setName(name) {
-		return this.raknet.getServerName().setMotd(name);
-	}
-
-	sendPacket(player, packet, needACK, immediate) {
+	queuePacket(player, packet, immediate) {
 		if (this.players.hasPlayer(player)) {
-			let identifier = this.players.getPlayerIdentifier(player);
 			if (!packet.isEncoded) {
 				packet.encode();
 			}
-
 			if (packet instanceof GamePacket) {
-				if (needACK) {
-					let pk = new EncapsulatedPacket();
-					pk.identifierACK = this.identifiersACK[identifier]++;
-					pk.stream.buffer = packet.buffer;
-					pk.reliability = PacketReliability.RELIABLE_ORDERED;
-					pk.orderChannel = 0;
+				let frame = new Frame();
+				frame.reliability = ReliabilityTool.UNRELIABLE;
+				frame.isFragmented = false;
+				frame.stream = new BinaryStream(packet.buffer);
+				if (this.raknet.hasConnection(player.ip)) {
+					let connection = this.raknet.getConnection(player.ip);
+					connection.addToQueue(frame);
 				}
-
-				let session;
-				if (
-					(session = this.raknet
-						.getSessionManager()
-						.getSessionByIdentifier(identifier))
-				) {
-					session.queueConnectedPacketFromServer(packet, needACK, immediate);
-				}
-				return null;
 			} else {
 				this.server.batchPackets([player], [packet], true, immediate);
-				return null;
 			}
 		}
 	}
 
-	tick() {
-		this.raknet.getSessionManager().readOutgoingMessages().forEach(message => this.handleIncomingMessage(message.purpose, message.data));
+	handle() {
+		RakNetHandler.updatePong(this);
 
-		this.raknet
-			.getSessionManager()
-			.getSessions()
-			.forEach((session) => {
-				let player = this.players.getPlayer(session.toString());
+		this.raknet.on('connect', (connection) => {
+			RakNetHandler.handlePlayerConnection(this, connection);
+		});
+		this.raknet.on('disconnect', (address) => {
+			RakNetHandler.handlePlayerDisconnection(this, address);
+		});
 
-				session.packetBatches.getAllAndClear().forEach((packet) => {
-					let pk = new GamePacket();
-					pk.setBuffer(packet.getStream().getBuffer());
-					pk.decode();
-					pk.handle(player.getSessionAdapter());
-				});
-			});
+		this.raknet.on('packet', (stream, connection) => {
+			RakNetHandler.handlePackets(this, stream, connection);
+		});
 	}
 
-	close(player, reason = "unknown reason") {
-		if (this.players.hasPlayer(player.identifier)) {
-			this.raknet.getSessionManager().removeSession(this.raknet.getSessionManager().getSession(player.ip, player.port), reason);
+	close(player) {
+		if (this.players.hasPlayer(player.ip + ":" + player.port)) {
+			this.raknet.removeConnection(player.ip);
 			this.players.removePlayer(player.ip + ":" + player.port);
 		}
 	}
 
 	shutdown() {
-		this.raknet.shutdown();
-	}
-
-	handleIncomingMessage(purpose, data) {
-		switch (purpose) {
-			case "openSession":
-				let player = new Player(this.server, data.clientId, data.ip, data.port, data.identifier);
-				this.players.addPlayer(data.identifier, player);
-				this.playersCount += 1;
-				break;
-			case "closeSession":
-				if (this.players.has(data.identifier)) {
-					this.players.getPlayer(data.identifier).close(data.reason, true);
-					this.playersCount -= 1;
-				}
-				break;
-		}
+		this.raknet.isRunning = false;
 	}
 }
 

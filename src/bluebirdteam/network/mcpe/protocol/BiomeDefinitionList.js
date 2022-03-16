@@ -1,3 +1,18 @@
+/******************************************\
+ *  ____  _            ____  _         _  *
+ * | __ )| |_   _  ___| __ )(_)_ __ __| | *
+ * |  _ \| | | | |/ _ \  _ \| | '__/ _` | *
+ * | |_) | | |_| |  __/ |_) | | | | (_| | *
+ * |____/|_|\__,_|\___|____/|_|_|  \__,_| *
+ *                                        *
+ * This file is licensed under the GNU    *
+ * General Public License 3. To use or    *
+ * modify it you must accept the terms    *
+ * of the license.                        *
+ * ___________________________            *
+ * \ @author BlueBirdMC Team /            *
+ \******************************************/
+
 const DataPacket = require("./DataPacket");
 const ProtocolInfo = require("./ProtocolInfo");
 
@@ -18,14 +33,14 @@ class BiomeDefinitionList extends DataPacket {
 	}
 
 	encodePayload() {
-		this.writeByte(0x0a);
-		this.writeUnsignedVarInt(0);
-		this.writeByte(0x0a);
-		this.writeUnsignedVarInt(5);
-		this.append(Buffer.from("Taiga"));
-		this.writeByte(0);
-		this.writeByte(0);
-		// this.append(this.namedtag ?? base64_decode(BiomeDefinitionList.HARDCODED_NBT_BLOB));
+		/*this.writeUnsignedByte(0x0a);
+		this.writeVarInt(0);
+		this.writeUnsignedByte(0x0a);
+		this.writeVarInt(5);
+		this.write(Buffer.from("Taiga"));
+		this.writeUnsignedByte(0);
+		this.writeUnsignedByte(0);*/
+		this.write(this.namedtag ?? Buffer.from(BiomeDefinitionList.HARDCODED_NBT_BLOB, 'base64'));
 	}
 }
 

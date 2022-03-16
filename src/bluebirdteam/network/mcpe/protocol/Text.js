@@ -1,3 +1,18 @@
+/******************************************\
+ *  ____  _            ____  _         _  *
+ * | __ )| |_   _  ___| __ )(_)_ __ __| | *
+ * |  _ \| | | | |/ _ \  _ \| | '__/ _` | *
+ * | |_) | | |_| |  __/ |_) | | | | (_| | *
+ * |____/|_|\__,_|\___|____/|_|_|  \__,_| *
+ *                                        *
+ * This file is licensed under the GNU    *
+ * General Public License 3. To use or    *
+ * modify it you must accept the terms    *
+ * of the license.                        *
+ * ___________________________            *
+ * \ @author BlueBirdMC Team /            *
+ \******************************************/
+
 const DataPacket = require("./DataPacket");
 const ProtocolInfo = require("./ProtocolInfo");
 
@@ -62,7 +77,7 @@ class Text extends DataPacket {
 			case Text.TYPE_POPUP:
 			case Text.TYPE_JUKEBOX_POPUP:
 				this.message = this.readString();
-				let count = this.readUnsignedVarInt();
+				let count = this.readVarInt();
 				for (let i = 0; i < count; ++i) {
 					this.parameters.push(this.readString());
 				}
@@ -92,7 +107,7 @@ class Text extends DataPacket {
 			case Text.TYPE_POPUP:
 			case Text.TYPE_JUKEBOX_POPUP:
 				this.writeString(this.message);
-				this.writeUnsignedVarInt(this.parameters.length);
+				this.writeVarInt(this.parameters.length);
 				this.parameters.forEach((p) => this.writeString(p));
 				break;
 		}

@@ -1,3 +1,18 @@
+/******************************************\
+ *  ____  _            ____  _         _  *
+ * | __ )| |_   _  ___| __ )(_)_ __ __| | *
+ * |  _ \| | | | |/ _ \  _ \| | '__/ _` | *
+ * | |_) | | |_| |  __/ |_) | | | | (_| | *
+ * |____/|_|\__,_|\___|____/|_|_|  \__,_| *
+ *                                        *
+ * This file is licensed under the GNU    *
+ * General Public License 3. To use or    *
+ * modify it you must accept the terms    *
+ * of the license.                        *
+ * ___________________________            *
+ * \ @author BlueBirdMC Team /            *
+ \******************************************/
+
 const DataPacket = require("./DataPacket");
 const ProtocolInfo = require("./ProtocolInfo");
 
@@ -21,14 +36,14 @@ class ResourcePackStack extends DataPacket {
 
 	decodePayload() {
 		this.mustAccept = this.readBool();
-		let behaviorPackCount = this.readUnsignedVarInt();
+		let behaviorPackCount = this.readVarInt();
 		while (behaviorPackCount-- > 0) {
 			this.readString();
 			this.readString();
 			this.readString();
 		}
 
-		let resourcePackCount = this.readUnsignedVarInt();
+		let resourcePackCount = this.readVarInt();
 		while (resourcePackCount-- > 0) {
 			this.readString();
 			this.readString();
@@ -36,7 +51,7 @@ class ResourcePackStack extends DataPacket {
 		}
 
 		this.baseGameVersion = this.readString();
-		let experimentsCount = this.readLInt();
+		let experimentsCount = this.readIntLE();
 		while (experimentsCount-- > 0) {
 			this.readString();
 			this.readBool();
@@ -47,14 +62,14 @@ class ResourcePackStack extends DataPacket {
 	encodePayload() {
 		this.writeBool(this.mustAccept);
 
-		this.writeUnsignedVarInt(this.behaviorPackStack.length);
+		this.writeVarInt(this.behaviorPackStack.length);
 		this.behaviorPackStack.forEach(() => {
 			this.writeString("");
 			this.writeString("");
 			this.writeString("");
 		});
 
-		this.writeUnsignedVarInt(this.resourcePackStack.length);
+		this.writeVarInt(this.resourcePackStack.length);
 		this.resourcePackStack.forEach(() => {
 			this.writeString("");
 			this.writeString("");
@@ -62,7 +77,7 @@ class ResourcePackStack extends DataPacket {
 		});
 
 		this.writeString(this.baseGameVersion);
-		this.writeLInt(0); // experiments count
+		this.writeIntLE(0); // experiments count
 		this.writeBool(this.experimentsPreviouslyUsed);
 	}
 }

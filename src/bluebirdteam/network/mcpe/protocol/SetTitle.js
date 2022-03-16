@@ -1,3 +1,18 @@
+/******************************************\
+ *  ____  _            ____  _         _  *
+ * | __ )| |_   _  ___| __ )(_)_ __ __| | *
+ * |  _ \| | | | |/ _ \  _ \| | '__/ _` | *
+ * | |_) | | |_| |  __/ |_) | | | | (_| | *
+ * |____/|_|\__,_|\___|____/|_|_|  \__,_| *
+ *                                        *
+ * This file is licensed under the GNU    *
+ * General Public License 3. To use or    *
+ * modify it you must accept the terms    *
+ * of the license.                        *
+ * ___________________________            *
+ * \ @author BlueBirdMC Team /            *
+ \******************************************/
+
 const DataPacket = require("./DataPacket");
 const ProtocolInfo = require("./ProtocolInfo");
 
@@ -29,21 +44,21 @@ class SetTitle extends DataPacket {
 	platformOnlineId = "";
 
 	decodePayload() {
-		this.type = this.readVarInt();
+		this.type = this.readSignedVarInt();
 		this.text = this.readString();
-		this.fadeInTime = this.readVarInt();
-		this.stayTime = this.readVarInt();
-		this.fadeOutTime = this.readVarInt();
+		this.fadeInTime = this.readSignedVarInt();
+		this.stayTime = this.readSignedVarInt();
+		this.fadeOutTime = this.readSignedVarInt();
 		this.xuid = this.readString();
 		this.platformOnlineId = this.readString();
 	}
 
 	encodePayload() {
-		this.writeVarInt(this.type);
+		this.writeSignedVarInt(this.type);
 		this.writeString(this.text);
-		this.writeVarInt(this.fadeInTime);
-		this.writeVarInt(this.stayTime);
-		this.writeVarInt(this.fadeOutTime);
+		this.writeSignedVarInt(this.fadeInTime);
+		this.writeSignedVarInt(this.stayTime);
+		this.writeSignedVarInt(this.fadeOutTime);
 		this.writeString(this.xuid);
 		this.writeString(this.platformOnlineId);
 	}

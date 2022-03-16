@@ -1,5 +1,19 @@
+/******************************************\
+ *  ____  _            ____  _         _  *
+ * | __ )| |_   _  ___| __ )(_)_ __ __| | *
+ * |  _ \| | | | |/ _ \  _ \| | '__/ _` | *
+ * | |_) | | |_| |  __/ |_) | | | | (_| | *
+ * |____/|_|\__,_|\___|____/|_|_|  \__,_| *
+ *                                        *
+ * This file is licensed under the GNU    *
+ * General Public License 3. To use or    *
+ * modify it you must accept the terms    *
+ * of the license.                        *
+ * ___________________________            *
+ * \ @author BlueBirdMC Team /            *
+ \******************************************/
+
 const DataPacket = require("./protocol/DataPacket");
-const SessionManager = require("bluebirdmc-raknet/server/SessionManager");
 const SkinAdapterSingleton = require("./protocol/types/SkinAdapterSingleton");
 
 class PlayerSessionAdapter {
@@ -24,7 +38,7 @@ class PlayerSessionAdapter {
 
 		packet.decode();
 
-		if (!packet.feof() && !packet.mayHaveUnreadBytes) {
+		if (!packet.feos() && !packet.mayHaveUnreadBytes) {
 			let remains = packet.buffer.slice(packet.offset);
 			this.server.logger.debug("Still " + remains.length + " bytes unread in " + packet.getName() + ": 0x" + remains.toString("hex"));
 		}
@@ -49,7 +63,7 @@ class PlayerSessionAdapter {
 	}
 
 	toString() {
-		return this.player.getName() !== "" ? this.player.getName() : SessionManager.hashAddress(this.player.ip, this.player.port);
+		return this.player.getName() !== "" ? this.player.getName() : this.player.ip + ":" + this.player.port;
 	}
 }
 

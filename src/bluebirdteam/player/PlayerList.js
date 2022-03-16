@@ -1,3 +1,18 @@
+/******************************************\
+ *  ____  _            ____  _         _  *
+ * | __ )| |_   _  ___| __ )(_)_ __ __| | *
+ * |  _ \| | | | |/ _ \  _ \| | '__/ _` | *
+ * | |_) | | |_| |  __/ |_) | | | | (_| | *
+ * |____/|_|\__,_|\___|____/|_|_|  \__,_| *
+ *                                        *
+ * This file is licensed under the GNU    *
+ * General Public License 3. To use or    *
+ * modify it you must accept the terms    *
+ * of the license.                        *
+ * ___________________________            *
+ * \ @author BlueBirdMC Team /            *
+ \******************************************/
+
 const Player = require("./Player");
 
 class PlayerList extends Map {
@@ -28,7 +43,7 @@ class PlayerList extends Map {
 	/**
 	 * @param player {Player}
 	 */
-	getPlayerIdentifier(player) {
+	getPlayerAddrNPort(player) {
 		return Array.from(this.keys())[Array.from(this.values()).indexOf(player)];
 	}
 

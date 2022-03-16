@@ -1,3 +1,18 @@
+/******************************************\
+ *  ____  _            ____  _         _  *
+ * | __ )| |_   _  ___| __ )(_)_ __ __| | *
+ * |  _ \| | | | |/ _ \  _ \| | '__/ _` | *
+ * | |_) | | |_| |  __/ |_) | | | | (_| | *
+ * |____/|_|\__,_|\___|____/|_|_|  \__,_| *
+ *                                        *
+ * This file is licensed under the GNU    *
+ * General Public License 3. To use or    *
+ * modify it you must accept the terms    *
+ * of the license.                        *
+ * ___________________________            *
+ * \ @author BlueBirdMC Team /            *
+ \******************************************/
+
 const NetworkBinaryStream = require("../../NetworkBinaryStream");
 
 class DataPacket extends NetworkBinaryStream {
@@ -14,10 +29,6 @@ class DataPacket extends NetworkBinaryStream {
 	recipientSubId = 0;
 	canBeBatched = true;
 
-	pid() {
-		return this.constructor.NETWORK_ID;
-	}
-
 	getName() {
 		return this.constructor.name;
 	}
@@ -33,17 +44,13 @@ class DataPacket extends NetworkBinaryStream {
 	}
 
 	decodeHeader() {
-		let header = this.readUnsignedVarInt();
+		let header = this.readVarInt();
 		let pid = header & this.constructor.PID_MASK;
 		if (pid !== this.constructor.NETWORK_ID) {
 			throw new Error(`Expected ${this.constructor.NETWORK_ID} for packet ID, got ${pid}`);
 		}
-		this.senderSubId =
-			(header >> this.constructor.SENDER_SUBCLIENT_ID_SHIFT) &
-			this.constructor.SUBCLIENT_ID_MASK;
-		this.recipientSubId =
-			(header >> this.constructor.RECIPIENT_SUBCLIENT_ID_SHIFT) &
-			this.constructor.SUBCLIENT_ID_MASK;
+		this.senderSubId = (header >> this.constructor.SENDER_SUBCLIENT_ID_SHIFT) & this.constructor.SUBCLIENT_ID_MASK;
+		this.recipientSubId = (header >> this.constructor.RECIPIENT_SUBCLIENT_ID_SHIFT) & this.constructor.SUBCLIENT_ID_MASK;
 	}
 
 	decodePayload() {}
@@ -56,8 +63,7 @@ class DataPacket extends NetworkBinaryStream {
 	}
 
 	encodeHeader() {
-		this.writeUnsignedVarInt(
-			this.constructor.NETWORK_ID |
+		this.writeVarInt(this.constructor.NETWORK_ID |
 				(this.senderSubId << this.constructor.SENDER_SUBCLIENT_ID_SHIFT) |
 				(this.recipientSubId << this.constructor.RECIPIENT_SUBCLIENT_ID_SHIFT)
 		);

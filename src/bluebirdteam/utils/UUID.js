@@ -1,4 +1,19 @@
-const BinaryStream = require("bluebirdmc-binarystream");
+/******************************************\
+ *  ____  _            ____  _         _  *
+ * | __ )| |_   _  ___| __ )(_)_ __ __| | *
+ * |  _ \| | | | |/ _ \  _ \| | '__/ _` | *
+ * | |_) | | |_| |  __/ |_) | | | | (_| | *
+ * |____/|_|\__,_|\___|____/|_|_|  \__,_| *
+ *                                        *
+ * This file is licensed under the GNU    *
+ * General Public License 3. To use or    *
+ * modify it you must accept the terms    *
+ * of the license.                        *
+ * ___________________________            *
+ * \ @author BlueBirdMC Team /            *
+ \******************************************/
+
+const BinaryStream = require("bbmc-binarystream");
 const lib = require("uuid-js");
 const {bin2hex} = require("locutus/php/strings");
 
@@ -32,7 +47,7 @@ class UUID {
 			throw new TypeError("UUID buffer must be exactly 16 bytes");
 		}
 		let stream = new BinaryStream(Buffer.from(uuid));
-		return new UUID(stream.readInt(), stream.readInt(), stream.readInt(), stream.readInt(), version);
+		return new UUID(stream.readIntBE(), stream.readIntBE(), stream.readIntBE(), stream.readIntBE(), version);
 	}
 
 	static fromRandom() {
@@ -41,7 +56,8 @@ class UUID {
 
 	toBinary(){
 		let stream = new BinaryStream();
-		return stream.writeInt(this.parts[0] + this.parts[1] + this.parts[2] + this.parts[3]);
+		stream.writeIntBE(this.parts[0] + this.parts[1] + this.parts[2] + this.parts[3]);
+		return stream;
 	}
 
 	toString(){

@@ -1,9 +1,4 @@
-1.0.2:
-Fixed typos
-Better code in Globals.js
-
 1.0.1:
-
 Fixed typos
 Added /reportbug
 Fixed console spam
@@ -11,3 +6,13 @@ Added onlinemode to config
 Added more checks
 Cleaned some code
 Fixed a crash
+
+1.0.2:
+Fixed typos
+Better code in Globals.js
+Added skin packet and handling - not finished
+fixed joining will cause skin is invalid
+
+1.0.3:
+changed the raknet
+changed the binarystream

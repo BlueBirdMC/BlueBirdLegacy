@@ -1,3 +1,18 @@
+/******************************************\
+ *  ____  _            ____  _         _  *
+ * | __ )| |_   _  ___| __ )(_)_ __ __| | *
+ * |  _ \| | | | |/ _ \  _ \| | '__/ _` | *
+ * | |_) | | |_| |  __/ |_) | | | | (_| | *
+ * |____/|_|\__,_|\___|____/|_|_|  \__,_| *
+ *                                        *
+ * This file is licensed under the GNU    *
+ * General Public License 3. To use or    *
+ * modify it you must accept the terms    *
+ * of the license.                        *
+ * ___________________________            *
+ * \ @author BlueBirdMC Team /            *
+ \******************************************/
+
 const PlayerSessionAdapter = require("../network/mcpe/PlayerSessionAdapter");
 const LoginPacket = require("../network/mcpe/protocol/Login");
 const ProtocolInfo = require("../network/mcpe/protocol/ProtocolInfo");
@@ -27,14 +42,13 @@ class Player {
 	username = "";
 	loggedIn = false;
 	locale = "en_US";
-	needACK = {};
+	skin;
+	uuid;
 
-	constructor(server, clientId, ip, port, identifier) {
+	constructor(server, ip, port) {
 		this.server = server;
-		this.clientId = clientId;
 		this.ip = ip;
 		this.port = port;
-		this.identifier = identifier;
 		this.sessionAdapter = new PlayerSessionAdapter(this);
 	}
 
@@ -80,11 +94,11 @@ class Player {
 			if (packet.protocol < ProtocolInfo.CURRENT_PROTOCOL) {
 				let play_status = new PlayStatus();
 				play_status.status = PlayStatus.LOGIN_FAILED_CLIENT;
-				this.directDataPacket(play_status);
+				this.sendDataPacket(play_status, true);
 			} else {
 				let play_status = new PlayStatus();
 				play_status.status = PlayStatus.LOGIN_FAILED_SERVER;
-				this.directDataPacket(play_status);
+				this.sendDataPacket(play_status, true);
 			}
 
 			this.close("Incompatible protocol");
@@ -190,19 +204,21 @@ class Player {
 				let pk = new ResourcePackStack();
 				pk.resourcePackStack = [];
 				pk.mustAccept = false;
-				this.dataPacket(pk);
+				this.sendDataPacket(pk);
 				break;
 
 			case ResourcePackClientResponse.STATUS_COMPLETED:
 				let startgame = new StartGame();
-				this.dataPacket(startgame);
+				this.sendDataPacket(startgame);
 
-				this.dataPacket(new BiomeDefinitionList());
-				this.dataPacket(new CreativeContent());
+				this.sendDataPacket(new BiomeDefinitionList());
+				this.sendDataPacket(new CreativeContent());
 
 				let play_status = new PlayStatus();
 				play_status.status = PlayStatus.PLAYER_SPAWN;
-				this.dataPacket(play_status);
+				this.sendDataPacket(play_status);
+
+				console.log("RPCP -> reached");
 				break;
 		}
 		return true;
@@ -245,13 +261,13 @@ class Player {
 
 		let play_status = new PlayStatus();
 		play_status.status = PlayStatus.LOGIN_SUCCESS;
-		this.dataPacket(play_status);
+		this.sendDataPacket(play_status);
 
 		let packsInfo = new ResourcePacksInfo();
 		packsInfo.resourcePackEntries = [];
 		packsInfo.mustAccept = false;
 		packsInfo.forceServerPacks = false;
-		this.dataPacket(packsInfo);
+		this.sendDataPacket(packsInfo);
 
 		this.server.getLogger().info("Player " + this.username + " joined the game");
 		this.server.broadcastMessage("§6Player " + this.username + " joined the game");
@@ -269,9 +285,7 @@ class Player {
 						//TODO: Add player commands
 						return false;
 					}
-					let msg = "<:player> :message"
-						.replace(":player", this.getName())
-						.replace(":message", messageElement);
+					let msg = "<:player> :message".replace(":player", this.getName()).replace(":message", messageElement);
 					this.server.broadcastMessage(msg);
 					this.server.getLogger().info(msg);
 				}
@@ -284,7 +298,7 @@ class Player {
 		let pk = new Text();
 		pk.type = Text.TYPE_RAW;
 		pk.message = message;
-		this.dataPacket(pk);
+		this.sendDataPacket(pk);
 	}
 
 	sendTitle(title, subtitle = "", fadeIn = -1, stay = -1, fadeOut = -1) {
@@ -302,13 +316,13 @@ class Player {
 	clearTitles() {
 		let pk = new SetTitle();
 		pk.type = SetTitle.TYPE_CLEAR_TITLE;
-		this.dataPacket(pk);
+		this.sendDataPacket(pk);
 	}
 
 	resetTitles() {
 		let pk = new SetTitle();
 		pk.type = SetTitle.TYPE_RESET_TITLE;
-		this.dataPacket(pk);
+		this.sendDataPacket(pk);
 	}
 
 	setTitleDuration(fadeIn, stay, fadeOut) {
@@ -318,7 +332,7 @@ class Player {
 			pk.fadeInTime = fadeIn;
 			pk.stayTime = stay;
 			pk.fadeOutTime = fadeOut;
-			this.dataPacket(pk);
+			this.sendDataPacket(pk);
 		}
 	}
 
@@ -326,7 +340,7 @@ class Player {
 		let pk = new SetTitle();
 		pk.type = type;
 		pk.text = title;
-		this.dataPacket(pk);
+		this.sendDataPacket(pk);
 	}
 
 	close(reason, hide_disconnection_screen = false) {
@@ -335,37 +349,22 @@ class Player {
 		let pk = new DisconnectPacket();
 		pk.hideDisconnectionScreen = hide_disconnection_screen;
 		pk.message = reason;
-		this.dataPacket(pk);
-		this.server.raknet.close(this, reason);
+		this.sendDataPacket(pk);
+		this.server.raknet.close(this);
 	}
 
 	getName() {
 		return this.username;
 	}
 
-	dataPacket(packet, needACK = false) {
-		return this.sendDataPacket(packet, needACK, false);
-	}
-
-	directDataPacket(packet, needACK = false) {
-		return this.sendDataPacket(packet, needACK, true);
-	}
-
-	sendDataPacket(packet, needACK = false, immediate = false) {
+	sendDataPacket(packet, immediate = false) {
 		if (!this.isConnected()) return false;
 
 		if (!this.loggedIn && !packet.canBeSentBeforeLogin) {
 			throw new Error("Attempted to send " + packet.getName() + " to " + this.getName() + " before they got logged in.");
 		}
 
-		let identifier = this.server.raknet.sendPacket(this, packet, needACK, immediate);
-
-		if (needACK && identifier !== null) {
-			this.needACK[identifier] = false;
-			return identifier;
-		}
-
-		return true;
+		this.server.raknet.queuePacket(this, packet, immediate);
 	}
 }
 
