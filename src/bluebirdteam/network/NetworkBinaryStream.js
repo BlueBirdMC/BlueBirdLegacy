@@ -31,15 +31,13 @@ class NetworkBinaryStream extends require("bbmc-binarystream") {
 
 	/**
 	 * @param v {String}
-	 * @return {NetworkBinaryStream}
 	 */
 	writeString(v) {
 		this.writeVarInt(Buffer.byteLength(v));
 		if (v.length === 0) {
-			return this;
+			return "";
 		}
 		this.write(Buffer.from(v, "utf8"));
-		return this;
 	}
 
 	/**
