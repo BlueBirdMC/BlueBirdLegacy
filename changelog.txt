@@ -14,6 +14,7 @@ Added skin packet and handling - not finished
 fixed joining will cause skin is invalid
 
 1.0.3:
-All the forks has been breaked
+all the forks has been breaked
+u need to remove BlueBird.json file cuz more options added
 changed the raknet
 changed the binarystream
