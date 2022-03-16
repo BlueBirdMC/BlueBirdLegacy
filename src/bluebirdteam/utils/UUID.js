@@ -15,7 +15,6 @@
 
 const BinaryStream = require("bbmc-binarystream");
 const lib = require("uuid-js");
-const {bin2hex} = require("locutus/php/strings");
 
 class UUID {
 
@@ -61,7 +60,7 @@ class UUID {
 	}
 
 	toString(){
-		let b = bin2hex(this.toBinary());
+		let b = this.toBinary().toString('hex');
 		return b.substr(0, 8) + "-" + b.substr(8, 4) + b.substr(12, 4) + "-" + b.substr(16, 4) + b.substr(20, 12);
 	}
 

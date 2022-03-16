@@ -18,7 +18,6 @@ const PersonaPieceTintColor = require("./mcpe/protocol/types/PersonaPieceTintCol
 const SkinData = require("./mcpe/protocol/types/SkinData");
 const PersonaSkinPiece = require("./mcpe/protocol/types/PersonaSkinPiece");
 const SkinAnimation = require("./mcpe/protocol/types/SkinAnimation");
-const {count} = require("locutus/php/array");
 const SkinImage = require("./mcpe/protocol/types/SkinImage");
 
 class NetworkBinaryStream extends require("bbmc-binarystream") {
@@ -126,7 +125,7 @@ class NetworkBinaryStream extends require("bbmc-binarystream") {
 		this.writeString(skin.getPlayFabId());
 		this.writeString(skin.getResourcePatch());
 		this.writeSkinImage(skin.getSkinImage());
-		this.writeIntLE(count(skin.getAnimations()));
+		this.writeIntLE(skin.getAnimations().length);
 		skin.getAnimations().forEach(animation => {
 			this.writeSkinImage(animation.getImage());
 			this.writeIntLE(animation.getType());
@@ -141,7 +140,7 @@ class NetworkBinaryStream extends require("bbmc-binarystream") {
 		this.writeString(skin.getFullSkinId());
 		this.writeString(skin.getArmSize());
 		this.writeString(skin.getSkinColor());
-		this.writeIntLE(count(skin.getPersonaPieces()));
+		this.writeIntLE(skin.getPersonaPieces().length);
 		skin.getPersonaPieces().forEach(piece => {
 			this.writeString(piece.getPieceId());
 			this.writeString(piece.getPieceType());
@@ -149,17 +148,17 @@ class NetworkBinaryStream extends require("bbmc-binarystream") {
 			this.writeBool(piece.isDefaultPiece());
 			this.writeString(piece.getProductId());
 		});
-		this.writeIntLE(count(skin.getPieceTintColors()));
+		this.writeIntLE(skin.getPieceTintColors().length);
 		skin.getPieceTintColors().forEach(tint => {
 			this.writeString(tint.getPieceType());
-			this.writeIntLE(count(tint.getColors()));
+			this.writeIntLE(tint.getColors().length);
 			tint.getColors().forEach(color => {
 				this.writeString(color);
 			});
 		});
 		skin.getPieceTintColors().forEach(tint => {
 			this.writeString(tint.getPieceType());
-			this.writeIntLE(count(tint.getColors()));
+			this.writeIntLE(tint.getColors().length);
 			tint.getColors().forEach(color => {
 				this.writeString(color);
 			});

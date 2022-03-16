@@ -13,7 +13,6 @@
  * \ @author BlueBirdMC Team /            *
  \******************************************/
 
-const {is_array} = require("locutus/php/var");
 const SkinData = require("./SkinData");
 const SkinImage = require("./SkinImage");
 const Skin = require("../../../../entity/Skin");
@@ -49,7 +48,7 @@ class LegacySkinAdapter {
         let geometryName = "";
         let resourcePatch = JSON.parse(data.getResourcePatch(), true);
 
-        if (is_array(resourcePatch) && typeof resourcePatch['geometry']['default'] !== 'undefined' && typeof resourcePatch['geometry']['default'] === 'string') {
+        if (resourcePatch.constructor === Object && typeof resourcePatch['geometry']['default'] !== 'undefined' && typeof resourcePatch['geometry']['default'] === 'string') {
             geometryName = resourcePatch['geometry']['default'];
         } else {
             throw new Error("Missing geometry name field");

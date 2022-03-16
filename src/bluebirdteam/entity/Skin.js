@@ -13,8 +13,6 @@
  * \ @author BlueBirdMC Team /            *
  \******************************************/
 
-const {in_array} = require("locutus/php/array");
-
 class Skin {
     static ACCEPTED_SKIN_SIZES = [
         4102,
@@ -67,7 +65,7 @@ class Skin {
 
         let length = this.#skinData.length;
 
-        if(!in_array(length, Skin.ACCEPTED_SKIN_SIZES, true)) {
+        if(Skin.ACCEPTED_SKIN_SIZES.includes(length) === false) {
             throw new Error(`Invalid skin data size ${length} bytes (allowed sizes: ${Skin.ACCEPTED_SKIN_SIZES.join(', ')})`);
         }
 
