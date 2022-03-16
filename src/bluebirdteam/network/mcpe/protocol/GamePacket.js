@@ -75,7 +75,6 @@ class GamePacket extends DataPacket {
 
 	handle(handler) {
 		if (this.payload.buffer.length === 0) {
-			console.log("jl");
 			return false;
 		}
 		this.getPackets().forEach((buf) => {

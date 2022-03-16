@@ -41,7 +41,7 @@ class PacketPool {
 		this.registerPacket(Text);
 		this.registerPacket(SetTitle);
 		this.registerPacket(DisconnectPacket);
-		this.registerPacket(PlayerSkin);
+		// this.registerPacket(PlayerSkin);
 	}
 
 	registerPacket(packet) {

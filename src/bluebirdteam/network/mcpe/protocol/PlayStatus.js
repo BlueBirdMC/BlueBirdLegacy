@@ -39,11 +39,11 @@ class PlayStatus extends DataPacket {
 	canBeSentBeforeLogin = true;
 
 	decodePayload() {
-		this.status = this.readUnsignedIntBE();
+		this.status = this.readIntBE();
 	}
 
 	encodePayload() {
-		this.writeUnsignedIntBE(this.status);
+		this.writeIntBE(this.status);
 	}
 }
 
