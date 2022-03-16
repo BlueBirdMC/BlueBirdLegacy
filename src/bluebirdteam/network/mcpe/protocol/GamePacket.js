@@ -84,7 +84,8 @@ class GamePacket extends DataPacket {
 				if (!pk.canBeBatched) {
 					throw new Error("Received invalid " + pk.getName() + " inside GamePacket");
 				}
-				pk.setBuffer(buf, 1);
+				pk.buffer = buf;
+				pk.offset = 1;
 				handler.handleDataPacket(pk);
 			} else {
 				console.log(buf);

@@ -38,7 +38,7 @@ class BiomeDefinitionList extends DataPacket {
 		this.write(Buffer.from("Taiga"));
 		this.writeUnsignedByte(0);
 		this.writeUnsignedByte(0);*/
-		this.write(this.namedtag ?? Buffer.from(BiomeDefinitionList.HARDCODED_NBT_BLOB, 'base64'));
+		this.write(this.namedtag ? this.namedtag : Buffer.from(BiomeDefinitionList.HARDCODED_NBT_BLOB, 'base64'));
 	}
 }
 

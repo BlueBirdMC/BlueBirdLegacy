@@ -50,16 +50,16 @@ class Skin {
         }
     }
 
-    static #checkLength(thing, name, maxLength) {
+    static checkLength(thing, name, maxLength) {
         if(thing.length > maxLength) {
             throw new Error(`${name} must be at most ${maxLength} but have ${thing.length}`);
         }
     }
 
     validate() {
-        this.constructor.#checkLength(this.#skinId, "Skin ID", 32767);
-        this.constructor.#checkLength(this.#geometryName, "Geometry name", 32767);
-        this.constructor.#checkLength(this.#geometryData, "Geometry data", 0x7fffffff);
+        Skin.checkLength(this.#skinId, "Skin ID", 32767);
+        Skin.checkLength(this.#geometryName, "Geometry name", 32767);
+        Skin.checkLength(this.#geometryData, "Geometry data", 0x7fffffff);
 
         if(!this.#skinId) {
             throw new Error("Skin id must not be empty");

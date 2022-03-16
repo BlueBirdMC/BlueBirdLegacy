@@ -148,7 +148,7 @@ class Player {
 		let skinData = new SkinData(
 			packet.clientData["SkinId"],
 			packet.clientData["PlayFabId"],
-			base64_decode(packet.clientData["SkinResourcePatch"] ?? "", true),
+			base64_decode(packet.clientData["SkinResourcePatch"] ? packet.clientData["SkinResourcePatch"] : "", true),
 			new SkinImage(
 				packet.clientData["SkinImageHeight"],
 				packet.clientData["SkinImageWidth"],
@@ -158,21 +158,21 @@ class Player {
 			new SkinImage(
 				packet.clientData["CapeImageHeight"],
 				packet.clientData["CapeImageWidth"],
-				base64_decode(packet.clientData["CapeData"] ?? "", true)
+				base64_decode(packet.clientData["CapeData"] ? packet.clientData["CapeData"] : "", true)
 			),
-			base64_decode(packet.clientData["SkinGeometryData"] ?? "", true),
+			base64_decode(packet.clientData["SkinGeometryData"] ? packet.clientData["SkinGeometryData"] : "", true),
 			base64_decode(packet.clientData["SkinGeometryDataEngineVersion"], true),
-			base64_decode(packet.clientData["SkinAnimationData"] ?? "", true),
-			packet.clientData["CapeId"] ?? "",
+			base64_decode(packet.clientData["SkinAnimationData"] ? packet.clientData["SkinAnimationData"] : "", true),
+			packet.clientData["CapeId"] ? packet.clientData["CapeId"] : "",
 			null,
-			packet.clientData["ArmSize"] ?? SkinData.ARM_SIZE_WIDE,
-			packet.clientData["SkinColor"] ?? "",
+			packet.clientData["ArmSize"] ? packet.clientData["ArmSize"] : SkinData.ARM_SIZE_WIDE,
+			packet.clientData["SkinColor"] ? packet.clientData["SkinColor"] : "",
 			personaPieces,
 			pieceTintColors,
 			true,
-			packet.clientData["PremiumSkin"] ?? false,
-			packet.clientData["PersonaSkin"] ?? false,
-			packet.clientData["CapeOnClassicSkin"] ?? false,
+			packet.clientData["PremiumSkin"] ? packet.clientData["PremiumSkin"] : false,
+			packet.clientData["PersonaSkin"] ? packet.clientData["PersonaSkin"] : false,
+			packet.clientData["CapeOnClassicSkin"] ? packet.clientData["CapeOnClassicSkin"] : false,
 			true,
 		);
 

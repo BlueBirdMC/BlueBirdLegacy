@@ -91,10 +91,10 @@ class Login extends DataPacket {
 		this.clientDataJwt = buffer.read(buffer.readIntLE()).toString();
 		this.clientData = Utils.decodeJWT(this.clientDataJwt);
 
-		this.clientId = this.clientData["ClientRandomId"] ?? null;
-		this.serverAddress = this.clientData["ServerAddress"] ?? null;
+		this.clientId = this.clientData["ClientRandomId"] ? this.clientData["ClientRandomId"] : null;
+		this.serverAddress = this.clientData["ServerAddress"] ? this.clientData["ServerAddress"] : null;
 
-		this.locale = this.clientData["LanguageCode"] ?? null;
+		this.locale = this.clientData["LanguageCode"] ? this.clientData["LanguageCode"] : null;
 	}
 
 	handle(handler) {
