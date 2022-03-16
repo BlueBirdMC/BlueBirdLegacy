@@ -86,7 +86,7 @@ class StartGame extends DataPacket {
 		this.writeSignedVarInt(0); // Movement authority
 		this.writeSignedVarInt(0); // Rewind history
 		this.writeBool(false); // Server authorative block breaking
-		this.writeLongLE(0); // Current tick
+		this.writeLongLE(BigInt(0)); // Current tick
 
 		this.writeSignedVarInt(0); // Enchantment seed
 
@@ -96,7 +96,7 @@ class StartGame extends DataPacket {
 		this.writeString(""); // Multiplayer correction id
 		this.writeBool(false); // Server authorative inventory
 		this.writeString("BlueBird"); // Engine
-		this.writeLongLE(0); // Block palette checksum
+		this.writeLongLE(BigInt(0)); // Block palette checksum
 	}
 }
 

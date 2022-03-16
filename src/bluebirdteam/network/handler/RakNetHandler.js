@@ -38,12 +38,12 @@ class RakNetHandler {
     }
 
     static handlePackets(inter, stream, connection){
+        console.log(connection.address.toString() + ": Packet -> 0x" + stream.readUnsignedByte().toString(16));
         let player = inter.players.getPlayer(connection.address.toString());
         let pk = new GamePacket();
         pk.setBuffer(stream.buffer);
         pk.decode();
         pk.handle(player.getSessionAdapter());
-        console.log(connection.address.toString() + ": Packet -> 0x" + stream.readUnsignedByte().toString(16));
     }
 }
 
