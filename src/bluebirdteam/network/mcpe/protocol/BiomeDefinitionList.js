@@ -15,6 +15,7 @@
 
 const DataPacket = require("./DataPacket");
 const ProtocolInfo = require("./ProtocolInfo");
+const fs = require("fs");
 
 class BiomeDefinitionList extends DataPacket {
 	static NETWORK_ID = ProtocolInfo.BIOME_DEFINITION_LIST;
@@ -38,7 +39,8 @@ class BiomeDefinitionList extends DataPacket {
 		this.write(Buffer.from("Taiga"));
 		this.writeUnsignedByte(0);
 		this.writeUnsignedByte(0);*/
-		this.write(this.namedtag ? this.namedtag : Buffer.from(BiomeDefinitionList.HARDCODED_NBT_BLOB, 'base64'));
+		this.write(this.namedtag ? this.namedtag : Buffer.from(fs.readFileSync(__dirname + "/res/biome_list.txt").toString(), 'base64'));
+		// this.write(this.namedtag ? this.namedtag : Buffer.from(BiomeDefinitionList.HARDCODED_NBT_BLOB, 'base64'));
 	}
 }
 
