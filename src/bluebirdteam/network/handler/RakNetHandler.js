@@ -18,23 +18,27 @@ const ProtocolInfo = require("../mcpe/protocol/ProtocolInfo");
 const GamePacket = require("../mcpe/protocol/GamePacket");
 
 class RakNetHandler {
-    static #players_count = 0;
 
     static handlePlayerConnection(inter, connection){
         let player = new Player(inter.server, connection.address, connection.port);
         inter.players.addPlayer(connection.address.toString(), player);
-        this.#players_count += 1;
     }
 
     static handlePlayerDisconnection(inter, address){
         if (inter.players.has(address.toString())) {
             inter.players.getPlayer(address.toString()).close('client disconnect', true);
-            this.#players_count -= 1;
+            inter.players.removePlayer(address.toString());
         }
     }
 
     static updatePong(inter){
-        inter.raknet.message = "MCPE;" + inter.bluebirdcfg.get("motd") + ";" + ProtocolInfo.CURRENT_PROTOCOL + ";" + ProtocolInfo.MINECRAFT_VERSION + ";" + this.#players_count + ";" + inter.bluebirdcfg.get("maxplayers") + ";" + inter.raknet.serverGUID.toString() + ";";
+        let interval = setInterval(() => {
+            if(inter.raknet.isRunning === true){
+                inter.raknet.message = "MCPE;" + inter.bluebirdcfg.get("motd") + ";" + ProtocolInfo.CURRENT_PROTOCOL + ";" + ProtocolInfo.MINECRAFT_VERSION + ";" + inter.server.getOnlinePlayers().length + ";" + inter.bluebirdcfg.get("maxplayers") + ";" + inter.raknet.serverGUID.toString() + ";";
+            }else{
+                clearInterval(interval);
+            }
+        });
     }
 
     static handlePackets(inter, stream, connection){
