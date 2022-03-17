@@ -25,9 +25,9 @@ const Text = require("./Text");
 const SetTitle = require("./SetTitle");
 const DisconnectPacket = require("./DisconnectPacket");
 const PlayerSkin = require("./PlayerSkin");
+const SetLocalPlayerAsInitialized = require("./SetLocalPlayerAsInitialized");
 
-class PacketPool {
-	packetPool = new Map();
+class PacketPool extends Map {
 
 	init() {
 		this.registerPacket(Login);
@@ -41,15 +41,16 @@ class PacketPool {
 		this.registerPacket(Text);
 		this.registerPacket(SetTitle);
 		this.registerPacket(DisconnectPacket);
+		this.registerPacket(SetLocalPlayerAsInitialized);
 		// this.registerPacket(PlayerSkin);
 	}
 
 	registerPacket(packet) {
-		this.packetPool.set(packet.NETWORK_ID, packet);
+		this.set(packet.NETWORK_ID, packet);
 	}
 
 	getPacket(id) {
-		return this.packetPool.has(id) ? new (this.packetPool.get(id))() : null;
+		return this.has(id) ? new (this.get(id))() : null;
 	}
 }
 

@@ -21,9 +21,12 @@ class StartGame extends DataPacket {
 
 	canBeSentBeforeLogin = true;
 
+	entityId;
+	entityRuntimeId;
+
 	encodePayload() {
-		this.writeSignedVarLong(0); // Entity id
-		this.writeVarLong(0); // Runtime entity id
+		this.writeSignedVarLong(this.entityId); // Entity id
+		this.writeVarLong(this.entityRuntimeId); // Runtime entity id
 		this.writeSignedVarInt(1); // Player gamemode
 
 		this.writeFloatLE(0.0); // Player x

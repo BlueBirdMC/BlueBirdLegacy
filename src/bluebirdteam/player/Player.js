@@ -36,8 +36,9 @@ const SkinAnimation = require("../network/mcpe/protocol/types/SkinAnimation");
 const PersonaSkinPiece = require("../network/mcpe/protocol/types/PersonaSkinPiece");
 const PersonaPieceTintColor = require("../network/mcpe/protocol/types/PersonaPieceTintColor");
 const SkinData = require("../network/mcpe/protocol/types/SkinData");
+const Entity = require("../entity/Entity");
 
-class Player {
+class Player extends Entity {
 
 	username = "";
 	loggedIn = false;
@@ -46,6 +47,7 @@ class Player {
 	uuid;
 
 	constructor(server, ip, port) {
+		super();
 		this.server = server;
 		this.ip = ip;
 		this.port = port;
@@ -209,6 +211,8 @@ class Player {
 
 			case ResourcePackClientResponse.STATUS_COMPLETED:
 				let startgame = new StartGame();
+				startgame.entityId = this.id;
+				startgame.entityRuntimeId = this.id;
 				this.sendDataPacket(startgame);
 
 				this.sendDataPacket(new BiomeDefinitionList());

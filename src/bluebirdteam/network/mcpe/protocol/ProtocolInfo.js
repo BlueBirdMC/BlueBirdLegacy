@@ -30,7 +30,8 @@ let ProtocolInfo = {
 	TEXT: 0x09,
 	SET_TITLE: 0x58,
 	DISCONNECT_PACKET: 0x05,
-	PLAYER_SKIN: 0x5d
+	PLAYER_SKIN: 0x5d,
+	SET_LOCAL_PLAYER_AS_INITIALIZED: 0x71
 };
 
 module.exports = ProtocolInfo;
