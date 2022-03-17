@@ -8,7 +8,7 @@
     "bbmc-raknet": "git+https://github.com/BlueBirdMC/RakNet.git",
     "uuid-js": "^0.7.5"
   },
-  "author": "DRAGKILLS",
+  "author": "BlueBirdMC Team",
   "license": "MIT",
   "devDependencies": {
     "time-stamp": "^2.2.0"
