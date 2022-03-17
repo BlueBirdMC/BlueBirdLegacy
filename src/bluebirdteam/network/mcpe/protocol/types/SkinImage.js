@@ -21,11 +21,11 @@ class SkinImage {
 
     constructor(height, width, data) {
         if(height < 0 || width < 0){
-            throw new Error("unknown height and width");
+            throw new Error("Unknown height and width");
         }
         let expected, actual;
         if((expected = height * width * 4) !== (actual = data.length)){
-            throw new Error(`data should be ${expected} got ${actual}`);
+            throw new Error(`Data should be ${expected} got ${actual}`);
         }
         this.height = height;
         this.width = width;
@@ -41,7 +41,7 @@ class SkinImage {
             case 128 * 128 * 4:
                 return new SkinImage(128, 128, data);
         }
-        throw new Error("unknown size");
+        throw new Error("Unknown size");
     }
 
     getHeight(){
