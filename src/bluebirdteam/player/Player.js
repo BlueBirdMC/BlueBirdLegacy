@@ -37,6 +37,7 @@ const PersonaSkinPiece = require("../network/mcpe/protocol/types/PersonaSkinPiec
 const PersonaPieceTintColor = require("../network/mcpe/protocol/types/PersonaPieceTintColor");
 const SkinData = require("../network/mcpe/protocol/types/SkinData");
 const Entity = require("../entity/Entity");
+const AvailableActorIdentifiers = require("../network/mcpe/protocol/AvailableActorIdentifiers");
 
 class Player extends Entity {
 
@@ -216,6 +217,7 @@ class Player extends Entity {
 				this.sendDataPacket(startgame);
 
 				this.sendDataPacket(new BiomeDefinitionList());
+				this.sendDataPacket(new AvailableActorIdentifiers());
 				this.sendDataPacket(new CreativeContent());
 
 				let play_status = new PlayStatus();

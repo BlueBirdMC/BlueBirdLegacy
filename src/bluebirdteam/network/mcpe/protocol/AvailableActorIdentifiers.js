@@ -13,26 +13,23 @@
  * \ @author BlueBirdMC Team /            *
 \******************************************/
 
-let ProtocolInfo = {
-	/** Minecraft protocol */
-	CURRENT_PROTOCOL: 486,
-	/** the display version will be showed */
-	MINECRAFT_VERSION: "1.18.11",
-	/** packet ids */
-	LOGIN: 0x01,
-	PLAY_STATUS: 0x02,
-	RESOURCE_PACKS_INFO: 0x06,
-	RESOURCE_PACK_STACK: 0x07,
-	RESOURCE_PACK_CLIENT_RESPONSE: 0x08,
-	START_GAME: 0x0b,
-	BIOME_DEFINITION_LIST: 0x7a,
-	CREATIVE_CONTENT: 0x91,
-	TEXT: 0x09,
-	SET_TITLE: 0x58,
-	DISCONNECT_PACKET: 0x05,
-	PLAYER_SKIN: 0x5d,
-	SET_LOCAL_PLAYER_AS_INITIALIZED: 0x71,
-	AVAILABLE_ACTOR_IDENTIFIERS: 0x77
-};
+const DataPacket = require("./DataPacket");
+const ProtocolInfo = require("./ProtocolInfo");
+const fs = require("fs");
+const Path = require("path");
 
-module.exports = ProtocolInfo;
+class AvailableActorIdentifiers extends DataPacket {
+    static NETWORK_ID = ProtocolInfo.AVAILABLE_ACTOR_IDENTIFIERS;
+
+    namedtag;
+
+    decodePayload() {
+        this.namedtag = this.readRemaining();
+    }
+
+    encodePayload() {
+        this.write(this.namedtag ?? Buffer.from(fs.readFileSync(Path.normalize(__dirname + "/../../../resources/entity_identifiers.nbt")), "base64"));
+    }
+}
+
+module.exports = AvailableActorIdentifiers;

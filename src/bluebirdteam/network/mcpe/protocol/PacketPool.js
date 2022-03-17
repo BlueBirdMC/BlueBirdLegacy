@@ -26,6 +26,7 @@ const SetTitle = require("./SetTitle");
 const DisconnectPacket = require("./DisconnectPacket");
 const PlayerSkin = require("./PlayerSkin");
 const SetLocalPlayerAsInitialized = require("./SetLocalPlayerAsInitialized");
+const AvailableActorIdentifiers = require("./AvailableActorIdentifiers");
 
 class PacketPool extends Map {
 
@@ -42,6 +43,7 @@ class PacketPool extends Map {
 		this.registerPacket(SetTitle);
 		this.registerPacket(DisconnectPacket);
 		this.registerPacket(SetLocalPlayerAsInitialized);
+		this.registerPacket(AvailableActorIdentifiers);
 		// this.registerPacket(PlayerSkin);
 	}
 
