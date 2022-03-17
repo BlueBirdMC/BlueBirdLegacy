@@ -9,7 +9,7 @@
     "uuid-js": "^0.7.5"
   },
   "author": "BlueBirdMC Team",
-  "license": "MIT",
+  "license": "GNU-3.0",
   "devDependencies": {
     "time-stamp": "^2.2.0"
   },
