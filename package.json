@@ -1,6 +1,6 @@
 {
   "name": "bluebird",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "A server software for Minecraft: Bedrock edition",
   "main": "src/bluebirdteam/BlueBird.js",
   "dependencies": {
