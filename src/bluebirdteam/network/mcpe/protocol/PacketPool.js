@@ -27,6 +27,15 @@ const DisconnectPacket = require("./DisconnectPacket");
 const PlayerSkin = require("./PlayerSkin");
 const SetLocalPlayerAsInitialized = require("./SetLocalPlayerAsInitialized");
 const AvailableActorIdentifiers = require("./AvailableActorIdentifiers");
+const ChunkRadiusUpdated = require("./ChunkRadiusUpdated");
+const NetworkChunkPublisherUpdate = require("./NetworkChunkPublisherUpdate");
+const RequestChunkRadius = require("./RequestChunkRadius");
+const ResourcePackChunkData = require("./ResourcePackChunkData");
+const ResourcePackChunkRequest = require("./ResourcePackChunkRequest");
+const SubChunk = require("./SubChunk");
+const SubChunkRequest = require("./SubChunkRequest");
+const UpdateSubChunkBlocks = require("./UpdateSubChunkBlocks");
+const LevelChunk = require("./LevelChunk");
 
 class PacketPool extends Map {
 
@@ -44,6 +53,15 @@ class PacketPool extends Map {
 		this.registerPacket(DisconnectPacket);
 		this.registerPacket(SetLocalPlayerAsInitialized);
 		this.registerPacket(AvailableActorIdentifiers);
+		this.registerPacket(ChunkRadiusUpdated);
+		this.registerPacket(NetworkChunkPublisherUpdate);
+		this.registerPacket(RequestChunkRadius);
+		this.registerPacket(ResourcePackChunkData);
+		this.registerPacket(ResourcePackChunkRequest);
+		this.registerPacket(SubChunk);
+		this.registerPacket(SubChunkRequest);
+		this.registerPacket(LevelChunk);
+		// this.registerPacket(UpdateSubChunkBlocks);
 		// this.registerPacket(PlayerSkin);
 	}
 

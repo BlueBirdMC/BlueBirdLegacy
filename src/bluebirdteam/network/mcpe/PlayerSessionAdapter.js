@@ -62,6 +62,15 @@ class PlayerSessionAdapter {
 		return this.player.changeSkin(SkinAdapterSingleton.get().fromSkinData(packet.skin), packet.oldSkinName, packet.newSkinName);
 	}
 
+	handleRequestChunkRadius(packet){
+		this.player.setViewDistance(packet.radius);
+		return true;
+	}
+
+	handleResourcePackChunkRequest(packet){
+		return this.player.handleResourcePackChunkRequest(packet);
+	}
+
 	/**
 	 * @return {String}
 	 */

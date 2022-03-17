@@ -45,6 +45,17 @@ global.base64_encode = function (str) {
 	return Buffer.from(str).toString("base64");
 };
 
+global.array_fill = function(startIndex, num, mixedVal) {
+	let key;
+	const tmpArr = {};
+	if (!isNaN(startIndex) && !isNaN(num)) {
+		for (key = 0; key < num; key++) {
+			tmpArr[(key + startIndex)] = mixedVal;
+		}
+	}
+	return tmpArr;
+};
+
 global.CheckTypes = function (...args) {
 	if (args.length === 0) throw new TypeError("Expecting at least 1 Array. Example: [Object, myObjectVar]");
 

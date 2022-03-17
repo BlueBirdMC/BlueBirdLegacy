@@ -38,6 +38,9 @@ const PersonaPieceTintColor = require("../network/mcpe/protocol/types/PersonaPie
 const SkinData = require("../network/mcpe/protocol/types/SkinData");
 const Entity = require("../entity/Entity");
 const AvailableActorIdentifiers = require("../network/mcpe/protocol/AvailableActorIdentifiers");
+const ResourcePackChunkRequest = require("../network/mcpe/protocol/ResourcePackChunkRequest");
+const ResourcePackChunkData = require("../network/mcpe/protocol/ResourcePackChunkData");
+const ChunkRadiusUpdated = require("../network/mcpe/protocol/ChunkRadiusUpdated");
 
 class Player extends Entity {
 
@@ -46,6 +49,7 @@ class Player extends Entity {
 	locale = "en_US";
 	skin;
 	uuid;
+	viewDistance = 0;
 
 	constructor(server, ip, port) {
 		super();
@@ -275,6 +279,24 @@ class Player extends Entity {
 
 		this.server.getLogger().info("Player " + this.username + " joined the game");
 		this.server.broadcastMessage("§6Player " + this.username + " joined the game");
+	}
+
+	handleResourcePackChunkRequest(packet){
+		let pk = new ResourcePackChunkData();
+		pk.packId = 0;
+		pk.chunkIndex = packet.chunkIndex;
+		pk.data = Math.ceil(128 / 128 * 1028);
+		pk.progress = (128 * packet.chunkIndex);
+		this.sendDataPacket(pk);
+	}
+
+	setViewDistance(distance){
+		this.viewDistance = distance;
+		let pk = new ChunkRadiusUpdated();
+		pk.radius = this.viewDistance;
+		this.sendDataPacket(pk);
+
+		this.server.getLogger().debug("Setting view distance for " + this.username + " to " + this.viewDistance);
 	}
 
 	handleText(packet) {
