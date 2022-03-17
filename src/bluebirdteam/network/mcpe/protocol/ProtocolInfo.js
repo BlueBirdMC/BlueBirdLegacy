@@ -17,7 +17,7 @@ let ProtocolInfo = {
 	/** Minecraft protocol */
 	CURRENT_PROTOCOL: 486,
 	/** the display version will be showed */
-	MINECRAFT_VERSION: "1.18.11",
+	MINECRAFT_VERSION: "1.18.12",
 	/** packet ids */
 	LOGIN: 0x01,
 	PLAY_STATUS: 0x02,
