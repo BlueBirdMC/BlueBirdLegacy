@@ -11,7 +11,7 @@
  * of the license.                        *
  * ___________________________            *
  * \ @author BlueBirdMC Team /            *
- \******************************************/
+\******************************************/
 
 class SkinAnimation {
     static TYPE_HEAD = 1;

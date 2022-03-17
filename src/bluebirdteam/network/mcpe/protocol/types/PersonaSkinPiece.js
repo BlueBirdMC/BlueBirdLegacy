@@ -11,7 +11,7 @@
  * of the license.                        *
  * ___________________________            *
  * \ @author BlueBirdMC Team /            *
- \******************************************/
+\******************************************/
 
 class PersonaSkinPiece {
     static PIECE_TYPE_PERSONA_BODY = "persona_body";

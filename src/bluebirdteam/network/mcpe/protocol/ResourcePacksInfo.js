@@ -11,7 +11,7 @@
  * of the license.                        *
  * ___________________________            *
  * \ @author BlueBirdMC Team /            *
- \******************************************/
+\******************************************/
 
 const DataPacket = require("./DataPacket");
 const ProtocolInfo = require("./ProtocolInfo");
@@ -69,7 +69,7 @@ class ResourcePacksInfo extends DataPacket {
 		this.behaviorPackEntries.forEach(() => {
 			this.writeString("");
 			this.writeString("");
-			this.writeLLong(0);
+			this.writeLongLE(0);
 			this.writeString("");
 			this.writeString("");
 			this.writeString("");

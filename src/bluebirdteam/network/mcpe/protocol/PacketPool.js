@@ -11,7 +11,7 @@
  * of the license.                        *
  * ___________________________            *
  * \ @author BlueBirdMC Team /            *
- \******************************************/
+\******************************************/
 
 const Login = require("./Login");
 const PlayStatus = require("./PlayStatus");

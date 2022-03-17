@@ -11,7 +11,7 @@
  * of the license.                        *
  * ___________________________            *
  * \ @author BlueBirdMC Team /            *
- \******************************************/
+\******************************************/
 
 const PlayerSessionAdapter = require("../network/mcpe/PlayerSessionAdapter");
 const LoginPacket = require("../network/mcpe/protocol/Login");

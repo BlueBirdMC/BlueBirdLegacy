@@ -11,7 +11,7 @@
  * of the license.                        *
  * ___________________________            *
  * \ @author BlueBirdMC Team /            *
- \******************************************/
+\******************************************/
 
 const SkinData = require("./SkinData");
 const SkinImage = require("./SkinImage");

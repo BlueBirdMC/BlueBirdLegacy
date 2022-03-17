@@ -11,7 +11,7 @@
  * of the license.                        *
  * ___________________________            *
  * \ @author BlueBirdMC Team /            *
- \******************************************/
+\******************************************/
 
 const UUID = require("../utils/UUID");
 const PersonaPieceTintColor = require("./mcpe/protocol/types/PersonaPieceTintColor");

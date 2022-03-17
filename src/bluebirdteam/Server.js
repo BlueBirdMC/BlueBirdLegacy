@@ -11,7 +11,7 @@
  * of the license.                        *
  * ___________________________            *
  * \ @author BlueBirdMC Team /            *
- \******************************************/
+\******************************************/
 
 const GamePacket = require("./network/mcpe/protocol/GamePacket");
 const Config = require("./utils/Config");

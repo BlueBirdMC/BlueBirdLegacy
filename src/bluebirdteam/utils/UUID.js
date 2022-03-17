@@ -11,7 +11,7 @@
  * of the license.                        *
  * ___________________________            *
  * \ @author BlueBirdMC Team /            *
- \******************************************/
+\******************************************/
 
 const BinaryStream = require("bbmc-binarystream");
 const lib = require("uuid-js");

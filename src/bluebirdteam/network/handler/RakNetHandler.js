@@ -11,7 +11,7 @@
  * of the license.                        *
  * ___________________________            *
  * \ @author BlueBirdMC Team /            *
- \******************************************/
+\******************************************/
 
 const Player = require("../../player/Player");
 const ProtocolInfo = require("../mcpe/protocol/ProtocolInfo");

@@ -11,7 +11,7 @@
  * of the license.                        *
  * ___________________________            *
  * \ @author BlueBirdMC Team /            *
- \******************************************/
+\******************************************/
 
 const ProtocolInfo = require("../ProtocolInfo");
 const UUID = require("../../../../utils/UUID");

@@ -11,7 +11,7 @@
  * of the license.                        *
  * ___________________________            *
  * \ @author BlueBirdMC Team /            *
- \******************************************/
+\******************************************/
 
 const { RakNetServer, InternetAddress, Frame, ReliabilityTool } = require("bbmc-raknet");
 const GamePacket = require("./mcpe/protocol/GamePacket");

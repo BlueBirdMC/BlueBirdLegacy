@@ -11,7 +11,7 @@
  * of the license.                        *
  * ___________________________            *
  * \ @author BlueBirdMC Team /            *
- \******************************************/
+\******************************************/
 
 const TextFormat = require("./TextFormat");
 const TimeStamp = require("time-stamp");

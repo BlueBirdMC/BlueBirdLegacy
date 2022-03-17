@@ -11,7 +11,7 @@
  * of the license.                        *
  * ___________________________            *
  * \ @author BlueBirdMC Team /            *
- \******************************************/
+\******************************************/
 
 const DataPacket = require("./DataPacket");
 const ProtocolInfo = require("./ProtocolInfo");

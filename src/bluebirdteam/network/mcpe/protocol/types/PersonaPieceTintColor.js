@@ -11,7 +11,7 @@
  * of the license.                        *
  * ___________________________            *
  * \ @author BlueBirdMC Team /            *
- \******************************************/
+\******************************************/
 
 class PersonaPieceTintColor {
     static PIECE_TYPE_PERSONA_EYES = "persona_eyes";
