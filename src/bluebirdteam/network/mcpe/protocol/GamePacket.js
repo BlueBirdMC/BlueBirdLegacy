@@ -17,6 +17,7 @@ const DataPacket = require("./DataPacket");
 const assert = require("assert");
 const Zlib = require("zlib");
 const BinaryStream = require("../../NetworkBinaryStream");
+const Logger = require("./utils/MainLogger");
 
 class GamePacket extends DataPacket {
 	static NETWORK_ID = 0xfe;
@@ -79,7 +80,8 @@ class GamePacket extends DataPacket {
 		}
 		this.getPackets().forEach((buf) => {
 			let pk = handler.raknetAdapter.packetPool.getPacket(buf[0]);
-			console.log("MINECRAFT PACKET: 0x" + buf.slice(0, 1).toString("hex"));
+			this.logger = new Logger();
+			this.getLogger().debug("MINECRAFT PACKET: 0x" + buf.slice(0, 1).toString("hex"));
 			if (pk instanceof DataPacket) {
 				if (!pk.canBeBatched) {
 					throw new Error("Received invalid " + pk.getName() + " inside GamePacket");
@@ -88,7 +90,7 @@ class GamePacket extends DataPacket {
 				pk.offset = 1;
 				handler.handleDataPacket(pk);
 			} else {
-				console.log(buf);
+				this.getLogger().debug(buf);
 			}
 		});
 		return true;
