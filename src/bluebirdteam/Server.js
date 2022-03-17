@@ -35,7 +35,15 @@ class Server {
 		this.getLogger().info("Loading BlueBird.json");
 		this.path = path;
 		if (!fs.existsSync("BlueBird.json")) {
-			fs.copyFileSync(this.path.file + "bluebirdteam/resources/BlueBird.json", this.path.data + "BlueBird.json");
+			let options = {
+				"motd": "BlueBird Server",
+				"interface": "0.0.0.0",
+				"port": 19132,
+				"maxplayers": 20,
+				"debug_level": 0,
+				"onlinemode": true
+			};
+			fs.writeFileSync(this.path.data + "BlueBird.json", JSON.stringify(options));
 		}
 		this.getLogger().info("This server is running BlueBird " + version);
 		this.getLogger().info("BlueBird is distributed under GPLv3 License");
