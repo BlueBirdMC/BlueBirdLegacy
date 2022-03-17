@@ -71,9 +71,9 @@ class Server {
 			packets.forEach((packet) => pk.addPacket(packet));
 
 			if (!forceSync && !immediate) {
-				this.broadcastPackets(pk, targets, false);
+				this.broadcastPackets([pk], targets, false);
 			} else {
-				this.broadcastPackets(pk, targets, immediate);
+				this.broadcastPackets([pk], targets, immediate);
 			}
 		}
 	}
@@ -101,28 +101,30 @@ class Server {
 	}
 
 	/**
-	 * @param pk {DataPacket}
+	 * @param packets {DataPacket[]}
 	 * @param targets {Player[]}
 	 * @param immediate {Boolean}
 	 */
-	broadcastPackets(pk, targets, immediate) {
-		if (!pk.isEncoded) {
-			pk.encode();
-		}
+	broadcastPackets(packets, targets, immediate) {
+		packets.forEach(pk => {
+			if (!pk.isEncoded) {
+				pk.encode();
+			}
 
-		if (immediate) {
-			targets.forEach((id) => {
-				if (this.raknet.players.has(id)) {
-					this.raknet.players.getPlayer(id).sendDataPacket(pk, true);
-				}
-			});
-		} else {
-			targets.forEach((id) => {
-				if (this.raknet.players.has(id)) {
-					this.raknet.players.getPlayer(id).sendDataPacket(pk);
-				}
-			});
-		}
+			if (immediate) {
+				targets.forEach((id) => {
+					if (this.raknet.players.has(id)) {
+						this.raknet.players.getPlayer(id).sendDataPacket(pk, true);
+					}
+				});
+			} else {
+				targets.forEach((id) => {
+					if (this.raknet.players.has(id)) {
+						this.raknet.players.getPlayer(id).sendDataPacket(pk);
+					}
+				});
+			}
+		});
 	}
 
 	/**
