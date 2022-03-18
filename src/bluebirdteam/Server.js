@@ -31,7 +31,7 @@ class Server {
 	constructor(path) {
 		let start_time = Date.now();
 		this.logger = new Logger();
-		this.getLogger().info("Starting Server...");
+		this.getLogger().info("Starting server...");
 		this.getLogger().info("Loading BlueBird.json");
 		this.path = path;
 		if (!fs.existsSync("BlueBird.json")) {

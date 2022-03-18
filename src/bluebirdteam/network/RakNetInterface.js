@@ -73,6 +73,7 @@ class RakNetInterface {
 		this.raknet.on('connect', (connection) => {
 			RakNetHandler.handlePlayerConnection(this, connection);
 		});
+
 		this.raknet.on('disconnect', (address) => {
 			RakNetHandler.handlePlayerDisconnection(this, address);
 		});
