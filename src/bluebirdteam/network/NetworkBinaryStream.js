@@ -33,7 +33,6 @@ class NetworkBinaryStream extends require("bbmc-binarystream") {
 	 */
 	writeString(v) {
 		this.writeVarInt(Buffer.byteLength(v));
-		if (v.length === 0) { return ""; }
 		this.write(Buffer.from(v, "utf8"));
 	}
 
