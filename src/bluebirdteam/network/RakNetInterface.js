@@ -40,7 +40,7 @@ class RakNetInterface {
 		this.server = server;
 		this.bluebirdcfg = new Config("BlueBird.json", Config.JSON);
 		this.logger = new Logger();
-		this.raknet = new RakNetServer(new InternetAddress(this.bluebirdcfg.get("interface"), this.bluebirdcfg.get("port"), 4), 10);
+		this.raknet = new RakNetServer(new InternetAddress(this.bluebirdcfg.get("interface"), this.bluebirdcfg.get("port"), this.bluebirdcfg.get("ipv")), 10);
 		this.players = new PlayerList();
 		this.packetPool = new PacketPool();
 		this.packetPool.init();
