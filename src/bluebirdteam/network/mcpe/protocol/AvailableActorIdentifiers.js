@@ -21,7 +21,7 @@ const Path = require("path");
 class AvailableActorIdentifiers extends DataPacket {
     static NETWORK_ID = ProtocolInfo.AVAILABLE_ACTOR_IDENTIFIERS;
 
-    /** @type {Buffer}
+    /** @type {Buffer} */
     namedtag;
 
     decodePayload() {
