@@ -15,7 +15,6 @@
 
 const DataPacket = require("./DataPacket");
 const ProtocolInfo = require("./ProtocolInfo");
-const fs = require("fs");
 
 class CreativeContent extends DataPacket {
 	static NETWORK_ID = ProtocolInfo.CREATIVE_CONTENT;
@@ -25,9 +24,7 @@ class CreativeContent extends DataPacket {
 	canBeSentBeforeLogin = true;
 
 	encodePayload() {
-		// this.writeVarInt(0);
-		this.write(Buffer.from(fs.readFileSync(__dirname + "/res/creative_content.txt").toString(), 'base64'));
-		// this.write(Buffer.from(CreativeContent.HARDCODED_CC_BLOB, 'base64'));
+		this.write(Buffer.from(CreativeContent.HARDCODED_CC_BLOB, 'base64'));
 	}
 }
 
