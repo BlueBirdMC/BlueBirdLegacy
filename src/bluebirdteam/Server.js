@@ -39,6 +39,7 @@ class Server {
 				"motd": "BlueBird Server",
 				"interface": "0.0.0.0",
 				"port": 19132,
+				"ipv": 4,
 				"maxplayers": 20,
 				"debug_level": 0,
 				"onlinemode": true
