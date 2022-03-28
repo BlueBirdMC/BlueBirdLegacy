@@ -1,5 +1,3 @@
-use https://github.com/BlueBirdMC/BlueBirdR2 instead
-<!---
 ## What is BlueBird?
 
 > BlueBird is a new Minecraft: Bedrock Edition Server Software written on JavaScript
@@ -26,5 +24,3 @@ $ sudo apt update && apt install nodejs && npm install && node start.js
 >**Windows**
 ```php
 $ npm install && node start.js
-```
----!>
