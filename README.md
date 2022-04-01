@@ -1,1 +1,1 @@
-https://github.com/BlueBird/BlueBird
+https://github.com/BlueBirdMC/BlueBird
